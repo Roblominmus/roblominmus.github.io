@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Schedule</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(#2a2a4f,#c56cf0);
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #ffffff;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background: rgba(27, 27, 47, 0.9);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2em;
+            color: #c56cf0;
+            margin-bottom: 20px;
+        }
+
+        #day-selector {
+            padding: 10px;
+            font-size: 1em;
+            border-radius: 5px;
+            border: 1px solid #c56cf0;
+            margin-bottom: 20px;
+            background-color: #2a2a4f;
+            color: #c56cf0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 1em;
+            color: #ffffff;
+        }
+
+        th, td {
+            border: 1px solid #c56cf0;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #6a0572;
+            color: #ffffff;
+        }
+
+        td {
+            background-color: #1e1e40;
+        }
+
+        tr:nth-child(even) td {
+            background-color: #2a2a4f;
+        }
+
+        tr:hover td {
+            background-color: #6a0572;
+            color: #ffffff;
+        }
+
+        .highlight {
+            background-color: #c56cf0 !important;
+            color: #1e1e40 !important;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.5em;
+            }
+
+            #day-selector {
+                width: 100%;
+                font-size: 0.9em;
+            }
+
+            table {
+                font-size: 0.9em;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="current-day"></h1>
+        <select id="day-selector">
+            <option value="Sunday">Sunday</option>
+            <option value="Monday">Monday</option>
+            <option value="Tuesday">Tuesday</option>
+            <option value="Wednesday">Wednesday</option>
+            <option value="Thursday">Thursday</option>
+            <option value="Friday">Friday</option>
+            <option value="Saturday">Saturday</option>
+        </select>
+        <p id="current-task"></p> <!-- New element to display current task -->
+        <table id="schedule-table">
+             <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Task</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Schedule will be inserted here by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const schedule = {
+                "Monday": {
+                    "9 am - 10 am": "Review Classes",
+                    "11 am - 1 pm": "COSC 112 - Bucodel Lab 2",
+                    "1 pm - 2 pm": "CAF (FRIED RICE)",
+                    "2 pm - 4 pm": "Learn C and C++ (POMODORO)",
+                    "4 pm - 5 pm": "       ",
+                    "5 pm - 6 pm": "CAF (TUBER & EGG SAUCE)",
+                    "6 pm - 8 pm": "Learn WebDev (Pomodoro)",
+                    "8 pm - 10 pm": "GRWM / EXERCISE (NORMAL)"
+                },
+                "Tuesday": {
+                    "9 am - 10 am": "SEMINAR : AMPHITHEATER",
+                    "10 am - 11 am": "COSC 112: Bucodel Lab 2",
+                    "11 am - 1 pm": "BU-SENG CIT",
+                    "1 pm - 2 pm": "CAF (SWALLOW)",
+                    "2 pm - 4 pm": "MATHS: A008",
+                    "4 pm - 5 pm": "CAF (RICE & BEANS)",
+                    "5 pm - 6 pm": "GRWM",
+                    "6 pm - 7 pm": "HALL WORSHIP",
+                    "7 pm - 9 pm": "Read Maths (Pomodoro)",
+                    "9 pm - 10 pm": "Assignments / Leisure / Projects"
+                },
+                "Wednesday": {
+                    "7 am - 8 am": "                ",
+                    "9 am - 11am": "Physics: B106",
+                    "11 am - 1 pm": "stats: SCLT",
+                    "1 pm - 2 pm": "CAF (BEANS)",
+                    "2 pm - 4 pm": "Read Physics",
+                    "4 pm - 5 pm": "GRWM",
+                    "5 pm - 6 pm": "CAF (SPAG)",
+                    "6 pm - 7 pm": "CHURCH",
+                    "7 pm - 9 pm": "Read Stats",
+                    "9 pm - 10 pm": "EXERCISE (HAND RELEASE) / PHONE"
+                },
+                "Thursday": {
+                    "8 am - 10 am": "NPCT: ONLINE",
+                    "10 am - 11 am": "CTM: WRA",
+                    "11 am - 12 pm": "BU-SENG: CIT",
+                    "12 pm - 2 pm": "Learn Python (POMO) / CAF (SWALLOW) / CYBER",
+                    "2 pm - 3 pm": "Learn Python / Cyber",
+                    "3 pm - 4 pm": "      ",
+                    "4 pm - 6 pm": "HP : Online",
+                    "6 pm - 7 pm": "CAF (MIXED RICE)",
+                    "7 pm - 8 pm": "GRWM",
+                    "8 pm - 10 pm": "READ HARD STUFF / ASSIGNMENTS / LEISURE"
+                },
+                "Friday": {
+                    "10 am - 12 pm": "CTM: Amphitheatre",
+                    "12 pm - 1 pm": "CAF (BEANS)",
+                    "1 pm - 2 pm": "Laundry",
+                    "2 pm - 5 pm": "Assignments / Flash cards / Test Myself / Leisure",
+                    "5 pm - 6 pm": "CAF (YAM & STEW)",
+                    "6 pm - 7 pm": "CHURCH",
+                    "7 pm - 8 pm": "GRWM",
+                    "8 pm - 10 pm": "REST / EXERCISE (ENOMS)"
+                },
+                "Saturday": {
+                    "9 am - 11 am": "CHURCH",
+                    "11 am - 12 pm": "     ",
+                    "12 pm - 1 pm": "extra laundry",
+                    "1 pm - 2 pm": "CAF (JOLLOF RICE)",
+                    "2 pm - 5 pm": "Learn C++ / WebDev / Python / Cyber (Which is lacking)",
+                    "5 pm - 6 pm": "CAF (FRIED YAM)",
+                    "6 pm - 7 pm": "CHURCH",
+                    "7 pm - 10 pm": "Assignments / Flash cards / Test Myself / Leisure"
+                },
+                "Sunday": {
+                    "9 am - 11 am": "Read Maths / Stats / Physics (any lacking) / Fun / Assignments",
+                    "11 am - 12 pm": "CAF (BEANS)",
+                    "12 pm - 1 pm": "more laundry",
+                    "1 pm - 2 pm": "     ",
+                    "2 pm - 5 pm": "Notes on GSTs and personal projects / Assignments",
+                    "5 pm - 6 pm": "CAF (YAM AND STEW)",
+                    "6 pm - 7 pm": "     ",
+                    "7 pm - 9 pm": "Exercise (Shoulder Taps and tricep pushups)"
+                }
+            };
+
+            const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            const today = new Date();
+            const currentDay = daysOfWeek[today.getDay()];
+
+            document.getElementById("current-day").innerText = currentDay;
+            document.getElementById("day-selector").value = currentDay;
+
+            const scheduleTableBody = document.querySelector("#schedule-table tbody");
+            const currentTaskElement = document.getElementById("current-task");
+
+            function updateSchedule(day) {
+                scheduleTableBody.innerHTML = "";
+                if (schedule[day]) {
+                    for (let [time, task] of Object.entries(schedule[day])) {
+                        const row = document.createElement("tr");
+
+                        const timeCell = document.createElement("td");
+                        timeCell.textContent = time;
+                        row.appendChild(timeCell);
+
+                        const taskCell = document.createElement("td");
+                        taskCell.textContent = task;
+                        row.appendChild(taskCell);
+
+                        scheduleTableBody.appendChild(row);
+                    }
+                } else {
+                    const row = document.createElement("tr");
+                    const cell = document.createElement("td");
+                    cell.textContent = "No schedule for today";
+                    cell.colSpan = 2;
+                    row.appendChild(cell);
+                    scheduleTableBody.appendChild(row);
+                }
+                getCurrentTask(); // Highlight the current task after updating the schedule
+            }
+
+            updateSchedule(currentDay);
+
+            document.getElementById("day-selector").addEventListener("change", function() {
+                const selectedDay = this.value;
+                document.getElementById("current-day").innerText = selectedDay;
+                updateSchedule(selectedDay);
+            });
+
+            function getCurrentTask() {
+                const now = new Date();
+                const currentDay = document.getElementById("current-day").innerText;
+                const currentTime = now.getHours() * 60 + now.getMinutes();
+                const currentTasks = schedule[currentDay];
+                let taskFound = false;
+
+                scheduleTableBody.querySelectorAll('tr').forEach(row => row.classList.remove('highlight')); // Remove existing highlights
+
+                for (let [time, task] of Object.entries(currentTasks)) {
+                    const [start, end] = time.split(' - ').map(parseTime);
+                    if (currentTime >= start && currentTime <= end) {
+                        currentTaskElement.textContent = "Current Task: " + task;
+                        highlightTask(time); // Highlight the current task
+                        taskFound = true;
+                        CAF;
+                    }
+                }
+                if (!taskFound) {
+                    currentTaskElement.textContent = "No task at the moment.";
+                }
+            }
+
+            function parseTime(timeString) {
+                const [time, period] = timeString.split(' ');
+                let [hours, minutes] = time.split(':').map(Number);
+                if (period === 'pm' && hours < 12) hours += 12;
+                if (period === 'am' && hours === 12) hours = 0;
+                return hours * 60 + (minutes || 0);
+            }
+
+            function highlightTask(time) {
+                const rows = scheduleTableBody.querySelectorAll('tr');
+                rows.forEach(row => {
+                    if (row.cells[0].textContent.trim() === time.trim()) {
+                        row.style.fontWeight = 'bold';
+                        row.style.fontSize = '1.2em';
+                        row.style.color = 'yellow';
+                    }
+                });
+            }
+
+            getCurrentTask();
+            setInterval(getCurrentTask, 60000); // Update current task every minute
+        });
+    </script>
+
+</body>
+</html>
