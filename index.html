@@ -132,91 +132,51 @@
         document.addEventListener("DOMContentLoaded", function() {
             const schedule = {
                 "Monday": {
-                    "9 am - 10 am": "Review Classes",
-                    "11 am - 1 pm": "COSC 112 - Bucodel Lab 2",
-                    "1 pm - 2 pm": "CAF (FRIED RICE)",
-                    "2 pm - 4 pm": "Learn C and C++ (POMODORO)",
-                    "4 pm - 5 pm": "       ",
-                    "5 pm - 6 pm": "CAF (TUBER & EGG SAUCE)",
-                    "6 pm - 8 pm": "Learn WebDev (Pomodoro)",
-                    "8 pm - 10 pm": "GRWM / EXERCISE (NORMAL)"
-                    ,"10 pm - 11 pm" : "Crypto Grind"
+                    "9 am - 10 am": "INTERDISCIPLINARY SEMINARY) - AMPHI",
+                    "11 am - 1 pm": "Discrete Structures (COS203) - NH RM 5",
+                    "1 pm - 2 pm": "CAF - FRIED RICE",
+                    "2 pm - 3 pm": "Computer Programming I (COSC 201) -F102",
+                    "3 pm - 5 pm": "BREAK",
+                    "5 pm - 6 pm": "CAF - POTATO AND EGG SAUCE"
                 },
                 "Tuesday": {
-                    "9 am - 10 am": "SEMINAR : AMPHITHEATER",
-                    "10 am - 11 am": "COSC 112: Bucodel Lab 2",
-                    "11 am - 1 pm": "BU-SENG CIT",
-                    "1 pm - 2 pm": "CAF (SWALLOW)",
-                    "2 pm - 4 pm": "MATHS: A008",
-                    "4 pm - 5 pm": "CAF (RICE & BEANS)",
-                    "5 pm - 6 pm": "GRWM",
-                    "6 pm - 7 pm": "HALL WORSHIP",
-                    "7 pm - 9 pm": "Read Maths (Pomodoro)",
-                    "9 pm - 10 pm": "Assignments / Leisure / Projects"
-                    ,"10 pm - 11 pm" : "Crypto Grind"
+                    "8 am - 9 am": "BREAK",
+                    "9 am - 11 am": "Computer Programming I (COSC 201) -BCDEL RM 1",
+                    "11 am - 12 pm": "BREAK",
+                    "12 pm - 1 pm": "CAF - SWALLOW",
+                    "1 pm - 5 pm": "BREAK",
+                    "5 pm - 6 pm": "CAF - RICE & BEANS"
                 },
                 "Wednesday": {
-                    "7 am - 8 am": "                ",
-                    "9 am - 11am": "Physics: B106",
-                    "11 am - 1 pm": "stats: SCLT",
-                    "1 pm - 2 pm": "CAF (BEANS)",
-                    "2 pm - 4 pm": "Read Physics",
-                    "4 pm - 5 pm": "GRWM",
-                    "5 pm - 6 pm": "CAF (SPAG)",
-                    "6 pm - 7 pm": "CHURCH",
-                    "7 pm - 9 pm": "Read Stats",
-                    "9 pm - 10 pm": "EXERCISE (HAND RELEASE) / PHONE"
-                    ,"10 pm - 11 pm" : "Crypto Grind"
+                    "7 am - 11 am": "BREAK",
+                    "11 am - 1 pm": "Digital Logic Design (IFT 211) - BCDEL RM 2",
+                    "1 pm - 2 pm": "CAF - BEANS",
+                    "2 pm - 4 pm": "Adventist Heritage (BU GST 215) - AMPHI",
+                    "3 pm - 5 pm": "BREAK",
+                    "5 pm - 6 pm": "CAF - SPAG"
                 },
                 "Thursday": {
-                    "8 am - 10 am": "NPCT: ONLINE",
-                    "10 am - 11 am": "CTM: WRA",
-                    "11 am - 12 pm": "BU-SENG: CIT",
-                    "12 pm - 2 pm": "Learn Python (POMO) / CAF (SWALLOW) / CYBER",
-                    "2 pm - 3 pm": "Learn Python / Cyber",
-                    "3 pm - 4 pm": "      ",
-                    "4 pm - 6 pm": "HP : Online",
-                    "6 pm - 7 pm": "CAF (MIXED RICE)",
-                    "7 pm - 8 pm": "GRWM",
-                    "8 pm - 10 pm": "READ HARD STUFF / ASSIGNMENTS / LEISURE"
-                    ,"10 pm - 11 pm" : "Crypto Grind"
+                    "8 am - 9 am": "Adventist Heritage (BU-GST 125) - AMPHI",
+                    "9 am - 11 am": "BREAK - SWALLOW",
+                    "11 am - 1 pm": "Web Design (COS 209) - NH SD 4",
+                    "1 pm - 2 pm": "CAF",
+                    "2 pm - 4 pm": "Entrepreneurship & Innovation (ENT 211) - VARIES",
+                    "4 pm - 5 pm": "BREAK",
+                    "5 pm - 6 pm": "CAF - MIXED RICE"
                 },
                 "Friday": {
-                    "10 am - 12 pm": "CTM: Amphitheatre",
-                    "12 pm - 1 pm": "CAF (BEANS)",
-                    "1 pm - 2 pm": "Laundry",
-                    "2 pm - 5 pm": "Assignments / Flash cards / Test Myself / Leisure",
-                    "5 pm - 6 pm": "CAF (YAM & STEW)",
-                    "6 pm - 7 pm": "CHURCH",
-                    "7 pm - 8 pm": "GRWM",
-                    "8 pm - 10 pm": "REST / EXERCISE (ENOMS)"
-                    ,"10 pm - 11 pm" : "Crypto Grind"
-                },
-                "Saturday": {
-                    "9 am - 11 am": "CHURCH",
-                    "11 am - 12 pm": "CAF (JOLLOF RICE)",
-                    "12 pm - 1 pm": "extra laundry",
-                    "1 pm - 2 pm": "     ",
-                    "2 pm - 5 pm": "Learn C++ / WebDev / Python / Cyber (Which is lacking)",
-                    "5 pm - 6 pm": "CAF (FRIED YAM)",
-                    "6 pm - 7 pm": "CHURCH",
-                    "7 pm - 10 pm": "Assignments / Flash cards / Test Myself / Leisure"
-                    ,"10 pm - 11 pm" : "Crypto Grind"
-                },
-                "Sunday": {
-                    "9 am - 11 am": "Read Maths / Stats / Physics (any lacking) / Fun / Assignments",
-                    "11 am - 12 pm": "CAF (BEANS)",
-                    "12 pm - 1 pm": "more laundry",
-                    "1 pm - 2 pm": "     ",
-                    "2 pm - 5 pm": "Notes on GSTs and personal projects / Assignments",
-                    "5 pm - 6 pm": "CAF (YAM AND STEW)",
-                    "6 pm - 7 pm": "     ",
-                    "7 pm - 9 pm": "Exercise (Shoulder Taps and tricep pushups)"
-                    ,"10 pm - 11 pm" : "Crypto Grind"
+                    "7 am - 8 am": "BREAK",
+                    "8 am - 10 am": "SEN",
+                    "10 am - 11 am": "GST 221 - Intro to Agric - ONLINE",
+                    "11 am - 1 pm": "MTH 201 - B107",
+                    "12 pm - 1 pm": "CAF - BEANS",
+                    "1 pm - 5 pm": "BREAK",
+                    "5 pm - 6 pm": "CAF - YAM & STEW"
                 }
             };
 
-            const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+            const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
             const today = new Date();
             const currentDay = daysOfWeek[today.getDay()];
 
