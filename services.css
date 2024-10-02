@@ -1,0 +1,150 @@
+body{
+    background-color: rgb(107, 3, 3);
+    background-image : linear-gradient(to bottom right,rgb(17, 10, 10), rgb(126, 1, 1));
+}
+
+header {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 2;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    color: white;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    padding-left: 10px;
+    width: 40px;
+    height: auto;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+}
+
+.nav-links li {
+    position: relative;
+}
+
+.nav-links li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: 0.3s ease;
+}
+
+.nav-links li a:hover {
+    color: #bd2323;
+    font-size: 1.5rem;
+}
+
+
+.intro{
+    margin-top: 100px;
+    color:darkred;
+    text-align: center;
+    position: relative;
+
+}
+
+.services{
+    text-decoration: underline;
+    font-size: 45px;
+}
+
+button{
+    background-color:black;
+    color: white;
+    padding: 20px;
+    height: 60px;
+    display: block;
+    margin: auto;
+    border-radius: 8px;
+    border-color: black;
+    margin-bottom: 15px;
+}
+
+button:hover{
+    background-color: darkred;
+    padding: 10px;
+    font-size: 20px;
+    margin-bottom: 25px;
+}
+
+.customer-child{
+    text-align: center;
+}
+
+.lists{
+    display: flex;
+    justify-content: space-between;
+}
+
+.list-elements{
+    padding: 33px;
+    background-color: black;
+    color: white;
+    width: 25%;
+    height: 17em;
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.list-topic{
+    font-size: 20px;
+}
+
+.list-topic:hover{
+    text-decoration: underline;
+    color: darkred;
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
+
+#icon{
+    font-size: 34px;
+    padding: 20px;
+    background-color: darkred;
+    border-radius: 50%;
+}
+
+.additionals{
+    display: flex;
+    justify-content: space-between;
+    
+}
+
+.each-footers{
+    display: flex;
+    justify-content: space-between;
+  
+}
+
+.footers{
+    display: block;
+    justify-content: space-between;
+    
+}
+
+.unique{
+    margin-right: 80px;
+}
+
+.container{
+    border: 2px solid black;
+}
+
