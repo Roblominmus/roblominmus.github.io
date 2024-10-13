@@ -1,40 +1,313 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home page</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Weekly Schedule</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(#2a2a4f,#c56cf0);
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #ffffff;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background: rgba(27, 27, 47, 0.9);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2em;
+            color: #c56cf0;
+            margin-bottom: 20px;
+        }
+
+        #day-selector {
+            padding: 10px;
+            font-size: 1em;
+            border-radius: 5px;
+            border: 1px solid #c56cf0;
+            margin-bottom: 20px;
+            background-color: #2a2a4f;
+            color: #c56cf0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 1em;
+            color: #ffffff;
+        }
+
+        th, td {
+            border: 1px solid #c56cf0;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #6a0572;
+            color: #ffffff;
+        }
+
+        td {
+            background-color: #1e1e40;
+        }
+
+        tr:nth-child(even) td {
+            background-color: #2a2a4f;
+        }
+
+        tr:hover td {
+            background-color: #6a0572;
+            color: #ffffff;
+        }
+
+        .highlight {
+            background-color: #c56cf0 !important;
+            color: #1e1e40 !important;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.5em;
+            }
+
+            #day-selector {
+                width: 100%;
+                font-size: 0.9em;
+            }
+
+            table {
+                font-size: 0.9em;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+        }
+
+    </style>
 </head>
 <body>
+    <div class="container">
+        <h1 id="current-day"></h1>
+        <select id="day-selector">
+            <option value="Monday">Monday</option>
+            <option value="Tuesday">Tuesday</option>
+            <option value="Wednesday">Wednesday</option>
+            <option value="Thursday">Thursday</option>
+            <option value="Friday">Friday</option>
+            <option value="Saturday">Saturday</option>
+            <option value="Sunday">Sunday</option>
+        </select>
+        <p id="current-task"></p> <!-- New element to display current task -->
+        <table id="schedule-table">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Task</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const schedule = {
+                "Monday": {
+                    "9 am - 10 am": "INTERDISCIPLINARY SEMINARY) - AMPHI",
+                    "11 am - 1 pm": "BREAK",
+                    "1 pm - 2 pm": "CAF - FRIED RICE",
+                    "2 pm - 3 pm": "Computer Programming I (COSC 201) -F102",
+                    "3 pm - 5 pm": "BREAK",
+                    "5 pm - 6 pm": "CAF - POTATO AND EGG SAUCE"
+                },
+                "Tuesday": {
+                    "8 am - 9 am": "BREAK",
+                    "9 am - 11 am": "Computer Programming I (COSC 201) -NH RM 2",
+                    "11 am - 12 pm": "BREAK",
+                    "12 pm - 1 pm": "CAF - SWALLOW",
+                    "2 pm - 4 pm": "Discrete Structures (COS203) - NH RM 5",
+                    "5 pm - 5 pm": "BREAK",
+                    "5 pm - 6 pm": "CAF - RICE & BEANS"
+                },
+                "Wednesday": {
+                    "7 am - 11 am": "BREAK",
+                    "11 am - 1 pm": "Digital Logic Design (IFT 211) - BCDEL RM 2",
+                    "1 pm - 2 pm": "CAF - BEANS",
+                    "2 pm - 4 pm": "Adventist Heritage (BU GST 215) - AMPHI",
+                    "3 pm - 5 pm": "BREAK",
+                    "5 pm - 6 pm": "CAF - SPAG"
+                },
+                "Thursday": {
+                    "8 am - 9 am": "Adventist Heritage (BU-GST 125) - AMPHI",
+                    "9 am - 11 am": "BREAK",
+                    "11 am - 1 pm": "Web Design (COS 209) - NH SD 4",
+                    "1 pm - 2 pm": "CAF - SWALLOW",
+                    "2 pm - 4 pm": "Entrepreneurship & Innovation (ENT 211) - VARIES",
+                    "4 pm - 5 pm": "BREAK",
+                    "5 pm - 6 pm": "CAF - MIXED RICE"
+                },
+                "Friday": {
+                    "7 am - 8 am": "BREAK",
+                    "8 am - 10 am": "SENG 201 - SCLT",
+                    "10 am - 11 am": "GST 221 - Intro to Agric - ONLINE",
+                    "11 am - 1 pm": "MTH 201 - B107",
+                    "12 pm - 1 pm": "CAF - BEANS",
+                    "1 pm - 5 pm": "BREAK",
+                    "5 pm - 6 pm": "CAF - YAM & STEW"
+                },
+                "Saturday":{
+                    "9 am - 11 am": "CHURCH",
+                    "11 am - 1 pm": "CAF - JOLLOF RICE",
+                    "5 pm - 6 pm": "CAF -  FRIED YAM",
+                },
+                "Sunday":{
+                    "11 am - 1 pm": "CAF -  BEANS",
+                    "5 pm - 6 pm": "CAF -  WHITE RICE",
+                }
+            };
 
-    <header>
-        <nav class="navbar">
-            <div class="brand">
-                <img src="images/logo.png" alt="Ferrari Logo" class="logo">
-            </div>
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="car reviews.html">Car Review</a></li>
-                <li><a href="services.html">Services</a></li>
-                <li><a href="about.html">About Us</a></li>
-                <li><a href="contact.html">Contact Us</a></li>
-            </ul>
 
-        </nav>
-    </header>
+            const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            const today = new Date();
+            const currentDay = daysOfWeek[today.getDay()]; // Correctly map the day index
 
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Ferrari</h1>
-            <h2>We are the competition</h2>
-            <a href="car reviews.html" class="button">Explore Our Cars</a>
-        </div>
-        
-    </section>
 
-    <footer style="color:white;">
-        &copy; Designed by Okafor Chiedozie Kevin 23/0342
-    </footer>
+            document.getElementById("current-day").innerText = currentDay;
+            document.getElementById("day-selector").value = currentDay;
+
+            const scheduleTableBody = document.querySelector("#schedule-table tbody");
+            const currentTaskElement = document.getElementById("current-task");
+
+            function updateSchedule(day) {
+                scheduleTableBody.innerHTML = "";
+                if (schedule[day]) {
+                    for (let [time, task] of Object.entries(schedule[day])) {
+                        const row = document.createElement("tr");
+
+                        const timeCell = document.createElement("td");
+                        timeCell.textContent = time;
+                        row.appendChild(timeCell);
+
+                        const taskCell = document.createElement("td");
+                        taskCell.textContent = task;
+                        row.appendChild(taskCell);
+
+                        scheduleTableBody.appendChild(row);
+                    }
+                } else {
+                    const row = document.createElement("tr");
+                    const cell = document.createElement("td");
+                    cell.textContent = "No schedule for today";
+                    cell.colSpan = 2;
+                    row.appendChild(cell);
+                    scheduleTableBody.appendChild(row);
+                }
+                getCurrentTask(); // Highlight the current task after updating the schedule
+            }
+
+            updateSchedule(currentDay);
+
+            document.getElementById("day-selector").addEventListener("change", function() {
+                const selectedDay = this.value;
+                document.getElementById("current-day").innerText = selectedDay;
+                updateSchedule(selectedDay);
+                getCurrentTask(); // Call getCurrentTask() whenever the selected day changes
+            });
+
+            function getCurrentTask() {
+                const now = new Date();
+                const currentDay = document.getElementById("current-day").innerText;
+                const currentTime = now.getHours() * 60 + now.getMinutes();
+                const currentTasks = schedule[currentDay];
+                let taskFound = false;
+
+                scheduleTableBody.querySelectorAll('tr').forEach(row => row.classList.remove('highlight')); // Remove existing highlights
+
+                if (document.getElementById("day-selector").value !== currentDay) {
+                    // Show the tasks of the next day if a different day is selected
+                    const nextDayIndex = (daysOfWeek.indexOf(currentDay) + 1) % daysOfWeek.length;
+                    const nextDay = daysOfWeek[nextDayIndex];
+                    const nextDayTasks = schedule[nextDay];
+                    for (let [time, task] of Object.entries(nextDayTasks)) {
+                        const [start, end] = time.split(' - ').map(parseTime);
+                        if (start >= currentTime) {
+                            const row = document.createElement("tr");
+                            const timeCell = document.createElement("td");
+                            timeCell.textContent = time;
+                            row.appendChild(timeCell);
+                            const taskCell = document.createElement("td");
+                            taskCell.textContent = task;
+                            row.appendChild(taskCell);
+                            scheduleTableBody.appendChild(row);
+                            taskFound = true;
+                            break;
+                        }
+                    }
+                    if (!taskFound) {
+                        currentTaskElement.textContent = "No task at the moment.";
+                    }
+                } else {
+                    // Show the tasks of the current day as usual
+                    for (let [time, task] of Object.entries(currentTasks)) {
+                        const [start, end] = time.split(' - ').map(parseTime);
+                        if (currentTime >= start && currentTime <= end) {
+                            currentTaskElement.textContent = "Current Task: " + task;
+                            highlightTask(time); // Highlight the current task
+                            taskFound = true;
+                            break;
+                        }
+                    }
+                    if (!taskFound) {
+                        currentTaskElement.textContent = "No task at the moment.";
+                    }
+                }
+            }
+
+
+            function parseTime(timeString) {
+                const [time, period] = timeString.split(' ');
+                let [hours, minutes] = time.split(':').map(Number);
+                if (period === 'pm' && hours < 12) hours += 12;
+                if (period === 'am' && hours === 12) hours = 0;
+                return hours * 60 + (minutes || 0);
+            }
+
+            function highlightTask(time) {
+                const rows = scheduleTableBody.querySelectorAll('tr');
+                rows.forEach(row => {
+                    if (row.cells[0].textContent.trim() === time.trim()) {
+                        row.style.fontWeight = 'bold';
+                        row.style.fontSize = '1.2em';
+                        row.style.color = 'yellow';
+                    }
+                });
+            }
+
+            
+
+            setInterval(getCurrentTask, 60000); // Update current task every minute
+
+            getCurrentTask();
+        });
+    </script>
+
 </body>
 </html>
