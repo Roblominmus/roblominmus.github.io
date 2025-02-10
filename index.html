@@ -131,59 +131,47 @@
         document.addEventListener("DOMContentLoaded", function() {
             const schedule = {
                 "Monday": {
-                    "9 am - 10 am": "INTERDISCIPLINARY SEMINARY) - AMPHI",
-                    "11 am - 1 pm": "BREAK",
-                    "1 pm - 2 pm": "CAF - FRIED RICE",
-                    "2 pm - 3 pm": "Computer Programming I (COSC 201) -F102",
-                    "3 pm - 5 pm": "BREAK",
+                    "7 am - 9 am": "COS 202 - NH RM 3",
+                    "9 am - 10 am": "BIS",
+                    "10 am - 1 pm": "INS 204 - E202",
+                    "1 pm - 2 pm": "CAF - FRIED RICE", // CAF moved forward
+                    "2 pm - 4 pm": "MATHS - B007",
+                    "4 pm - 5 pm": "COS 202 - NH RM 3",
                     "5 pm - 6 pm": "CAF - POTATO AND EGG SAUCE"
                 },
                 "Tuesday": {
-                    "8 am - 9 am": "BREAK",
-                    "9 am - 11 am": "Computer Programming I (COSC 201) -NH RM 2",
-                    "11 am - 12 pm": "BREAK",
-                    "12 pm - 1 pm": "CAF - SWALLOW",
-                    "2 pm - 4 pm": "Discrete Structures (COS203) - NH RM 5",
-                    "5 pm - 5 pm": "BREAK",
+                    "11 am - 1 pm": "SENG - BDEL RM 2",
+                    "1 pm - 2 pm": "CAF - SWALLOW",
                     "5 pm - 6 pm": "CAF - RICE & BEANS"
                 },
                 "Wednesday": {
-                    "7 am - 11 am": "BREAK",
-                    "11 am - 1 pm": "Digital Logic Design (IFT 211) - BCDEL RM 2",
+                    "8 am - 9 am": "ORIGINS AND SCIENCE - TELEGRAM",
+                    "9 am - 11 am": "IFT 211 - BDEL RM 2",
+                    "11 am - 1 pm": "SENG - BDEL RM 2",
                     "1 pm - 2 pm": "CAF - BEANS",
-                    "2 pm - 4 pm": "Adventist Heritage (BU GST 215) - AMPHI",
-                    "3 pm - 5 pm": "BREAK",
                     "5 pm - 6 pm": "CAF - SPAG"
                 },
                 "Thursday": {
-                    "8 am - 9 am": "Adventist Heritage (BU-GST 125) - AMPHI",
-                    "9 am - 11 am": "BREAK",
-                    "11 am - 1 pm": "Web Design (COS 209) - NH SD 4",
+                    "7 am - 10 am": "OPERATIONS RESEARCH - BDEL RM 3",
                     "1 pm - 2 pm": "CAF - SWALLOW",
-                    "2 pm - 4 pm": "Entrepreneurship & Innovation (ENT 211) - VARIES",
-                    "4 pm - 5 pm": "BREAK",
                     "5 pm - 6 pm": "CAF - MIXED RICE"
                 },
                 "Friday": {
-                    "7 am - 8 am": "BREAK",
-                    "8 am - 10 am": "SENG 201 - SCLT",
-                    "10 am - 11 am": "GST 221 - Intro to Agric - ONLINE",
-                    "11 am - 1 pm": "MTH 201 - B107",
-                    "12 pm - 1 pm": "CAF - BEANS",
-                    "1 pm - 5 pm": "BREAK",
+                    "7 am - 9 am": "PHILOSOPHY & LOGIC - TELEGRAM",
+                    "10 am - 11 am": "COMMUNICATION IN FRENCH - TELEGRAM",
+                    "1 pm - 2 pm": "CAF - BEANS",
                     "5 pm - 6 pm": "CAF - YAM & STEW"
                 },
-                "Saturday":{
-                    "9 am - 11 am": "CHURCH",
+                "Saturday": {
                     "11 am - 1 pm": "CAF - JOLLOF RICE",
-                    "5 pm - 6 pm": "CAF -  FRIED YAM",
+                    "5 pm - 6 pm": "CAF - FRIED YAM"
                 },
-                "Sunday":{
-                    "11 am - 1 pm": "CAF -  BEANS",
-                    "5 pm - 6 pm": "CAF -  WHITE RICE",
+                "Sunday": {
+                    "11 am - 1 pm": "CAF - BEANS",
+                    "5 pm - 6 pm": "CAF - WHITE RICE"
                 }
-            };
-
+                        
+            }
 
             const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
             const today = new Date();
