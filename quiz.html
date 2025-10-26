@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CompTIA Linux+ Quiz (Chapters 1-5)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for immediate feedback */
+        .correct-answer {
+            color: #16a34a; /* Green */
+            font-weight: bold;
+        }
+        .wrong-answer {
+            color: #dc2626; /* Red */
+            /* text-decoration: line-through; */ /* Removed strikethrough for clarity */
+        }
+        .correct-choice::after {
+            content: " ✔️ Correct";
+            color: #16a34a;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+         .wrong-choice::after {
+            content: " ❌ Incorrect";
+            color: #dc2626;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+        /* Style radio buttons to visually indicate selection */
+        input[type="radio"]:checked + label {
+             font-weight: bold;
+             /* Add a subtle background or border if desired */
+             /* background-color: #e0f2fe; */ /* Light blue background */
+        }
+         input[type="radio"] {
+            margin-right: 8px; /* Space between radio and label */
+        }
+        label {
+            cursor: pointer;
+        }
+        .disabled-label {
+             cursor: default;
+             opacity: 0.7;
+        }
+        /* Hide radio buttons visually but keep them accessible */
+       .sr-only {
+          position: absolute;
+          width: 1px;
+          height: 1px;
+          padding: 0;
+          margin: -1px;
+          overflow: hidden;
+          clip: rect(0, 0, 0, 0);
+          white-space: nowrap;
+          border-width: 0;
+        }
+       /* Custom styled radio button appearance */
+       .custom-radio + label::before {
+          content: '';
+          display: inline-block;
+          width: 1.25em;
+          height: 1.25em;
+          margin-right: 0.5em;
+          border: 2px solid #6b7280; /* gray-500 */
+          border-radius: 50%;
+          vertical-align: middle;
+          cursor: pointer;
+          transition: border-color 0.2s, background-color 0.2s;
+        }
+        .custom-radio:checked + label::before {
+          background-color: #3b82f6; /* blue-500 */
+          border-color: #3b82f6; /* blue-500 */
+          background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="white"><circle cx="8" cy="8" r="3"/></svg>');
+          background-position: center;
+          background-repeat: no-repeat;
+        }
+       .custom-radio:disabled + label {
+          cursor: default;
+          opacity: 0.6;
+        }
+       .custom-radio:disabled + label::before {
+          background-color: #e5e7eb; /* gray-200 */
+          border-color: #d1d5db; /* gray-300 */
+          cursor: default;
+        }
+        /* Ensure code/preformatted text wraps */
+        pre {
+             white-space: pre-wrap;       /* Since CSS 2.1 */
+             white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+             white-space: -pre-wrap;      /* Opera 4-6 */
+             white-space: -o-pre-wrap;    /* Opera 7 */
+             word-wrap: break-word;       /* Internet Explorer 5.5+ */
+        }
+
+    </style>
+</head>
+<body class="bg-gradient-to-r from-blue-50 to-indigo-100 font-sans flex items-center justify-center min-h-screen p-4">
+
+    <div id="quiz-container" class="bg-white p-6 md:p-10 rounded-xl shadow-2xl w-full max-w-2xl transform transition-all duration-500">
+        <h1 class="text-2xl md:text-3xl font-bold text-center text-indigo-700 mb-6">CompTIA Linux+ Practice Quiz (Ch 1-5)</h1>
+
+        <div id="quiz-content">
+            <div class="flex justify-between items-center mb-4 text-sm text-gray-600">
+                <span id="question-counter">Question 1 of X</span>
+                <span id="score-counter">Score: 0</span>
+            </div>
+
+            <p id="question-text" class="text-lg md:text-xl font-semibold text-gray-800 mb-6 min-h-[60px]">Loading question...</p>
+
+            <ul id="options-list" class="space-y-3 mb-6">
+                <!-- Options will be loaded here -->
+            </ul>
+
+            <div id="feedback" class="mt-4 p-4 rounded-lg min-h-[50px] text-center font-medium">
+                <!-- Feedback: Correct/Incorrect -->
+            </div>
+
+            <div class="flex justify-end mt-6">
+                 <button id="next-button" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg shadow transition duration-300 ease-in-out transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100" disabled>Next Question</button>
+            </div>
+        </div>
+
+        <div id="results-screen" class="hidden text-center">
+            <h2 class="text-2xl font-bold text-indigo-700 mb-4">Quiz Complete!</h2>
+            <p class="text-xl text-gray-700 mb-6">Your final score is: <span id="final-score" class="font-bold"></span></p>
+            <button id="restart-button" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg shadow transition duration-300 ease-in-out transform hover:scale-105">Restart Quiz</button>
+        </div>
+
+    </div>
+
+    <script>
+        // --- Quiz Data ---
+        // Answers obtained from the "Self Test Answers" sections in the provided PDF.
+        const quizData = [
+            // Chapter 1
+            {
+                chapter: 1,
+                question: "Which of the following are applications? (Choose two.)",
+                options: ["Linux", "MySQL", "VMware", "DOS", "Active Directory"],
+                correctAnswer: ["MySQL", "VMware"]
+            },
+            {
+                chapter: 1,
+                question: "Your company recently purchased 12 new computer systems... Can Linux be installed on them if they already have Windows XP Professional installed?",
+                options: [
+                    "Yes, but you must install a new hard drive for Linux.",
+                    "No, Windows is embedded in the system hardware. You must purchase systems without an operating system installed.",
+                    "No, modern motherboards are hard-coded to recognize your Windows Certificate of Authority. If it doesn't find this, the system won't boot.",
+                    "Yes, you can erase the hard drive and install Linux."
+                ],
+                correctAnswer: "Yes, you can erase the hard drive and install Linux."
+            },
+            {
+                chapter: 1,
+                question: "Which of the following is the true operating system component within Linux?",
+                options: ["Linux libraries", "Linux kernel", "X Window System", "bash shell"],
+                correctAnswer: "Linux kernel"
+            },
+            {
+                chapter: 1,
+                question: "Which of the following provides pre-written code that programmers can use in Linux programs?",
+                options: ["Linux kernel", "X Window System", "bash shell", "Linux libraries", "Window manager"],
+                correctAnswer: "Linux libraries"
+            },
+            {
+                chapter: 1,
+                question: "What was the name of the UNIX clone written by Andrew Tanenbaum?",
+                options: ["CPM", "DR-DOS", "Linux", "Minix", "Solaris", "AIX"],
+                correctAnswer: "Minix"
+            },
+            {
+                chapter: 1,
+                question: "What did Linus Torvalds do with the source code for Linux?",
+                options: [
+                    "He sold it to IBM.",
+                    "He gave it to Microsoft for free.",
+                    "He developed Minix.",
+                    "He patented and copyrighted it.",
+                    "He posted it on the Internet for anyone who wanted a copy."
+                ],
+                correctAnswer: "He posted it on the Internet for anyone who wanted a copy."
+            },
+            {
+                chapter: 1,
+                question: "Who initiated the GNU Project?",
+                options: ["Richard Stallman", "Andrew Tanenbaum", "Linus Torvalds", "Richard Berkley"],
+                correctAnswer: "Richard Stallman"
+            },
+             {
+                chapter: 1,
+                question: "You are a computer programmer... Can you download the source code for the latest Linux kernel and modify it for use in-house?",
+                options: [
+                    "No, the source code for Linux is no longer available on the Internet.",
+                    "No, the copyright on the source code won't permit it.",
+                    "Yes, but you must pay a royalty to the GNU Project.",
+                    "Yes, you can create a new Linux flavor and even redistribute it as long as the source code remains freely available."
+                ],
+                correctAnswer: "Yes, you can create a new Linux flavor and even redistribute it as long as the source code remains freely available."
+            },
+             {
+                chapter: 1,
+                question: "You've been tasked with setting up an e-mail server for your organization of 150 people... Is this possible using Linux?",
+                options: [
+                    "Yes, Linux can be configured to provide e-mail services.",
+                    "No, while Linux can be configured to provide e-mail services, it's not recommended for more than 25 users.",
+                    "Yes, but you'll have to purchase special e-mail software that's compatible with Linux.",
+                    "No. E-mail software is not currently available for Linux."
+                ],
+                correctAnswer: "Yes, Linux can be configured to provide e-mail services."
+            },
+             {
+                chapter: 1,
+                question: "Which Linux services can be used to provide network printing? (Choose two.)",
+                options: ["MySQL", "NFS", "CUPS", "Samba", "NIS", "OpenPrint"],
+                correctAnswer: ["CUPS", "Samba"]
+            },
+            {
+                chapter: 1,
+                question: "Which Linux services could be used to provide network file storage for users? (Choose two.)",
+                options: ["MySQL", "NFS", "PostgreSQL", "Samba", "NIS", "FileManager"],
+                correctAnswer: ["NFS", "Samba"]
+            },
+            {
+                chapter: 1,
+                question: "Which Linux services could be used as a database server? (Choose two.)",
+                options: ["MySQL", "NFS", "PostgreSQL", "Samba", "NIS", "Access"],
+                correctAnswer: ["MySQL", "PostgreSQL"]
+            },
+            {
+                chapter: 1,
+                question: "Which Linux service can be used to turn a Linux system into an application-level gateway?",
+                options: ["MySQL", "NFS", "PostgreSQL", "Samba", "NIS", "Squid"],
+                correctAnswer: "Squid"
+            },
+            {
+                chapter: 1,
+                question: "Which shell is the default shell for most Linux distributions?",
+                options: ["sh", "csh", "bash", "zsh"],
+                correctAnswer: "bash"
+            },
+            {
+                chapter: 1,
+                question: "Which shell is the default shell for most FreeBSD systems?",
+                options: ["sh", "csh", "zsh", "tsch"],
+                correctAnswer: "tsch"
+            },
+            {
+                chapter: 1,
+                question: "You are working with a bash shell... You need to mount the floppy... What can you do without halting the installation?",
+                options: [
+                    "Nothing, you must halt the installation, mount the floppy, then restart the installation.",
+                    "You can press CTRL PAUSE On the keyboard. This will pause the installation while you mount the floppy.",
+                    "You can press ALT F2 to open an alternate console screen and mount the floppy.",
+                    "Insert the floppy and press CTRL SHIFT F6. This will automatically mount the floppy without pausing the program."
+                ],
+                correctAnswer: "You can press ALT F2 to open an alternate console screen and mount the floppy."
+            },
+            {
+                chapter: 1,
+                question: "Which x86 processor mode allows the Linux kernel to run multiple shell sessions at the same time?",
+                options: ["Real", "Protected", "486 Enhanced", "586 Emulation"],
+                correctAnswer: "Protected"
+            },
+            {
+                chapter: 1,
+                question: "You've downloaded an executable file named updatedb.sh... When you enter updatedb.sh, the shell indicates that it can't find the file. What can you do?",
+                options: [
+                    "Enter the file name in all capital letters.",
+                    "Add a ./ before the file name when entering it at the prompt.",
+                    "Enter the file name without the sh extension.",
+                    "Move the file to your home directory and then execute it."
+                ],
+                correctAnswer: "Add a ./ before the file name when entering it at the prompt."
+            },
+            {
+                chapter: 1,
+                question: "You need to find out what directories in the Linux file system are parts of the path. What command can you use? (Choose two.)",
+                options: ["env", "show $PATH", "man path", "echo $PATH", "writeln PATH"],
+                correctAnswer: ["env", "echo $PATH"]
+            },
+            {
+                chapter: 1,
+                question: "You've downloaded an executable file named updatedb.sh... When you enter ./Updatedb.sh, the shell indicates that it can't find the file. What can you do?",
+                options: [
+                    "Enter the file name in all lower-case letters.",
+                    "Add a before the file name when entering it at the prompt.",
+                    "Enter the file name without the sh extension.",
+                    "Move the file to your home directory and then execute it."
+                ],
+                correctAnswer: "Enter the file name in all lower-case letters."
+            },
+            {
+                chapter: 1,
+                question: "Which Linux utility can be used to display a list of all running processes on your system?",
+                options: ["env", "procman", "processes", "top", "echo $PROCESSES"],
+                correctAnswer: "top"
+            },
+            {
+                chapter: 1,
+                question: "Which Linux utility can be used to display your network board configuration?",
+                options: ["netstat", "route", "ifconfig", "ipconfig", "echo $NETWORK_CONFIG"],
+                correctAnswer: "ifconfig"
+            },
+            {
+                chapter: 1,
+                question: "Which Linux utility can be used to change to a different user account at the shell prompt?",
+                options: ["user", "chuser", "swuser", "su"],
+                correctAnswer: "su"
+            },
+            // Chapter 2
+             {
+                chapter: 2,
+                question: "What DC voltage levels does a power supply provide? (Choose two.)",
+                options: ["3.3 volts", "24 volts", "6 volts", "5 volts", "18 volts"],
+                correctAnswer: ["3.3 volts", "5 volts"]
+            },
+             {
+                chapter: 2,
+                question: "You insert your first Linux installation CD... Instead of starting the installation routine, the screen displays an error message indicating that an operating system couldn’t be found. What’s causing the problem?",
+                options: [
+                    "Your Linux CD is damaged.",
+                    "The hard drive is failing and needs to be replaced.",
+                    "The CD drive is malfunctioning.",
+                    "The boot device order is set incorrectly in the BIOS."
+                ],
+                correctAnswer: "The boot device order is set incorrectly in the BIOS."
+            },
+            {
+                chapter: 2,
+                question: "Which of the following is an Intel CPU?",
+                options: ["Celeron", "Athlon", "Sempron", "Opteron"],
+                correctAnswer: "Celeron"
+            },
+            {
+                chapter: 2,
+                question: "Which of the following CPU sockets is used for the AMD Athlon CPU?",
+                options: ["Socket 370", "Socket 423", "Socket 478", "Socket A", "Socket AMD"],
+                correctAnswer: "Socket A"
+            },
+            {
+                chapter: 2,
+                question: "What type of memory is used to create the CPU cache?",
+                options: ["DRAM", "SDRAM", "SRAM", "FPM RAM", "EDO RAM"],
+                correctAnswer: "SRAM"
+            },
+            {
+                chapter: 2,
+                question: "Which type of memory is used in 72-pin SIMM modules? (Choose two.)",
+                options: ["SDRAM", "SRAM", "FPM RAM", "EDO RAM", "DDR-SDRAM"],
+                correctAnswer: ["FPM RAM", "EDO RAM"]
+            },
+            {
+                chapter: 2,
+                question: "Which type of memory is used in 184-pin DIMM modules?", // Ch 2 Answer says E (DDR-SDRAM), not two.
+                options: ["SDRAM", "SRAM", "FPM RAM", "EDO RAM", "DDR-SDRAM"],
+                correctAnswer: "DDR-SDRAM"
+            },
+            {
+                chapter: 2,
+                question: "How wide is the ISA expansion bus? (Choose two.)",
+                options: ["8 bits", "16 bits", "24 bits", "32 bits", "64 bits"],
+                correctAnswer: ["8 bits", "16 bits"]
+            },
+            {
+                chapter: 2,
+                question: "How wide is the standard PCI expansion bus?",
+                options: ["8 bits", "16 bits", "24 bits", "32 bits", "64 bits"],
+                correctAnswer: "32 bits"
+            },
+            {
+                chapter: 2,
+                question: "What is the clock speed of a standard PCI expansion bus?",
+                options: ["4.77 MHz", "8.33 MHz", "16 MHz", "24 MHz", "33 MHz"],
+                correctAnswer: "33 MHz"
+            },
+            {
+                chapter: 2,
+                question: "Which PCI component functions as an intermediary between the PCI bus and other expansion buses on the motherboard?",
+                options: ["Northbridge", "Southbridge", "PCI Gateway", "ISA Bridge"],
+                correctAnswer: "Southbridge"
+            },
+            {
+                chapter: 2,
+                question: "Your motherboard has a built-in AGP video board... Can you implement a dual-monitor system by installing two video boards?",
+                options: [
+                    "Yes, you can install a second adapter in the open AGP slot.",
+                    "No, Linux doesn’t support dual-monitor systems.",
+                    "Yes, but you’ll have to configure your BIOS to enable both devices.",
+                    "No, only a single adapter can function on the AGP bus at any given time."
+                ],
+                correctAnswer: "No, only a single adapter can function on the AGP bus at any given time."
+            },
+            {
+                chapter: 2,
+                question: "You’re installing two ISA expansion boards... The system has INT 2 and INT 9 available. Can you assign these interrupts to these two boards?",
+                options: [
+                    "Yes, either board can use either interrupt.",
+                    "Yes, but the sound board must use INT 2 and the network board must use INT 9.",
+                    "No, sound boards can’t use INT 2 or INT 9.",
+                    "No, network boards can’t use INT 2 or INT 9.",
+                    "No, INT 2 and INT 9 can’t be used at the same time."
+                ],
+                correctAnswer: "No, INT 2 and INT 9 can’t be used at the same time."
+            },
+            {
+                chapter: 2,
+                question: "You’re installing an ISA board... INT 5 is currently in use by a PCI board... Can you configure the ISA board to use INT 5 too?",
+                options: [
+                    "Yes, PCI cards can share interrupts.",
+                    "Yes, but you must enable the PCI Bridge in the CMOS setup program.",
+                    "No, ISA boards can’t use INT 5. They are reserved for PCI boards.",
+                    "No, PCI cards can’t share interrupts with ISA boards."
+                ],
+                correctAnswer: "No, PCI cards can’t share interrupts with ISA boards."
+            },
+            {
+                chapter: 2,
+                question: "Which of the following hard drive parameters refers to a set of concentric, parallel tracks on all sides of all platters in a hard disk drive?",
+                options: ["Cylinders", "Heads", "Sectors Per Track", "Write Precompensation", "Landing Zone"],
+                correctAnswer: "Cylinders"
+            },
+            {
+                chapter: 2,
+                question: "How many slave drives can be configured on the Secondary IDE channel? (Choose two.)",
+                options: ["0", "1", "2", "4", "6", "8"],
+                correctAnswer: ["0", "1"]
+            },
+            {
+                chapter: 2,
+                question: "If there are two hard drives on a Primary IDE channel, how many master drives must be configured on the channel?",
+                options: ["0", "1", "2", "Unlimited"],
+                correctAnswer: "1"
+            },
+            {
+                chapter: 2,
+                question: "Suppose you have an IDE DVD drive and an IDE hard drive connected to the Secondary IDE channel... Which drive must be set to be the master drive?",
+                options: [
+                    "The DVD drive.",
+                    "The hard drive.",
+                    "Either device can be the master.",
+                    "Neither device can be the master if dissimilar devices are connected to the same IDE channel."
+                ],
+                correctAnswer: "Either device can be the master."
+            },
+            {
+                chapter: 2,
+                question: "Which SCSI ID has the highest priority?",
+                options: ["0", "1", "3", "5", "7"],
+                correctAnswer: "0"
+            },
+            {
+                chapter: 2,
+                question: "Suppose you have a SCSI chain with four devices connected... Which devices should have termination enabled? (Choose two.)",
+                options: ["Hd0", "Hd1", "Cd0", "Sc0"],
+                correctAnswer: ["Hd0", "Sc0"]
+            },
+            {
+                chapter: 2,
+                question: "Which USB category includes devices such as printers, scanners, and hard drives?",
+                options: ["Hub", "Function", "Hub and Function", "Terminal Device"],
+                correctAnswer: "Function"
+            },
+            {
+                chapter: 2,
+                question: "What is the maximum number of USB devices that can be connected to a single USB bus?",
+                options: ["8", "24", "63", "127", "256"],
+                correctAnswer: "127"
+            },
+            {
+                chapter: 2,
+                question: "How fast does FireWire transfer data?",
+                options: ["12 Mbps", "64 Mbps", "400 Mbps", "480 Mbps"],
+                correctAnswer: "400 Mbps"
+            },
+            {
+                chapter: 2,
+                question: "You currently have an external FireWire hard drive connected... You need to disconnect the hard drive and connect a FireWire digital video camera... Can you do this without rebooting?",
+                options: [
+                    "No, you must bring the system down to do this.",
+                    "No, you can’t connect a FireWire digital video camera to a FireWire port used by an external hard drive.",
+                    "Yes, you can shut down the hard drive and connect the camera.",
+                    "Yes, but you must use a different port for each device."
+                ],
+                correctAnswer: "Yes, you can shut down the hard drive and connect the camera."
+            },
+            // Chapter 3
+            {
+                chapter: 3,
+                question: "When conducting a needs assessment, what questions should you ask? (Choose two.)",
+                options: [
+                    "What problem will this installation fix?",
+                    "Which distribution should I use?",
+                    "Where can I get the best price on a new server?",
+                    "Who is requesting the new systems?"
+                ],
+                correctAnswer: ["What problem will this installation fix?", "Who is requesting the new systems?"]
+            },
+            {
+                chapter: 3,
+                question: "Which of the following is a properly stated goal in a needs assessment?",
+                options: [
+                    "Mike’s boss wants a new server, so we’re gong to install it.",
+                    "We’re going to install Linux.",
+                    "We need a new Linux system.",
+                    "The new Linux system will provide a network database to increase the documentation team’s productivity by an anticipated 20 percent."
+                ],
+                correctAnswer: "The new Linux system will provide a network database to increase the documentation team’s productivity by an anticipated 20 percent."
+            },
+            {
+                chapter: 3,
+                question: "Suppose Karen from Customer Service approaches you and asks for a new Linux server for her team. Who else should you talk to as a part of your needs assessment? (Choose two.)",
+                options: ["Karen’s boss", "Karen’s co-workers", "The Technical Support supervisor", "Your hardware vendor"],
+                correctAnswer: ["Karen’s boss", "Karen’s co-workers"]
+            },
+            {
+                chapter: 3,
+                question: "Which of the following are components of your project scope? (Choose two.)",
+                options: ["Customer demands", "Management decision-making", "Schedule", "Scale"],
+                correctAnswer: ["Schedule", "Scale"]
+            },
+            {
+                chapter: 3,
+                question: "You’re responsible for implementing five new Linux servers... The Technical Support supervisor has asked that four additional servers be added... Which of the following is the most appropriate response?",
+                options: [
+                    "Ignore the request.",
+                    "Inform the supervisor that additional resources will have to be added to the project.",
+                    "Resign in protest.",
+                    "Cheerfully agree to the request and then miss the deadline."
+                ],
+                correctAnswer: "Inform the supervisor that additional resources will have to be added to the project."
+            },
+            {
+                chapter: 3,
+                question: "You’re installing new Linux systems that will be used by software engineers... Which distributions would be the best choice for this deployment? (Choose two.)",
+                options: [
+                    "Red Hat Enterprise Linux ES", "Red Hat Enterprise Linux AS", "Red Hat Desktop",
+                    "Red Hat Enterprise Linux WS", "SUSE Linux Enterprise Server", "SUSE Linux Enterprise Desktop"
+                ],
+                correctAnswer: ["Red Hat Enterprise Linux WS", "SUSE Linux Enterprise Desktop"]
+            },
+            {
+                chapter: 3,
+                question: "You’re installing a new Linux system that will be used by an administrative assistant... Which distribution would be the best choice?",
+                options: [
+                     "Red Hat Enterprise Linux ES", "Red Hat Enterprise Linux AS", "Red Hat Desktop",
+                    "Red Hat Enterprise Linux WS", "SUSE Linux Enterprise Server", "SUSE Linux Enterprise Desktop"
+                ],
+                correctAnswer: "Red Hat Desktop"
+            },
+            {
+                chapter: 3,
+                question: "You’re installing a new Linux server that will be used to host mission-critical database applications... Which distributions would be the best choice? (Choose two.)",
+                options: [
+                     "Red Hat Enterprise Linux ES", "Red Hat Enterprise Linux AS", "Red Hat Desktop",
+                    "Red Hat Enterprise Linux WS", "SUSE Linux Enterprise Server", "SUSE Linux Enterprise Desktop"
+                ],
+                correctAnswer: ["Red Hat Enterprise Linux AS", "SUSE Linux Enterprise Server"]
+            },
+            {
+                chapter: 3,
+                question: "You’re planning to install Linux on a system that you’ve built out of spare parts... Several components aren’t listed on your distribution’s HCL... What should you do?",
+                options: [
+                    "Install the distribution anyway and hope for the best.",
+                    "Install the distribution and then install the latest product updates.",
+                    "Replace the incompatible parts with supported hardware.",
+                    "Spend three days scouring the Internet looking for drivers."
+                ],
+                correctAnswer: "Replace the incompatible parts with supported hardware."
+            },
+            {
+                chapter: 3,
+                question: "You’re planning to install Fedora on a system that uses a Pentium IV Celeron CPU. Which distribution architecture should you download?",
+                options: ["IA-64", "x86-Celeron", "x86-64", "x86", "PPC"],
+                correctAnswer: "x86"
+            },
+            {
+                chapter: 3,
+                question: "You’re planning to install Fedora on a system that uses a 64-bit AMD CPU. Which distribution architecture should you download?",
+                options: ["IA-64", "x86-AMD", "x86-64", "x86", "PPC"],
+                correctAnswer: "x86-64"
+            },
+            {
+                chapter: 3,
+                question: "You’re installing a new Linux system... must run as fast as possible... protect data integrity... back up quickly. Which file system?",
+                options: ["VFAT", "FAT32", "Reiser", "ext3", "ext2"],
+                correctAnswer: "Reiser"
+            },
+            {
+                chapter: 3,
+                question: "Which partition is used for virtual memory by a Linux system?",
+                options: ["pagefile", "swap", "/swap", "/boot", "/tmp"],
+                correctAnswer: "swap"
+            },
+            {
+                chapter: 3,
+                question: "If your system has 1GB of RAM installed, how big should your swap partition be?",
+                options: ["256MB", "1GB", "512GB", "2GB"],
+                correctAnswer: "2GB"
+            },
+            {
+                chapter: 3,
+                question: "Which of the following directories should have their own partition? (Choose three.)",
+                options: ["/bin", "/boot", "/etc", "/usr", "/home", "/root", "/dev"],
+                correctAnswer: ["/boot", "/usr", "/home"] // Also /var per Table 3-1, but these are common choices
+            },
+            {
+                chapter: 3,
+                question: "You’re installing a new Linux server... e-mail server... What ports should you open on its host firewall? (Choose three.)",
+                options: ["110", "80", "25", "143", "443"],
+                correctAnswer: ["110", "25", "143"] // 110=POP3, 25=SMTP, 143=IMAP
+            },
+            {
+                chapter: 3,
+                question: "You need to install Linux... insert your first Linux installation CD... error message: operating system couldn’t be found. What’s the most likely cause?",
+                options: [
+                    "Your Linux CD is damaged.", "The hard drive is failing...", "The CD drive is malfunctioning.",
+                    "The boot device order is set incorrectly in the BIOS."
+                ],
+                correctAnswer: "The boot device order is set incorrectly in the BIOS."
+            },
+            {
+                chapter: 3,
+                question: "Your Linux system uses two SCSI hard disk drives... Which refers to the second SCSI drive?",
+                options: ["/dev/sda", "/dev/sdc", "/dev/sdb", "/dev/sdd"],
+                correctAnswer: "/dev/sdb"
+            },
+            {
+                chapter: 3,
+                question: "Your Linux system uses a single IDE hard disk drive. Which refers to the first partition?",
+                options: ["/dev/hda1", "/dev/hdb1", "/dev/hda2", "/dev/hdb2"],
+                correctAnswer: "/dev/hda1"
+            },
+            {
+                chapter: 3,
+                question: "Your Linux system uses a single IDE hard disk drive. Which refers to the second partition?",
+                options: ["/dev/hda1", "/dev/hdb1", "/dev/hda2", "/dev/hdb2"],
+                correctAnswer: "/dev/hda2"
+            },
+            {
+                chapter: 3,
+                question: "Your Linux system uses two SCSI hard disk drives... Which refers to the first partition on the second SCSI drive?",
+                options: ["/dev/sda1", "/dev/sdc1", "/dev/sdb1", "/dev/sdd1"],
+                correctAnswer: "/dev/sdb1"
+            },
+            // Chapter 4
+            {
+                chapter: 4,
+                question: "Which utility is used to view manual pages?",
+                options: ["man", "manual", "viewman", "Kwrite"],
+                correctAnswer: "man"
+            },
+            {
+                chapter: 4,
+                question: "Which environment variable contains the directory where man page files are located?",
+                options: ["MANUAL", "MANUALPATH", "MANPAGEPATH", "MANPATH"],
+                correctAnswer: "MANPATH"
+            },
+            {
+                chapter: 4,
+                question: "Which file can be used to configure the path to the man page files?",
+                options: ["/etc/man.config", "/etc/man.conf", "/etc/man.txt", "/etc/manual.conf"],
+                correctAnswer: "/etc/man.config" // Note: some distros might use man_db.conf now
+            },
+            {
+                chapter: 4,
+                question: "Which manual section contains man pages for administrative utilities used by the root user?",
+                options: ["1", "3", "8", "9"],
+                correctAnswer: "8"
+            },
+            {
+                chapter: 4,
+                question: "Which manual section contains man pages for utilities and commands that can be used by any user?",
+                options: ["9", "1", "3", "7"],
+                correctAnswer: "1"
+            },
+            {
+                chapter: 4,
+                question: "You need to learn about the options available for the mkdir utility. Which command?",
+                options: ["cat mkdir |more", "cat mkdir |man", "manual mkdir", "man mkdir"],
+                correctAnswer: "man mkdir"
+            },
+            {
+                chapter: 4,
+                question: "You need to learn about the options available for the chmod utility. Which command?",
+                options: ["cat chmod |man", "manual chmod", "man chmod", "display chmod man page"],
+                correctAnswer: "man chmod"
+            },
+            {
+                chapter: 4,
+                question: "Which section in a man page provides a brief review of the syntax?",
+                options: ["REVIEW", "SYNOPSIS", "DESCRIPTION", "SYNTAX"],
+                correctAnswer: "SYNOPSIS"
+            },
+            {
+                chapter: 4,
+                question: "Which section in a man page provides a list of related resources?",
+                options: ["DESCRIPTION", "VERSION", "SEE ALSO", "REFERENCES"],
+                correctAnswer: "SEE ALSO"
+            },
+            {
+                chapter: 4,
+                question: "You’re using man... Which keystroke will unload the current man page and exit?",
+                options: ["e", "x", "k", "q"],
+                correctAnswer: "q"
+            },
+            {
+                chapter: 4,
+                question: "You’re using man... Which keystrokes can you use to search for 'password'?",
+                options: ["/“password”", "Ctrl F", "/password", "search “password”"],
+                correctAnswer: "/password"
+            },
+            {
+                chapter: 4,
+                question: "After searching... you need to jump to the next instance. Which keystroke?",
+                options: ["q", "f", "n", "j"],
+                correctAnswer: "n"
+            },
+            {
+                chapter: 4,
+                question: "You need to search for man pages that relate to the Samba service. Which command?",
+                options: ["man –s samba", "man –k samba", "search samba |man", "which samba"],
+                correctAnswer: "man –k samba"
+            },
+            {
+                chapter: 4,
+                question: "You need to search for man pages that relate to the PAM service. Which command?",
+                options: ["which pam", "man –s pam", "search pam |man", "apropos pam"],
+                correctAnswer: "apropos pam"
+            },
+            {
+                chapter: 4,
+                question: "You need to use info to view information about smbpasswd. Which command?",
+                options: ["info /smbpasswd", "info “smbpasswd”", "show info smbpasswd", "info smbpasswd"],
+                correctAnswer: "info smbpasswd"
+            },
+            {
+                chapter: 4,
+                question: "While viewing an info node, which keystroke navigates to the next node?",
+                options: ["/next", "p", "n", "u"],
+                correctAnswer: "n"
+            },
+            {
+                chapter: 4,
+                question: "While viewing an info node, which keystroke navigates to the previous node?",
+                options: ["p", "/prev", "n", "/up"],
+                correctAnswer: "p"
+            },
+            {
+                chapter: 4,
+                question: "While viewing an info node, which keystroke navigates to the beginning of the node?",
+                options: ["Ctrl G", "/top", "Home", "End"],
+                correctAnswer: "Home" // Typically Home key, though behavior can vary
+            },
+            {
+                chapter: 4,
+                question: "Where are the README files for the packages installed on a Fedora system located?",
+                options: ["/bin/packages/README", "/usr/share/README", "/usr/share/doc", "/bin/share/doc"],
+                correctAnswer: "/usr/share/doc"
+            },
+            {
+                chapter: 4,
+                question: "What is the URL for The Linux Documentation Project Web site?",
+                options: ["http://www.linuxdoc.com", "http://www.linuxdocumentationproject.org", "http://www.tldp.org", "http://www.linuxdocs.org"],
+                correctAnswer: "http://www.tldp.org"
+            },
+            {
+                chapter: 4,
+                question: "You need to troubleshoot an error with the httpd service... Which resource is best?",
+                options: ["The httpd info node", "The Linux Documentation Project", "The knowledgebase on your vendor’s Web site", "The httpd man page"],
+                correctAnswer: "The knowledgebase on your vendor’s Web site"
+            },
+            {
+                chapter: 4,
+                question: "You need to learn how to set up and configure the Samba service... Which resource is best?",
+                options: ["The samba info node", "The Linux Documentation Project", "The knowledgebase on your vendor’s Web site", "The samba man page"],
+                correctAnswer: "The Linux Documentation Project" // TLDP HOWTOs are good for setup
+            },
+            {
+                chapter: 4,
+                question: "You need to look up an error code displayed during boot... Which resource is best?",
+                options: ["info", "The Linux Documentation Project", "A search engine such as Google or Yahoo", "man"],
+                correctAnswer: "A search engine such as Google or Yahoo"
+            },
+            // Chapter 5
+            {
+                chapter: 5,
+                question: "Where are operating system and application configuration parameters stored on a Linux system?",
+                options: ["In text files", "In the Registry", "In .ini files", "In the system database"],
+                correctAnswer: "In text files"
+            },
+            {
+                chapter: 5,
+                question: "Where are most configuration files stored in the Linux file system?",
+                options: ["/boot", "/var", "/usr", "/etc"],
+                correctAnswer: "/etc"
+            },
+            {
+                chapter: 5,
+                question: "Where can you find the vi symbolic link file on most Linux distributions?",
+                options: ["/usr/bin", "/boot", "/etc", "/var/vi"],
+                correctAnswer: "/usr/bin"
+            },
+            {
+                chapter: 5,
+                question: "Which of the following is an advantage of the vi editor?",
+                options: [
+                    "It provides a syntax checker.", "It provides a menu-driven user interface.",
+                    "It is small enough to fit on a floppy.", "It can be used to edit Microsoft Word files."
+                ],
+                correctAnswer: "It is small enough to fit on a floppy."
+            },
+            {
+                chapter: 5,
+                question: "You need to use vi to open a file named vnc in the /etc/xinetd.d directory... Which command?",
+                options: ["vi vnc", "vi /tmp/vnc", "vi /etc/xinetd.d/vnc", "vi /etc/xinetd.d"],
+                correctAnswer: "vi /etc/xinetd.d/vnc"
+            },
+            {
+                chapter: 5,
+                question: "You need to create a new file in your home directory named resources.txt using vi. Which command?",
+                options: ["vi resources.txt –new", "vi resources", "vi ~/resources", "vi resources.txt"],
+                correctAnswer: "vi resources.txt"
+            },
+            {
+                chapter: 5,
+                question: "Which mode does vi open in by default?",
+                options: ["Command mode", "Insert mode", "Normal mode", "Replace mode"],
+                correctAnswer: "Normal mode"
+            },
+            {
+                chapter: 5,
+                question: "You’ve opened a text file... You try to type, but nothing happens. Why?",
+                options: [
+                    "The vi editor is in insert mode. You need to switch to normal mode.",
+                    "The vi editor is in normal mode. You need to switch to insert mode.",
+                    "The vi editor is in insert mode. You need to switch to replace mode.",
+                    "The text file is corrupt."
+                ],
+                correctAnswer: "The vi editor is in normal mode. You need to switch to insert mode."
+            },
+            {
+                chapter: 5,
+                question: "Which keystroke will switch vi from normal mode to insert mode?",
+                options: ["d", "Esc", "i", "q"],
+                correctAnswer: "i" // Also 'a' or 'o' could work depending on context, but 'i' is standard
+            },
+            {
+                chapter: 5,
+                question: "You’re using vi... in insert mode... you need to switch to replace mode. Which keystroke?",
+                options: ["Esc", "Ctrl R", ":", "Insert"],
+                correctAnswer: "Insert"
+            },
+            {
+                chapter: 5,
+                question: "You’re using vi... in insert mode... You need to switch back to normal mode. Which keystroke?",
+                options: ["Insert", ":", "Esc", "q"],
+                correctAnswer: "Esc"
+            },
+            {
+                chapter: 5,
+                question: "You’re using vi... You try to use the Backspace key... but nothing happens. What’s wrong?",
+                options: [
+                    "You need to switch to normal mode.", "You need to switch to replace mode.",
+                    "Nothing is wrong. Backspace doesn’t work in vi.", "You need to switch to command mode."
+                ],
+                correctAnswer: "Nothing is wrong. Backspace doesn’t work in vi." // Behavior can depend on terminal settings, but often true by default. Delete key usually works.
+            },
+            {
+                chapter: 5,
+                question: "You’ve created a new file using vi and now need to save the file. Which command?",
+                options: [":s", ":w", ":save", ":writeln"],
+                correctAnswer: ":w"
+            },
+            {
+                chapter: 5,
+                question: "You’ve created a new file using vi and need to save the file to disk and exit. Which command? (Choose two.)",
+                options: [":w", ":se", ":wq", ":exit", ":q"],
+                correctAnswer: [":wq", ":exit"] // :x also works
+            },
+            {
+                chapter: 5,
+                question: "You’ve made several changes... want to quit without saving. Which command?",
+                options: [":q!", ":exit", ":q", ":exit!"],
+                correctAnswer: ":q!"
+            },
+            {
+                chapter: 5,
+                question: "You’re working with a file in vi... delete a word... without deleting the space that follows. Which command?",
+                options: ["dw", "de", "d$", "dd"],
+                correctAnswer: "de"
+            },
+            {
+                chapter: 5,
+                question: "You’re viewing a configuration file in vi... locate a directive named server... What command to search?",
+                options: ["/server", "search=server", "/“server”", "find “server”"],
+                correctAnswer: "/server"
+            },
+            {
+                chapter: 5,
+                question: "Which keystroke will open a file in the Emacs text editor?",
+                options: ["Ctrl X Ctrl F", "Ctrl S", "Ctrl X Ctrl S", "Ctrl O"],
+                correctAnswer: "Ctrl X Ctrl F"
+            },
+            {
+                chapter: 5,
+                question: "Which keystroke will save a file in the Emacs text editor?",
+                options: ["Ctrl X Ctrl F", "Ctrl S", "Ctrl X Ctrl S", "Ctrl W"],
+                correctAnswer: "Ctrl X Ctrl S"
+            },
+            {
+                chapter: 5,
+                question: "Which command will start Quick Emacs from the shell prompt?",
+                options: ["Emacs", "quickemacs", "QuickEmacs", "qemacs"],
+                correctAnswer: "qemacs"
+            },
+            {
+                chapter: 5,
+                question: "Which is an advantage of using a graphical text editor in Linux?",
+                options: [
+                    "It can be used in an emergency repair situation.", "It is small enough to fit on an emergency boot diskette.",
+                    "It can be used to work on Microsoft Word files.", "It is generally easier to use than a text-based editor."
+                ],
+                correctAnswer: "It is generally easier to use than a text-based editor."
+            },
+            {
+                chapter: 5,
+                question: "Which desktop environment uses Kate as the default graphical text editor?",
+                options: ["GNOME", "Sawfish", "KDE", "ICE"],
+                correctAnswer: "KDE"
+            },
+            {
+                chapter: 5,
+                question: "Which command can be used... to run the graphical version of Emacs?",
+                options: ["xemacs", "gemacs", "emacs -gui", "emacs -x"],
+                correctAnswer: "xemacs" // Standard emacs often runs graphically if X is available. xemacs is a distinct project.
+            },
+            {
+                chapter: 5,
+                question: "Which desktop environment uses gedit as the default graphical text editor?",
+                options: ["GNOME", "Sawfish", "KDE", "ICE"],
+                correctAnswer: "GNOME"
+            }
+        ];
+
+
+        // --- DOM Elements ---
+        const quizContainer = document.getElementById('quiz-container');
+        const quizContent = document.getElementById('quiz-content');
+        const questionCounterEl = document.getElementById('question-counter');
+        const scoreCounterEl = document.getElementById('score-counter');
+        const questionTextEl = document.getElementById('question-text');
+        const optionsListEl = document.getElementById('options-list');
+        const feedbackEl = document.getElementById('feedback');
+        const nextButton = document.getElementById('next-button');
+        const resultsScreen = document.getElementById('results-screen');
+        const finalScoreEl = document.getElementById('final-score');
+        const restartButton = document.getElementById('restart-button');
+
+        // --- Quiz State ---
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let questionsAnswered = false; // Flag to prevent multiple answers per question
+        let currentQuizQuestions = []; // Holds the shuffled questions for the current session
+
+
+        // --- Functions ---
+
+        function shuffleArray(array) {
+            // Fisher-Yates shuffle algorithm
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+
+        function displayQuestion() {
+            questionsAnswered = false; // Reset answer flag for new question
+            // Ensure we use the shuffled list for the current quiz session
+            const currentQuestion = currentQuizQuestions[currentQuestionIndex];
+
+            // Add chapter context to the question text
+            questionTextEl.innerHTML = `<span class="text-xs text-gray-500 block mb-1">Chapter ${currentQuestion.chapter}</span>${currentQuestion.question}`;
+            optionsListEl.innerHTML = ''; // Clear previous options
+            feedbackEl.innerHTML = ''; // Clear previous feedback
+            feedbackEl.className = 'mt-4 p-4 rounded-lg min-h-[50px] text-center font-medium'; // Reset feedback style
+            nextButton.disabled = true; // Disable next button until answered
+
+            questionCounterEl.textContent = `Question ${currentQuestionIndex + 1} of ${currentQuizQuestions.length}`;
+
+            // Shuffle options for variety
+            const shuffledOptions = [...currentQuestion.options];
+            // Only shuffle options if it's a standard multiple choice (more than 2 options)
+            if (shuffledOptions.length > 2) {
+                 shuffleArray(shuffledOptions);
+            }
+
+
+            shuffledOptions.forEach((option, index) => {
+                const li = document.createElement('li');
+                const radioId = `option-${index}`;
+                const radio = document.createElement('input');
+                // Use checkbox for multiple correct answers, radio otherwise
+                const isMultiple = Array.isArray(currentQuestion.correctAnswer) && currentQuestion.correctAnswer.length > 1;
+                radio.type = isMultiple ? 'checkbox' : 'radio';
+                radio.id = radioId;
+                radio.name = 'options'; // Keep same name for radio, different for checkbox if needed? No, checkbox needs separate handling.
+                // For now, stick to radio and adjust feedback logic
+                radio.value = option;
+                radio.className = 'custom-radio sr-only'; // Hide default radio visually
+                radio.addEventListener('change', handleAnswerSelection);
+
+                const label = document.createElement('label');
+                label.htmlFor = radioId;
+                // Use <pre> tag for options that might contain code/formatting sensitive text
+                if (option.includes(':') || option.includes('/') || option.startsWith('-')) {
+                    const pre = document.createElement('pre');
+                    pre.className = 'inline font-mono'; // Keep it inline but use mono font
+                    pre.textContent = option;
+                    label.appendChild(pre);
+                } else {
+                    label.textContent = option;
+                }
+
+                // Apply Tailwind classes for styling the label like a button/selectable item
+                label.className = 'block w-full p-3 border border-gray-300 rounded-lg hover:bg-indigo-50 transition duration-200 cursor-pointer';
+
+                li.appendChild(radio);
+                li.appendChild(label);
+                optionsListEl.appendChild(li);
+            });
+        }
+
+        function handleAnswerSelection(event) {
+             if (questionsAnswered) return; // Prevent changing answer after feedback
+
+             // For radio buttons, we process immediately. For checkboxes, we'd need a submit button.
+             // Sticking with immediate feedback for radio buttons.
+             questionsAnswered = true;
+
+            const selectedOption = event.target.value;
+            // Ensure we use the shuffled list for the current quiz session
+            const currentQuestion = currentQuizQuestions[currentQuestionIndex];
+            const isMultipleCorrect = Array.isArray(currentQuestion.correctAnswer);
+            let isCorrect = false;
+
+             if (isMultipleCorrect) {
+                 // Even with radio buttons, check if the selected is ONE OF the correct answers
+                 isCorrect = currentQuestion.correctAnswer.includes(selectedOption);
+            } else {
+                 isCorrect = (selectedOption === currentQuestion.correctAnswer);
+            }
+
+
+            // Disable all radio buttons after selection
+            const radioButtons = optionsListEl.querySelectorAll('input[type="radio"]');
+            radioButtons.forEach(radio => {
+                radio.disabled = true;
+                const label = document.querySelector(`label[for="${radio.id}"]`);
+                if (label) {
+                    label.classList.add('disabled-label');
+                     label.classList.remove('hover:bg-indigo-50'); // Remove hover effect
+                }
+            });
+
+
+            // Provide feedback
+            const optionsItems = optionsListEl.querySelectorAll('li');
+            optionsItems.forEach(item => {
+                const radio = item.querySelector('input[type="radio"]');
+                const label = item.querySelector('label');
+                const isCurrentItemCorrectChoice = isMultipleCorrect
+                                            ? currentQuestion.correctAnswer.includes(radio.value)
+                                            : radio.value === currentQuestion.correctAnswer;
+
+                if (radio.checked) { // The selected option
+                    if (isCorrect) {
+                        label.classList.add('bg-green-100', 'border-green-400', 'correct-choice');
+                        label.classList.remove('border-gray-300');
+                    } else {
+                        label.classList.add('bg-red-100', 'border-red-400', 'wrong-choice');
+                        label.classList.remove('border-gray-300');
+                    }
+                }
+
+                 // Highlight the actual correct answer(s), especially if the selection was wrong
+                 // or if it's a multiple-answer question
+                 if ((!isCorrect || isMultipleCorrect) && isCurrentItemCorrectChoice) {
+                     label.classList.add('bg-green-100', 'border-green-400', 'font-bold');
+                     label.classList.remove('border-gray-300');
+                     label.classList.add('correct-answer'); // Style the text too
+                 }
+            });
+
+
+            if (isCorrect) {
+                // If it's a multiple choice, check if they selected *one* of the correct answers.
+                // We can't fully validate "Choose two" with radio buttons alone.
+                score++;
+                feedbackEl.textContent = 'Correct!';
+                feedbackEl.classList.add('bg-green-100', 'text-green-700');
+                 // If multiple were required, add a note
+                 if (isMultipleCorrect && currentQuestion.correctAnswer.length > 1) {
+                     feedbackEl.innerHTML += ` (Note: This question requires ${currentQuestion.correctAnswer.length} answers. All correct options are highlighted.)`;
+                 }
+            } else {
+                 const correctAnswersText = Array.isArray(currentQuestion.correctAnswer)
+                                            ? currentQuestion.correctAnswer.join(', ')
+                                            : currentQuestion.correctAnswer;
+                feedbackEl.innerHTML = `Incorrect. The correct answer${isMultipleCorrect ? 's are' : ' is'}: <strong class="correct-answer">${correctAnswersText}</strong>`;
+                feedbackEl.classList.add('bg-red-100', 'text-red-700');
+            }
+
+            scoreCounterEl.textContent = `Score: ${score}`;
+            nextButton.disabled = false; // Enable the next button
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < currentQuizQuestions.length) {
+                displayQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            quizContent.classList.add('hidden');
+            resultsScreen.classList.remove('hidden');
+            finalScoreEl.textContent = `${score} out of ${currentQuizQuestions.length}`;
+            // Add animation class
+            resultsScreen.classList.add('animate-fade-in'); // Assuming you define this animation
+        }
+
+       function restartQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            resultsScreen.classList.add('hidden');
+            quizContent.classList.remove('hidden');
+            scoreCounterEl.textContent = `Score: ${score}`;
+             resultsScreen.classList.remove('animate-fade-in');
+             // Reshuffle questions before restarting
+             startQuiz(); // Call startQuiz to shuffle and display the first question
+        }
+
+       function startQuiz() {
+            // Create a shuffled copy of the main data for the current session
+            currentQuizQuestions = [...quizData];
+            shuffleArray(currentQuizQuestions);
+            currentQuestionIndex = 0; // Reset index
+            score = 0; // Reset score
+            scoreCounterEl.textContent = `Score: ${score}`;
+            displayQuestion(); // Display the first question
+        }
+
+        // --- Event Listeners ---
+        nextButton.addEventListener('click', nextQuestion);
+        restartButton.addEventListener('click', restartQuiz);
+
+        // --- Initial Load ---
+        startQuiz(); // Shuffle questions and load the first one
+
+       // Add fade-in animation style (optional)
+        const styleSheet = document.createElement("style");
+        styleSheet.type = "text/css";
+        styleSheet.innerText = `
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
+        `;
+        document.head.appendChild(styleSheet);
+
+
+    </script>
+
+</body>
+</html>
+
