@@ -143,8 +143,11 @@
 
     </div>
 
-    <script>
-        // --- Quiz Data ---
+    <!-- 
+      SCRIPT BLOCK 1: THE QUESTION "DATABASE"
+      This block contains all the quiz questions and answers.
+    -->
+    <script id="quiz-database">
         const quizData = [
             // Chapter 1
             {
@@ -155,7 +158,7 @@
             },
             {
                 chapter: 1,
-                question: "Your company recently purchased 12 new computer systems... Can Linux be installed on them if they already have Windows XP Professional installed?",
+                question: "Your company recently purchased 12 new computer systems. The computers have Intel Pentium IV 2.5 GHz CPUs and 40MB hard drives. Your supervisor wants to install Linux on them, but is concerned that it can't be done because they already have Windows XP Professional installed. Can this be done?",
                 options: [
                     "Yes, but you must install a new hard drive for Linux.",
                     "No, Windows is embedded in the system hardware. You must purchase systems without an operating system installed.",
@@ -202,7 +205,7 @@
             },
              {
                 chapter: 1,
-                question: "You are a computer programmer... Can you download the source code for the latest Linux kernel and modify it for use in-house?",
+                question: "You are a computer programmer. Your supervisor wants you to download the source code for the latest Linux kernel and modify it to support a custom application your company is developing for use in-house. Can you do this?",
                 options: [
                     "No, the source code for Linux is no longer available on the Internet.",
                     "No, the copyright on the source code won't permit it.",
@@ -213,7 +216,7 @@
             },
              {
                 chapter: 1,
-                question: "You've been tasked with setting up an e-mail server for your organization of 150 people... Is this possible using Linux?",
+                question: "You have been tasked with setting up an e-mail server for your organization of 150 people. You're considering using a Linux system to do this. Is this possible?",
                 options: [
                     "Yes, Linux can be configured to provide e-mail services.",
                     "No, while Linux can be configured to provide e-mail services, it's not recommended for more than 25 users.",
@@ -260,7 +263,7 @@
             },
             {
                 chapter: 1,
-                question: "You are working with a bash shell... You need to mount the floppy... What can you do without halting the installation?",
+                question: "You are working with a bash shell on a Linux system. You are in the middle of installing an application on the system when you discover that the installation program needs to access a license diskette in the floppy drive. You need to mount the floppy so this can happen, but this requires access to the shell prompt. You don't want to halt the installation to do this. What can you do?",
                 options: [
                     "Nothing, you must halt the installation, mount the floppy, then restart the installation.",
                     "You can press CTRL PAUSE On the keyboard. This will pause the installation while you mount the floppy.",
@@ -277,7 +280,7 @@
             },
             {
                 chapter: 1,
-                question: "You've downloaded an executable file named updatedb.sh... When you enter updatedb.sh, the shell indicates that it can't find the file. What can you do?",
+                question: "You've downloaded an executable file named updatedb.sh from your company's FTP server to /tmp on your Linux system. You open a shell and change to the /tmp directory. When you enter updatedb.sh, the shell indicates that it can't find the file. What can you do?",
                 options: [
                     "Enter the file name in all capital letters.",
                     "Add a ./ before the file name when entering it at the prompt.",
@@ -294,7 +297,7 @@
             },
             {
                 chapter: 1,
-                question: "You've downloaded an executable file named updatedb.sh... When you enter ./Updatedb.sh, the shell indicates that it can't find the file. What can you do?",
+                question: "You've downloaded an executable file named updatedb.sh from your company's FTP server to /tmp on your Linux system. You open a shell and change to the /tmp directory. When you enter ./Updatedb.sh, the shell indicates that it can't find the file. What can you do?",
                 options: [
                     "Enter the file name in all lower-case letters.",
                     "Add a before the file name when entering it at the prompt.",
@@ -330,7 +333,7 @@
             },
              {
                 chapter: 2,
-                question: "You insert your first Linux installation CD... Instead of starting the installation routine, the screen displays an error message indicating that an operating system couldn’t be found. What’s causing the problem?",
+                question: "You need to install Linux on a workstation. The hard drive has been wiped and is ready for the new operating system. You insert your first Linux installation CD in the CD drive and boot the system. Instead of starting the installation routine, the screen displays an error message indicating that an operating system couldn’t be found. What’s causing the problem?",
                 options: [
                     "Your Linux CD is damaged.",
                     "The hard drive is failing and needs to be replaced.",
@@ -365,7 +368,7 @@
             },
             {
                 chapter: 2,
-                question: "Which type of memory is used in 184-pin DIMM modules?", // Ch 2 Answer says E (DDR-SDRAM), not two.
+                question: "Which type of memory is used in 184-pin DIMM modules?", 
                 options: ["SDRAM", "SRAM", "FPM RAM", "EDO RAM", "DDR-SDRAM"],
                 correctAnswer: "DDR-SDRAM"
             },
@@ -395,7 +398,7 @@
             },
             {
                 chapter: 2,
-                question: "Your motherboard has a built-in AGP video board... Can you implement a dual-monitor system by installing two video boards?",
+                question: "Your motherboard has a built-in AGP video board as well as an available AGP slot. You’ve heard that you can implement a dual-monitor system by installing two video boards in the PC. Can you do this with the open AGP slot and the integrated video adapter?",
                 options: [
                     "Yes, you can install a second adapter in the open AGP slot.",
                     "No, Linux doesn’t support dual-monitor systems.",
@@ -406,7 +409,7 @@
             },
             {
                 chapter: 2,
-                question: "You’re installing two ISA expansion boards... The system has INT 2 and INT 9 available. Can you assign these interrupts to these two boards?",
+                question: "You’re installing two ISA expansion boards in an older PC system. One is a sound board, the other a network board. The system has INT 2 and INT 9 available. Can you assign these interrupts to these two boards?",
                 options: [
                     "Yes, either board can use either interrupt.",
                     "Yes, but the sound board must use INT 2 and the network board must use INT 9.",
@@ -418,7 +421,7 @@
             },
             {
                 chapter: 2,
-                question: "You’re installing an ISA board... INT 5 is currently in use by a PCI board... Can you configure the ISA board to use INT 5 too?",
+                question: "You’re installing an ISA board in a system that includes both ISA and PCI expansion slots. INT 5 is currently in use by a PCI board. However, you’ve heard that PCI cards can share interrupts. Can you configure the ISA board to use INT 5 too?",
                 options: [
                     "Yes, PCI cards can share interrupts.",
                     "Yes, but you must enable the PCI Bridge in the CMOS setup program.",
@@ -447,7 +450,7 @@
             },
             {
                 chapter: 2,
-                question: "Suppose you have an IDE DVD drive and an IDE hard drive connected to the Secondary IDE channel... Which drive must be set to be the master drive?",
+                question: "Suppose you have an IDE DVD drive and an IDE hard drive connected to the Secondary IDE channel. The DVD drive is connected to the first connector on the ribbon cable; the hard drive is connected to the second connector. Which drive must be set to be the master drive?",
                 options: [
                     "The DVD drive.",
                     "The hard drive.",
@@ -464,7 +467,7 @@
             },
             {
                 chapter: 2,
-                question: "Suppose you have a SCSI chain with four devices connected... Which devices should have termination enabled? (Choose two.)",
+                question: "Suppose you have a SCSI chain with four devices connected on an internal ribbon cable: An internal hard drive (hd0) at the end of the cable followed by a second hard drive (hd1), an internal CD drive (cd0), and then the SCSI controller (sc0). Which devices should have termination enabled? (Choose two.)",
                 options: ["Hd0", "Hd1", "Cd0", "Sc0"],
                 correctAnswer: ["Hd0", "Sc0"]
             },
@@ -488,7 +491,7 @@
             },
             {
                 chapter: 2,
-                question: "You currently have an external FireWire hard drive connected... You need to disconnect the hard drive and connect a FireWire digital video camera... Can you do this without rebooting?",
+                question: "You currently have an external FireWire hard drive connected to the FireWire port in your computer. You need to disconnect the hard drive and connect a FireWire digital video camera to your FireWire port. Can you do this without rebooting the system?",
                 options: [
                     "No, you must bring the system down to do this.",
                     "No, you can’t connect a FireWire digital video camera to a FireWire port used by an external hard drive.",
@@ -534,7 +537,7 @@
             },
             {
                 chapter: 3,
-                question: "You’re responsible for implementing five new Linux servers... The Technical Support supervisor has asked that four additional servers be added... Which of the following is the most appropriate response?",
+                question: "You’re responsible for implementing five new Linux servers in your organization’s Technical Support department. The Technical Support supervisor has asked that four additional servers be added to the project. Due to time constraints, he won’t allow you to adjust the original schedule to accommodate the additional servers. Which of the following is the most appropriate response?",
                 options: [
                     "Ignore the request.",
                     "Inform the supervisor that additional resources will have to be added to the project.",
@@ -545,7 +548,7 @@
             },
             {
                 chapter: 3,
-                question: "You’re installing new Linux systems that will be used by software engineers... Which distributions would be the best choice for this deployment? (Choose two.)",
+                question: "You’re installing new Linux systems that will be used by software engineers to develop advanced computer-aided design applications. Which distributions would be the best choice for this deployment? (Choose two.)",
                 options: [
                     "Red Hat Enterprise Linux ES", "Red Hat Enterprise Linux AS", "Red Hat Desktop",
                     "Red Hat Enterprise Linux WS", "SUSE Linux Enterprise Server", "SUSE Linux Enterprise Desktop"
@@ -554,7 +557,7 @@
             },
             {
                 chapter: 3,
-                question: "You’re installing a new Linux system that will be used by an administrative assistant... Which distribution would be the best choice?",
+                question: "You’re installing a new Linux system that will be used by an administrative assistant to type documents, create presentations, and manage e-mail. Which distribution would be the best choice for this deployment?",
                 options: [
                      "Red Hat Enterprise Linux ES", "Red Hat Enterprise Linux AS", "Red Hat Desktop",
                     "Red Hat Enterprise Linux WS", "SUSE Linux Enterprise Server", "SUSE Linux Enterprise Desktop"
@@ -563,7 +566,7 @@
             },
             {
                 chapter: 3,
-                question: "You’re installing a new Linux server that will be used to host mission-critical database applications... Which distributions would be the best choice? (Choose two.)",
+                question: "You’re installing a new Linux server that will be used to host mission-critical database applications. This server will be heavily utilized by a large number of users every day. Which distributions would be the best choice for this deployment? (Choose two.)",
                 options: [
                      "Red Hat Enterprise Linux ES", "Red Hat Enterprise Linux AS", "Red Hat Desktop",
                     "Red Hat Enterprise Linux WS", "SUSE Linux Enterprise Server", "SUSE Linux Enterprise Desktop"
@@ -572,7 +575,7 @@
             },
             {
                 chapter: 3,
-                question: "You’re planning to install Linux on a system that you’ve built out of spare parts... Several components aren’t listed on your distribution’s HCL... What should you do?",
+                question: "You’re planning to install Linux on a system that you’ve built out of spare parts. Several components in the system aren’t listed on your distribution’s HCL. This system will be used by your team’s administrative assistant to manage employee schedules, send and receive e-mail, and track employee hours. What should you do?",
                 options: [
                     "Install the distribution anyway and hope for the best.",
                     "Install the distribution and then install the latest product updates.",
@@ -595,7 +598,7 @@
             },
             {
                 chapter: 3,
-                question: "You’re installing a new Linux system... must run as fast as possible... protect data integrity... back up quickly. Which file system?",
+                question: "You’re installing a new Linux system. This system will be used by a civil engineer to model the behavior of buildings and bridges during an earthquake. This system must run as fast as possible. It must protect the integrity of the data if the system goes down unexpectedly. If it does go down, the system needs to be back up and running as quickly as possible. Which file system would be the best choice?",
                 options: ["VFAT", "FAT32", "Reiser", "ext3", "ext2"],
                 correctAnswer: "Reiser"
             },
@@ -619,13 +622,13 @@
             },
             {
                 chapter: 3,
-                question: "You’re installing a new Linux server... e-mail server... What ports should you open on its host firewall? (Choose three.)",
+                question: "You’re installing a new Linux server. This system will function as an e-mail server for your organization. What ports should you open on its host firewall? (Choose three.)",
                 options: ["110", "80", "25", "143", "443"],
                 correctAnswer: ["110", "25", "143"] // 110=POP3, 25=SMTP, 143=IMAP
             },
             {
                 chapter: 3,
-                question: "You need to install Linux... insert your first Linux installation CD... error message: operating system couldn’t be found. What’s the most likely cause?",
+                question: "You need to install Linux on a workstation. The hard drive has been wiped and is ready for the new operating system. You insert your first Linux installation CD in the CD drive and boot the system. Instead of starting the installation routine, the screen displays an error message indicating that an operating system couldn’t be found. What’s the most likely cause of the problem?",
                 options: [
                     "Your Linux CD is damaged.", "The hard drive is failing...", "The CD drive is malfunctioning.",
                     "The boot device order is set incorrectly in the BIOS."
@@ -634,25 +637,25 @@
             },
             {
                 chapter: 3,
-                question: "Your Linux system uses two SCSI hard disk drives... Which refers to the second SCSI drive?",
+                question: "Your Linux system uses two SCSI hard disk drives. The first drive is assigned SCSI ID 0; the second drive is assigned SCSI ID 1. Which of the following refers to the second SCSI drive in the system?",
                 options: ["/dev/sda", "/dev/sdc", "/dev/sdb", "/dev/sdd"],
                 correctAnswer: "/dev/sdb"
             },
             {
                 chapter: 3,
-                question: "Your Linux system uses a single IDE hard disk drive. Which refers to the first partition?",
+                question: "Your Linux system uses a single IDE hard disk drive. Which of the following refers to the first partition on the IDE drive?",
                 options: ["/dev/hda1", "/dev/hdb1", "/dev/hda2", "/dev/hdb2"],
                 correctAnswer: "/dev/hda1"
             },
             {
                 chapter: 3,
-                question: "Your Linux system uses a single IDE hard disk drive. Which refers to the second partition?",
+                question: "Your Linux system uses a single IDE hard disk drive. Which of the following refers to the second partition on the IDE drive?",
                 options: ["/dev/hda1", "/dev/hdb1", "/dev/hda2", "/dev/hdb2"],
                 correctAnswer: "/dev/hda2"
             },
             {
                 chapter: 3,
-                question: "Your Linux system uses two SCSI hard disk drives... Which refers to the first partition on the second SCSI drive?",
+                question: "Your Linux system uses two SCSI hard disk drives. The first drive is assigned SCSI ID 0; the second drive is assigned SCSI ID 1. Which of the following refers to the first partition on the second SCSI drive in the system?",
                 options: ["/dev/sda1", "/dev/sdc1", "/dev/sdb1", "/dev/sdd1"],
                 correctAnswer: "/dev/sdb1"
             },
@@ -677,91 +680,91 @@
             },
             {
                 chapter: 4,
-                question: "Which manual section contains man pages for administrative utilities used by the root user?",
+                question: "Which of the following manual sections contains man pages for administrative utilities used by the root user?",
                 options: ["1", "3", "8", "9"],
                 correctAnswer: "8"
             },
             {
                 chapter: 4,
-                question: "Which manual section contains man pages for utilities and commands that can be used by any user?",
+                question: "Which of the following manual sections contains man pages for utilities and commands that can be used by any user?",
                 options: ["9", "1", "3", "7"],
                 correctAnswer: "1"
             },
             {
                 chapter: 4,
-                question: "You need to learn about the options available for the mkdir utility. Which command?",
+                question: "You need to learn about the options available for the mkdir utility. Which command will display its manual page?",
                 options: ["cat mkdir |more", "cat mkdir |man", "manual mkdir", "man mkdir"],
                 correctAnswer: "man mkdir"
             },
             {
                 chapter: 4,
-                question: "You need to learn about the options available for the chmod utility. Which command?",
+                question: "You need to learn about the options available for the chmod utility. Which command will display its manual page?",
                 options: ["cat chmod |man", "manual chmod", "man chmod", "display chmod man page"],
                 correctAnswer: "man chmod"
             },
             {
                 chapter: 4,
-                question: "Which section in a man page provides a brief review of the syntax?",
+                question: "Which section in a man page provides a brief review of the syntax used for a particular command or utility?",
                 options: ["REVIEW", "SYNOPSIS", "DESCRIPTION", "SYNTAX"],
                 correctAnswer: "SYNOPSIS"
             },
             {
                 chapter: 4,
-                question: "Which section in a man page provides a list of related resources?",
+                question: "Which section in a man page provides a list of man pages or other resources related to the particular command or utility?",
                 options: ["DESCRIPTION", "VERSION", "SEE ALSO", "REFERENCES"],
                 correctAnswer: "SEE ALSO"
             },
             {
                 chapter: 4,
-                question: "You’re using man... Which keystroke will unload the current man page and exit?",
+                question: "You’re using man to view the man page for the chown utility. Which keystroke will unload the current man page and exit man?",
                 options: ["e", "x", "k", "q"],
                 correctAnswer: "q"
             },
             {
                 chapter: 4,
-                question: "You’re using man... Which keystrokes can you use to search for 'password'?",
+                question: "You’re using man to view the man page for the Samba service. Which keystrokes can you use to search for the term “password” in the man page?",
                 options: ["/“password”", "Ctrl F", "/password", "search “password”"],
                 correctAnswer: "/password"
             },
             {
                 chapter: 4,
-                question: "After searching... you need to jump to the next instance. Which keystroke?",
+                question: "After searching for a term within a man page, you need to jump to the next instance of the term in the page. Which keystroke will do this?",
                 options: ["q", "f", "n", "j"],
                 correctAnswer: "n"
             },
             {
                 chapter: 4,
-                question: "You need to search for man pages that relate to the Samba service. Which command?",
+                question: "You need to search for man pages that relate to the Samba service. Which command will do this?",
                 options: ["man –s samba", "man –k samba", "search samba |man", "which samba"],
                 correctAnswer: "man –k samba"
             },
             {
                 chapter: 4,
-                question: "You need to search for man pages that relate to the PAM service. Which command?",
+                question: "You need to search for man pages that relate to the PAM service. Which command will do this?",
                 options: ["which pam", "man –s pam", "search pam |man", "apropos pam"],
                 correctAnswer: "apropos pam"
             },
             {
                 chapter: 4,
-                question: "You need to use info to view information about smbpasswd. Which command?",
+                question: "You need to use info to view information about using the smbpasswd utility. Which command will do this?",
                 options: ["info /smbpasswd", "info “smbpasswd”", "show info smbpasswd", "info smbpasswd"],
                 correctAnswer: "info smbpasswd"
             },
             {
                 chapter: 4,
-                question: "While viewing an info node, which keystroke navigates to the next node?",
+                question: "While viewing an info node, which keystroke can be used to navigate to the next node?",
                 options: ["/next", "p", "n", "u"],
                 correctAnswer: "n"
             },
             {
                 chapter: 4,
-                question: "While viewing an info node, which keystroke navigates to the previous node?",
+                question: "While viewing an info node, which keystroke can be used to navigate to the previous node?",
                 options: ["p", "/prev", "n", "/up"],
                 correctAnswer: "p"
             },
             {
                 chapter: 4,
-                question: "While viewing an info node, which keystroke navigates to the beginning of the node?",
+                question: "While viewing an info node, which keystroke can be used to navigate to the beginning of the node?",
                 options: ["Ctrl G", "/top", "Home", "End"],
                 correctAnswer: "Home" // Typically Home key, though behavior can vary
             },
@@ -779,19 +782,19 @@
             },
             {
                 chapter: 4,
-                question: "You need to troubleshoot an error with the httpd service... Which resource is best?",
+                question: "You need to troubleshoot an error encountered with the httpd service on a Linux server. Which resource would be the best place to search for a resolution?",
                 options: ["The httpd info node", "The Linux Documentation Project", "The knowledgebase on your vendor’s Web site", "The httpd man page"],
                 correctAnswer: "The knowledgebase on your vendor’s Web site"
             },
             {
                 chapter: 4,
-                question: "You need to learn how to set up and configure the Samba service... Which resource is best?",
+                question: "You need to learn how to set up and configure the Samba service on a Linux server. Which resource would be the best place to search for instructions?",
                 options: ["The samba info node", "The Linux Documentation Project", "The knowledgebase on your vendor’s Web site", "The samba man page"],
                 correctAnswer: "The Linux Documentation Project" // TLDP HOWTOs are good for setup
             },
             {
                 chapter: 4,
-                question: "You need to look up an error code displayed during boot... Which resource is best?",
+                question: "You need to look up an error code displayed when your Linux workstation booted. Which resource would be the best place to search for a resolution?",
                 options: ["info", "The Linux Documentation Project", "A search engine such as Google or Yahoo", "man"],
                 correctAnswer: "A search engine such as Google or Yahoo"
             },
@@ -825,13 +828,13 @@
             },
             {
                 chapter: 5,
-                question: "You need to use vi to open a file named vnc in the /etc/xinetd.d directory... Which command?",
+                question: "You have a terminal window open and the current directory is /tmp. You need to use vi to open a file named vnc in the /etc/xinetd.d directory on your system. Which of the following commands will do this?",
                 options: ["vi vnc", "vi /tmp/vnc", "vi /etc/xinetd.d/vnc", "vi /etc/xinetd.d"],
                 correctAnswer: "vi /etc/xinetd.d/vnc"
             },
             {
                 chapter: 5,
-                question: "You need to create a new file in your home directory named resources.txt using vi. Which command?",
+                question: "You have a terminal window open and the current directory is your user’s home directory. You need to create a new file in your home directory named resources.txt using vi. Which of the following commands will do this?",
                 options: ["vi resources.txt –new", "vi resources", "vi ~/resources", "vi resources.txt"],
                 correctAnswer: "vi resources.txt"
             },
@@ -843,7 +846,7 @@
             },
             {
                 chapter: 5,
-                question: "You’ve opened a text file... You try to type, but nothing happens. Why?",
+                question: "You’ve opened a text file named list.txt in vi. You move the cursor using the arrow keys to the point in the file where you need to make several changes. You try to type, but nothing happens. Why is this happening?",
                 options: [
                     "The vi editor is in insert mode. You need to switch to normal mode.",
                     "The vi editor is in normal mode. You need to switch to insert mode.",
@@ -860,19 +863,19 @@
             },
             {
                 chapter: 5,
-                question: "You’re using vi... in insert mode... you need to switch to replace mode. Which keystroke?",
+                question: "You’re using vi to edit a text file in insert mode. Because of the nature of the changes you’re making to the file, you need to switch to replace mode. Which keystroke will do this?",
                 options: ["Esc", "Ctrl R", ":", "Insert"],
                 correctAnswer: "Insert"
             },
             {
                 chapter: 5,
-                question: "You’re using vi... in insert mode... You need to switch back to normal mode. Which keystroke?",
+                question: "You’re using vi to edit a file in insert mode. You need to switch back to normal mode. Which keystroke will do this?",
                 options: ["Insert", ":", "Esc", "q"],
                 correctAnswer: "Esc"
             },
             {
                 chapter: 5,
-                question: "You’re using vi... You try to use the Backspace key... but nothing happens. What’s wrong?",
+                question: "You’re using vi to edit a file in insert mode. You try to use the Backspace key to delete a word, but nothing happens. What’s wrong with the system?",
                 options: [
                     "You need to switch to normal mode.", "You need to switch to replace mode.",
                     "Nothing is wrong. Backspace doesn’t work in vi.", "You need to switch to command mode."
@@ -881,31 +884,31 @@
             },
             {
                 chapter: 5,
-                question: "You’ve created a new file using vi and now need to save the file. Which command?",
+                question: "You’ve created a new file using vi and now need to save the file. Which command will do this?",
                 options: [":s", ":w", ":save", ":writeln"],
                 correctAnswer: ":w"
             },
             {
                 chapter: 5,
-                question: "You’ve created a new file using vi and need to save the file to disk and exit. Which command? (Choose two.)",
+                question: "You’ve created a new file using vi and need to save the file to disk and exit the program. Which command will do this? (Choose two.)",
                 options: [":w", ":se", ":wq", ":exit", ":q"],
                 correctAnswer: [":wq", ":exit"] // :x also works
             },
             {
                 chapter: 5,
-                question: "You’ve made several changes... want to quit without saving. Which command?",
+                question: "You’ve made several changes to a configuration file using vi. You realize that you’ve made a myriad of mistakes and want to quit without saving the changes so you can start over. Which command will do this?",
                 options: [":q!", ":exit", ":q", ":exit!"],
                 correctAnswer: ":q!"
             },
             {
                 chapter: 5,
-                question: "You’re working with a file in vi... delete a word... without deleting the space that follows. Which command?",
+                question: "You’re working with a file in vi in normal mode. You locate a word in the file that needs to be deleted and place your cursor at the beginning of that word. Which command will delete this word without deleting the space that follows the word?",
                 options: ["dw", "de", "d$", "dd"],
                 correctAnswer: "de"
             },
             {
                 chapter: 5,
-                question: "You’re viewing a configuration file in vi... locate a directive named server... What command to search?",
+                question: "You’re viewing a configuration file in vi in normal mode. You need to locate a directive named server in the file. However, the file is very long and you don’t want to scan through it line by line. What command can you use to search for this term?",
                 options: ["/server", "search=server", "/“server”", "find “server”"],
                 correctAnswer: "/server"
             },
@@ -955,8 +958,13 @@
                 correctAnswer: "GNOME"
             }
         ];
+    </script>
 
-
+    <!-- 
+      SCRIPT BLOCK 2: THE QUIZ APPLICATION LOGIC
+      This block contains all the JavaScript functions to run the quiz.
+    -->
+    <script id="quiz-logic">
         // --- DOM Elements ---
         const quizContainer = document.getElementById('quiz-container');
         const quizContent = document.getElementById('quiz-content');
@@ -1028,13 +1036,14 @@
             }
             
             const isMultiple = Array.isArray(currentQuestion.correctAnswer) && currentQuestion.correctAnswer.length > 1;
+            const inputType = isMultiple ? 'checkbox' : 'radio';
 
             shuffledOptions.forEach((option, index) => {
                 const li = document.createElement('li');
                 const inputId = `option-${index}`;
                 const input = document.createElement('input');
                 
-                input.type = isMultiple ? 'checkbox' : 'radio';
+                input.type = inputType;
                 input.id = inputId;
                 input.name = 'options'; 
                 input.value = option;
