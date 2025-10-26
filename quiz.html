@@ -6,20 +6,24 @@
     <title>CompTIA Linux+ Quiz (Chapters 1-5)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Custom styles for immediate feedback */
-        .correct-answer {
+        /* Custom styles for feedback */
+        .correct-answer-text {
             color: #16a34a; /* Green */
             font-weight: bold;
         }
-        .wrong-answer {
-            color: #dc2626; /* Red */
-            /* text-decoration: line-through; */ /* Removed strikethrough for clarity */
+        .correct-choice {
+             background-color: #dcfce7; /* green-100 */
+             border-color: #22c55e; /* green-500 */
         }
-        .correct-choice::after {
+         .correct-choice::after {
             content: " ✔️ Correct";
             color: #16a34a;
             font-weight: bold;
             margin-left: 8px;
+        }
+         .wrong-choice {
+             background-color: #fee2e2; /* red-100 */
+             border-color: #ef4444; /* red-500 */
         }
          .wrong-choice::after {
             content: " ❌ Incorrect";
@@ -27,15 +31,12 @@
             font-weight: bold;
             margin-left: 8px;
         }
-        /* Style radio buttons to visually indicate selection */
-        input[type="radio"]:checked + label {
+        .missed-correct-choice {
+             background-color: #dcfce7; /* green-100 */
+             border-color: #22c55e; /* green-500 */
              font-weight: bold;
-             /* Add a subtle background or border if desired */
-             /* background-color: #e0f2fe; */ /* Light blue background */
         }
-         input[type="radio"] {
-            margin-right: 8px; /* Space between radio and label */
-        }
+
         label {
             cursor: pointer;
         }
@@ -43,7 +44,7 @@
              cursor: default;
              opacity: 0.7;
         }
-        /* Hide radio buttons visually but keep them accessible */
+        /* Hide radio/checkbox visually but keep them accessible */
        .sr-only {
           position: absolute;
           width: 1px;
@@ -56,41 +57,53 @@
           border-width: 0;
         }
        /* Custom styled radio button appearance */
-       .custom-radio + label::before {
+       .custom-input + label::before {
           content: '';
           display: inline-block;
           width: 1.25em;
           height: 1.25em;
           margin-right: 0.5em;
           border: 2px solid #6b7280; /* gray-500 */
-          border-radius: 50%;
           vertical-align: middle;
           cursor: pointer;
           transition: border-color 0.2s, background-color 0.2s;
         }
-        .custom-radio:checked + label::before {
+        input[type="radio"].custom-input + label::before {
+           border-radius: 50%;
+        }
+        input[type="checkbox"].custom-input + label::before {
+           border-radius: 0.25rem; /* rounded */
+        }
+
+        input[type="radio"].custom-input:checked + label::before {
           background-color: #3b82f6; /* blue-500 */
           border-color: #3b82f6; /* blue-500 */
           background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="white"><circle cx="8" cy="8" r="3"/></svg>');
           background-position: center;
           background-repeat: no-repeat;
         }
-       .custom-radio:disabled + label {
+        input[type="checkbox"].custom-input:checked + label::before {
+          background-color: #3b82f6; /* blue-500 */
+          border-color: #3b82f6; /* blue-500 */
+          background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="white"><path d="M12.207 4.793a1 1 0 0 1 0 1.414l-5 5a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L6.5 9.086l4.293-4.293a1 1 0 0 1 1.414 0z"/></svg>');
+          background-position: center;
+          background-repeat: no-repeat;
+        }
+       .custom-input:disabled + label {
           cursor: default;
           opacity: 0.6;
         }
-       .custom-radio:disabled + label::before {
+       .custom-input:disabled + label::before {
           background-color: #e5e7eb; /* gray-200 */
           border-color: #d1d5db; /* gray-300 */
           cursor: default;
         }
         /* Ensure code/preformatted text wraps */
         pre {
-             white-space: pre-wrap;       /* Since CSS 2.1 */
-             white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-             white-space: -pre-wrap;      /* Opera 4-6 */
-             white-space: -o-pre-wrap;    /* Opera 7 */
-             word-wrap: break-word;       /* Internet Explorer 5.5+ */
+             display: inline; /* Make pre tag inline with label text */
+             white-space: pre-wrap;
+             word-wrap: break-word;
+             font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
         }
 
     </style>
@@ -117,7 +130,8 @@
             </div>
 
             <div class="flex justify-end mt-6">
-                 <button id="next-button" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg shadow transition duration-300 ease-in-out transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100" disabled>Next Question</button>
+                 <button id="submit-button" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg shadow transition duration-300 ease-in-out transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100">Submit Answer</button>
+                 <button id="next-button" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg shadow transition duration-300 ease-in-out transform hover:scale-105 hidden">Next Question</button>
             </div>
         </div>
 
@@ -131,7 +145,6 @@
 
     <script>
         // --- Quiz Data ---
-        // Answers obtained from the "Self Test Answers" sections in the provided PDF.
         const quizData = [
             // Chapter 1
             {
@@ -952,6 +965,7 @@
         const questionTextEl = document.getElementById('question-text');
         const optionsListEl = document.getElementById('options-list');
         const feedbackEl = document.getElementById('feedback');
+        const submitButton = document.getElementById('submit-button');
         const nextButton = document.getElementById('next-button');
         const resultsScreen = document.getElementById('results-screen');
         const finalScoreEl = document.getElementById('final-score');
@@ -960,11 +974,11 @@
         // --- Quiz State ---
         let currentQuestionIndex = 0;
         let score = 0;
-        let questionsAnswered = false; // Flag to prevent multiple answers per question
+        let questionsAnswered = false; // Flag to prevent multiple submissions per question
         let currentQuizQuestions = []; // Holds the shuffled questions for the current session
 
 
-        // --- Functions ---
+        // --- Helper Functions ---
 
         function shuffleArray(array) {
             // Fisher-Yates shuffle algorithm
@@ -974,146 +988,167 @@
             }
         }
 
+        // Helper function to compare two arrays (for multi-answer questions)
+        function areArraysEqual(arr1, arr2) {
+            if (arr1.length !== arr2.length) return false;
+            // Sort arrays to ensure order doesn't matter
+            const sortedArr1 = [...arr1].sort();
+            const sortedArr2 = [...arr2].sort();
+            for (let i = 0; i < sortedArr1.length; i++) {
+                if (sortedArr1[i] !== sortedArr2[i]) return false;
+            }
+            return true;
+        }
+
+
+        // --- Core Functions ---
 
         function displayQuestion() {
-            questionsAnswered = false; // Reset answer flag for new question
-            // Ensure we use the shuffled list for the current quiz session
+            questionsAnswered = false; // Reset answer flag
             const currentQuestion = currentQuizQuestions[currentQuestionIndex];
 
             // Add chapter context to the question text
-            questionTextEl.innerHTML = `<span class="text-xs text-gray-500 block mb-1">Chapter ${currentQuestion.chapter}</span>${currentQuestion.question}`;
+            let questionHtml = `<span class="text-xs text-gray-500 block mb-1">Chapter ${currentQuestion.chapter}</span>${currentQuestion.question}`;
+            questionTextEl.innerHTML = questionHtml;
+
             optionsListEl.innerHTML = ''; // Clear previous options
             feedbackEl.innerHTML = ''; // Clear previous feedback
             feedbackEl.className = 'mt-4 p-4 rounded-lg min-h-[50px] text-center font-medium'; // Reset feedback style
-            nextButton.disabled = true; // Disable next button until answered
+            
+            submitButton.disabled = true; // Disable submit until an option is clicked
+            submitButton.classList.remove('hidden');
+            nextButton.classList.add('hidden');
 
             questionCounterEl.textContent = `Question ${currentQuestionIndex + 1} of ${currentQuizQuestions.length}`;
 
             // Shuffle options for variety
             const shuffledOptions = [...currentQuestion.options];
-            // Only shuffle options if it's a standard multiple choice (more than 2 options)
             if (shuffledOptions.length > 2) {
                  shuffleArray(shuffledOptions);
             }
-
+            
+            const isMultiple = Array.isArray(currentQuestion.correctAnswer) && currentQuestion.correctAnswer.length > 1;
 
             shuffledOptions.forEach((option, index) => {
                 const li = document.createElement('li');
-                const radioId = `option-${index}`;
-                const radio = document.createElement('input');
-                // Use checkbox for multiple correct answers, radio otherwise
-                const isMultiple = Array.isArray(currentQuestion.correctAnswer) && currentQuestion.correctAnswer.length > 1;
-                radio.type = isMultiple ? 'checkbox' : 'radio';
-                radio.id = radioId;
-                radio.name = 'options'; // Keep same name for radio, different for checkbox if needed? No, checkbox needs separate handling.
-                // For now, stick to radio and adjust feedback logic
-                radio.value = option;
-                radio.className = 'custom-radio sr-only'; // Hide default radio visually
-                radio.addEventListener('change', handleAnswerSelection);
+                const inputId = `option-${index}`;
+                const input = document.createElement('input');
+                
+                input.type = isMultiple ? 'checkbox' : 'radio';
+                input.id = inputId;
+                input.name = 'options'; 
+                input.value = option;
+                input.className = 'custom-input sr-only'; // Hide default input visually
+                
+                // Add event listener to enable submit button on selection
+                input.addEventListener('change', () => {
+                     // For radio, always enable. For checkbox, enable if at least one is checked.
+                     if (isMultiple) {
+                         const anyChecked = optionsListEl.querySelector('input[type="checkbox"]:checked');
+                         submitButton.disabled = !anyChecked;
+                     } else {
+                        submitButton.disabled = false;
+                     }
+                });
 
                 const label = document.createElement('label');
-                label.htmlFor = radioId;
+                label.htmlFor = inputId;
+                
                 // Use <pre> tag for options that might contain code/formatting sensitive text
-                if (option.includes(':') || option.includes('/') || option.startsWith('-')) {
+                if (option.includes(':') || option.includes('/') || option.startsWith('-') || option.includes('$')) {
                     const pre = document.createElement('pre');
-                    pre.className = 'inline font-mono'; // Keep it inline but use mono font
                     pre.textContent = option;
                     label.appendChild(pre);
                 } else {
                     label.textContent = option;
                 }
 
-                // Apply Tailwind classes for styling the label like a button/selectable item
                 label.className = 'block w-full p-3 border border-gray-300 rounded-lg hover:bg-indigo-50 transition duration-200 cursor-pointer';
 
-                li.appendChild(radio);
+                li.appendChild(input);
                 li.appendChild(label);
                 optionsListEl.appendChild(li);
             });
         }
 
-        function handleAnswerSelection(event) {
-             if (questionsAnswered) return; // Prevent changing answer after feedback
-
-             // For radio buttons, we process immediately. For checkboxes, we'd need a submit button.
-             // Sticking with immediate feedback for radio buttons.
+        function checkAnswer() {
+             if (questionsAnswered) return; // Prevent multiple submissions
              questionsAnswered = true;
+             submitButton.disabled = true; // Disable after submission
 
-            const selectedOption = event.target.value;
-            // Ensure we use the shuffled list for the current quiz session
             const currentQuestion = currentQuizQuestions[currentQuestionIndex];
             const isMultipleCorrect = Array.isArray(currentQuestion.correctAnswer);
+            
+            // Get all selected options
+            const selectedInputs = optionsListEl.querySelectorAll('input:checked');
+            const selectedOptions = Array.from(selectedInputs).map(input => input.value);
+            
             let isCorrect = false;
+            let correctAnswers = [];
 
-             if (isMultipleCorrect) {
-                 // Even with radio buttons, check if the selected is ONE OF the correct answers
-                 isCorrect = currentQuestion.correctAnswer.includes(selectedOption);
+            if (isMultipleCorrect) {
+                 correctAnswers = currentQuestion.correctAnswer;
+                 // Check if the selected options array is identical to the correct answer array
+                 isCorrect = areArraysEqual(selectedOptions, correctAnswers);
             } else {
-                 isCorrect = (selectedOption === currentQuestion.correctAnswer);
+                 correctAnswers = [currentQuestion.correctAnswer]; // Treat as array for easier logic
+                 // Check if the single selected option is correct
+                 isCorrect = selectedOptions.length === 1 && selectedOptions[0] === currentQuestion.correctAnswer;
             }
 
-
-            // Disable all radio buttons after selection
-            const radioButtons = optionsListEl.querySelectorAll('input[type="radio"]');
-            radioButtons.forEach(radio => {
-                radio.disabled = true;
-                const label = document.querySelector(`label[for="${radio.id}"]`);
+            // Disable all inputs after selection
+            const allInputs = optionsListEl.querySelectorAll('input');
+            allInputs.forEach(input => {
+                input.disabled = true;
+                const label = document.querySelector(`label[for="${input.id}"]`);
                 if (label) {
                     label.classList.add('disabled-label');
-                     label.classList.remove('hover:bg-indigo-50'); // Remove hover effect
+                    label.classList.remove('hover:bg-indigo-50'); // Remove hover effect
                 }
             });
-
 
             // Provide feedback
             const optionsItems = optionsListEl.querySelectorAll('li');
             optionsItems.forEach(item => {
-                const radio = item.querySelector('input[type="radio"]');
+                const input = item.querySelector('input');
                 const label = item.querySelector('label');
-                const isCurrentItemCorrectChoice = isMultipleCorrect
-                                            ? currentQuestion.correctAnswer.includes(radio.value)
-                                            : radio.value === currentQuestion.correctAnswer;
+                const isCorrectChoice = correctAnswers.includes(input.value);
+                const isSelected = input.checked;
 
-                if (radio.checked) { // The selected option
-                    if (isCorrect) {
-                        label.classList.add('bg-green-100', 'border-green-400', 'correct-choice');
-                        label.classList.remove('border-gray-300');
+                if (isSelected) {
+                    if (isCorrectChoice) {
+                         label.classList.add('correct-choice'); // Green highlight + check
                     } else {
-                        label.classList.add('bg-red-100', 'border-red-400', 'wrong-choice');
-                        label.classList.remove('border-gray-300');
+                         label.classList.add('wrong-choice'); // Red highlight + X
                     }
+                } else if (isCorrectChoice) {
+                     // Highlight correct answers the user *didn't* select
+                     label.classList.add('missed-correct-choice');
                 }
-
-                 // Highlight the actual correct answer(s), especially if the selection was wrong
-                 // or if it's a multiple-answer question
-                 if ((!isCorrect || isMultipleCorrect) && isCurrentItemCorrectChoice) {
-                     label.classList.add('bg-green-100', 'border-green-400', 'font-bold');
-                     label.classList.remove('border-gray-300');
-                     label.classList.add('correct-answer'); // Style the text too
-                 }
+                
+                // Common style adjustments
+                if (isCorrectChoice) {
+                     label.classList.add('bg-green-100', 'border-green-400');
+                } else if (isSelected && !isCorrectChoice) {
+                     label.classList.add('bg-red-100', 'border-red-400');
+                }
+                 label.classList.remove('border-gray-300');
             });
 
 
             if (isCorrect) {
-                // If it's a multiple choice, check if they selected *one* of the correct answers.
-                // We can't fully validate "Choose two" with radio buttons alone.
                 score++;
                 feedbackEl.textContent = 'Correct!';
                 feedbackEl.classList.add('bg-green-100', 'text-green-700');
-                 // If multiple were required, add a note
-                 if (isMultipleCorrect && currentQuestion.correctAnswer.length > 1) {
-                     feedbackEl.innerHTML += ` (Note: This question requires ${currentQuestion.correctAnswer.length} answers. All correct options are highlighted.)`;
-                 }
             } else {
-                 const correctAnswersText = Array.isArray(currentQuestion.correctAnswer)
-                                            ? currentQuestion.correctAnswer.join(', ')
-                                            : currentQuestion.correctAnswer;
-                feedbackEl.innerHTML = `Incorrect. The correct answer${isMultipleCorrect ? 's are' : ' is'}: <strong class="correct-answer">${correctAnswersText}</strong>`;
+                 const correctAnswersText = correctAnswers.join('", "');
+                feedbackEl.innerHTML = `Incorrect. The correct answer${isMultipleCorrect ? 's are' : ' is'}: <strong class="correct-answer-text">"${correctAnswersText}"</strong>`;
                 feedbackEl.classList.add('bg-red-100', 'text-red-700');
             }
 
             scoreCounterEl.textContent = `Score: ${score}`;
-            nextButton.disabled = false; // Enable the next button
+            submitButton.classList.add('hidden');
+            nextButton.classList.remove('hidden');
         }
 
         function nextQuestion() {
@@ -1130,16 +1165,13 @@
             resultsScreen.classList.remove('hidden');
             finalScoreEl.textContent = `${score} out of ${currentQuizQuestions.length}`;
             // Add animation class
-            resultsScreen.classList.add('animate-fade-in'); // Assuming you define this animation
+            resultsScreen.classList.add('animate-fade-in'); 
         }
 
        function restartQuiz() {
-            currentQuestionIndex = 0;
-            score = 0;
             resultsScreen.classList.add('hidden');
             quizContent.classList.remove('hidden');
-            scoreCounterEl.textContent = `Score: ${score}`;
-             resultsScreen.classList.remove('animate-fade-in');
+            resultsScreen.classList.remove('animate-fade-in');
              // Reshuffle questions before restarting
              startQuiz(); // Call startQuiz to shuffle and display the first question
         }
@@ -1155,6 +1187,7 @@
         }
 
         // --- Event Listeners ---
+        submitButton.addEventListener('click', checkAnswer);
         nextButton.addEventListener('click', nextQuestion);
         restartButton.addEventListener('click', restartQuiz);
 
