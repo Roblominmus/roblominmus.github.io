@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Design (W1-8) FINAL EXAM</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        #quiz-container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            padding: 30px;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+        h2.section-title {
+            color: #3498db;
+            border-bottom: 1px solid #ecf0f1;
+            padding-bottom: 5px;
+            margin-top: 40px;
+        }
+        .question-block {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed #ccc;
+        }
+        .question-text {
+            font-weight: 600;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+        .option {
+            margin-bottom: 10px;
+            padding: 12px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+            display: block;
+        }
+        .option:hover {
+            background-color: #f9f9f9;
+        }
+        .option input {
+            margin-right: 12px;
+            vertical-align: middle;
+        }
+        .option label {
+            vertical-align: middle;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #fff;
+            background-color: #3498db;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        #results {
+            margin-top: 30px;
+            padding: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 5px;
+        }
+        .results-show {
+            background-color: #ecf0f1;
+            border: 1px solid #bdc3c7;
+        }
+        .feedback {
+            margin-top: 10px;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .correct {
+            background-color: #eafaf1;
+            border-color: #27ae60;
+        }
+        .correct-feedback {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        .incorrect {
+            background-color: #fbeeee;
+            border-color: #c0392b;
+        }
+        .incorrect-feedback {
+            color: #c0392b;
+            font-weight: bold;
+        }
+        .correct-answer {
+            color: #2980b9;
+            font-weight: normal;
+            font-style: italic;
+            margin-top: 5px;
+        }
+        #score {
+            font-size: 1.5em;
+            color: #2c3e50;
+        }
+        #back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #3498db;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            display: none;
+            text-decoration: none;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+
+    <a href="#" id="back-to-top">Back to Top</a>
+
+    <div id="quiz-container">
+        <h1>Database Design Final Review Quiz</h1>
+        <p style="text-align:center; color: #555;">The **CUMBERSOME** quiz. All 8 weeks. All 30 of your past questions, plus 70 new surgical questions from our study sessions. Total: 100 questions.</p>
+        <form id="quiz-form">
+            <!-- Questions will be injected here by JavaScript -->
+        </form>
+        <button type="button" onclick="checkAnswers()">Submit and Check Answers</button>
+        <div id="results"></div>
+    </div>
+
+    <script>
+        const questions = [
+            // --- SECTION 1: USER-UPLOADED QUESTIONS (Q1-Q15) ---
+            {
+                section: "Past Questions (Set 1)",
+                q: "Q1. Which of the following best describes the difference between data and information? (From Image)",
+                o: [
+                    "Data always comes from a database, while information does not.",
+                    "Data is unprocessed facts, while information is processed and meaningful output.",
+                    "Data is meaningful while information is raw and unprocessed.",
+                    "Data always comes from a database, while information does not"
+                ],
+                a: 1
+            },
+            {
+                q: "Q2. Who proposed the relational model that disconnected logical organization from physical storage in databases? (From Image)",
+                o: [
+                    "P. Chen",
+                    "Larry Ellison",
+                    "E. F. Codd",
+                    "Charles Babbage"
+                ],
+                a: 2
+            },
+            {
+                q: "Q3. Which of the following correctly lists the three major steps in database development? (From Image)",
+                o: [
+                    "Design → Analyze → Build",
+                    "Data Modeling → Database Design → Database Build",
+                    "Conceptual Design → Logical Modeling → Physical Implementation",
+                    "Planning → Coding → Testing"
+                ],
+                a: 1
+            },
+            {
+                q: "Q4. What was a key problem with 'isolated, non-integrated systems' used before modern database solutions? (From Image)",
+                o: [
+                    "They could not store large amounts of data.",
+                    "They were too fast for most clients to handle.",
+                    "They made upgrades and data sharing across systems difficult and expensive.",
+                    "They required Internet connections to function."
+                ],
+                a: 2
+            },
+            {
+                q: "Q5. What is grid computing in relation to databases? (From Image)",
+                o: [
+                    "A model where data is stored on a single large computer only.",
+                    "A computing approach that uses distributed systems as one shared resource, like an electric grid.",
+                    "A manual way of organizing spreadsheet data.",
+                    "A method of limiting database access to one location."
+                ],
+                a: 1
+            },
+            {
+                q: "Q6. In an Entity-Relationship (ER) model, cardinality refers to: (From Image)",
+                o: [
+                    "Whether a relationship is mandatory or optional.",
+                    "The number of attributes an entity has.",
+                    "The quantity or degree of association between entities.",
+                    "The total number of entities in a database."
+                ],
+                a: 2
+            },
+            {
+                q: "Q7. In ER diagramming conventions, a 'crow's foot' symbol represents: (From Image)",
+                o: [
+                    "A mandatory relationship",
+                    "A one-to-one relationship",
+                    "A one-to-many relationship",
+                    "A self-referencing relationship"
+                ],
+                a: 2
+            },
+            {
+                q: "Q8. In ERDish, which of the following correctly describes the relationship between EMPLOYEE and DEPARTMENT? (From Image)",
+                o: [
+                    "Each EMPLOYEE may work in one or more DEPARTMENTS",
+                    "Each EMPLOYEE must work in one and only one DEPARTMENT",
+                    "Each DEPARTMENT must have one and only one EMPLOYEE",
+                    "Each DEPARTMENT must employ exactly two EMPLOYEES"
+                ],
+                a: 1
+            },
+            {
+                q: "Q9. Which of the following symbols in an ER diagram denotes a unique identifier attribute? (From Image)",
+                o: [
+                    "* (asterisk)",
+                    "# (hash)",
+                    "o (circle)",
+                    "= (equal sign)"
+                ],
+                a: 1
+            },
+            {
+                q: "Q10. The term 'optionality' in a relationship refers to: (From Image)",
+                o: [
+                    "The number of times an entity can participate in a relationship.",
+                    "Whether participation in the relationship is required or optional.",
+                    "The number of attributes shared by both entities.",
+                    "The naming convention used for relationships."
+                ],
+                a: 1
+            },
+            {
+                q: "Q11. Which statement best describes a conceptual data model? (From Image)",
+                o: [
+                    "It specifies table definitions, column types and indexes.",
+                    "It captures the business's informational needs and important entities and relationships, but does not specify attributes or UIDs.",
+                    "It is a physical implementation tied to a specific RDBMS.",
+                    "It always includes database views and performance tuning details."
+                ],
+                a: 1
+            },
+            {
+                q: "Q12. Which of the following is a primary characteristic of a physical data model? (From Image)",
+                o: [
+                    "It avoids mentioning primary keys or foreign keys.",
+                    "It lists entities but omits attributes and data types.",
+                    "It defines table definitions, data types, precision, and shows columns, primary and foreign keys.",
+                    "It is strictly implementation-free and cannot be tied to any RDBMS."
+                ],
+                a: 2
+            },
+            {
+                q: "Q13. You need an attribute to identify a person uniquely and with minimal maintenance. Which practice is recommended? (From Image)",
+                o: [
+                    "Use age because it's easy to update yearly.",
+                    "Use birth date rather than age because it is non-volatile.",
+                    "Use name because it is guaranteed unique.",
+                    "Never use artificial identifiers; always combine several natural attributes."
+                ],
+                a: 1
+            },
+            {
+                q: "Q14. Which of the following is NOT one of the four stated goals of ER modelling? (From Image)",
+                o: [
+                    "Capture all required data.",
+                    "Ensure that data appears only once (avoid duplication).",
+                    "Model no data that is derivable from other modelled data.",
+                    "Maximise data redundancy to improve availability."
+                ],
+                a: 3
+            },
+            {
+                q: "Q15. What does 'implementation-free' mean in the context of conceptual data models? (From Image)",
+                o: [
+                    "The model remains the same regardless of the type of database, storage medium or programming language used to implement it.",
+                    "The model must be designed specifically for a relational database.",
+                    "The model requires implementation details such as indexes and views to be useful.",
+                    "It means the model cannot be used unless a DBMS is chosen first."
+                ],
+                a: 0
+            },
+
+            // --- SECTION 2: USER-UPLOADED QUESTIONS (Q16-Q30) ---
+            {
+                section: "Past Questions (Set 2)",
+                q: "Q16. In database design, a many-to-many (M:M) relationship is best resolved by: (From Image)",
+                o: [
+                    "Adding a composite key to one of the entities",
+                    "Creating an intersection entity between the two entities",
+                    "Eliminating one entity from the model",
+                    "Using a simple attribute as the UID"
+                ],
+                a: 1
+            },
+            {
+                q: "Q17. During CRUD analysis, the term 'RETRIEVE' corresponds to which operation? (From Image)",
+                o: [
+                    "Loading data into the database",
+                    "Viewing or printing information from the database",
+                    "Modifying existing data",
+                    "Removing a record from the database"
+                ],
+                a: 1
+            },
+            {
+                q: "Q18. What is a barred relationship in an entity-relationship diagram? (From Image)",
+                o: [
+                    "A relationship that connects two unrelated entities",
+                    "A relationship that participates in the unique identifier of an intersection entity",
+                    "A relationship that is hidden during normalization",
+                    "A one-to-one relationship between entities"
+                ],
+                a: 1
+            },
+            {
+                q: "Q19. Which of the following is not a natural unique identifier (UID)? (From Image)",
+                o: [
+                    "Passport number",
+                    "Customer ID",
+                    "Seat number",
+                    "Email address"
+                ],
+                a: 1
+            },
+            {
+                q: "Q20. If an entity has more than one possible UID, the chosen one used as the main identifier is called the: (From Image)",
+                o: [
+                    "Composite UID",
+                    "Artificial UID",
+                    "Primary UID",
+                    "Secondary UID"
+                ],
+                a: 2
+            },
+            {
+                q: "Q21. What is the primary purpose of using a matrix diagram in database design? (From Image)",
+                o: [
+                    "To show optionality and cardinality for every relationship",
+                    "To discover and record relationships between many entities so none are missed",
+                    "To replace an ERD entirely",
+                    "To list only attributes for each entity"
+                ],
+                a: 1
+            },
+            {
+                q: "Q22. In the travel-agency example (TRAVELER — LANDMARK — COUNTRY), which statement is correct? (From Image)",
+                o: [
+                    "Each LANDMARK may be located in more than one COUNTRY.",
+                    "Each TRAVELER must have seen every LANDMARK in a COUNTRY.",
+                    "Each LANDMARK must be located in one and only one COUNTRY.",
+                    "The matrix diagram shows cardinality directly in its cells."
+                ],
+                a: 2
+            },
+            {
+                q: "Q23. Which of the following about supertypes and subtypes is FALSE? (From Image)",
+                o: [
+                    "A subtype inherits attributes and relationships of its supertype.",
+                    "Subtypes never exist alone – if a subtype exists there must be at least one other subtype.",
+                    "Subtypes are always optional (an instance of a supertype can belong to no subtype).",
+                    "Two important subtype rules are exhaustive and mutually exclusive."
+                ],
+                a: 2
+            },
+            {
+                q: "Q24. Which statement best describes a properly modelled subtype? (From Image)",
+                o: [
+                    "A subtype is an entity unrelated to the supertype and does not inherit anything.",
+                    "A subtype is drawn within the supertype, inherits its attributes/relationships, and usually adds its own attributes or relationships.",
+                    "A subtype can exist independently of its supertype.",
+                    "Subtypes eliminate the need to document common attributes at the supertype level."
+                ],
+                a: 1
+            },
+            {
+                q: "Q25. Which of these business rules is a procedural rule that typically cannot be represented in an ERD and requires programming? (From Image)",
+                o: [
+                    "All teachers must possess a valid teaching certificate.",
+                    "All orders at a restaurant must be handled by a staff member.",
+                    "Students must have studied algebra and geometry in order to sign up for trigonometry.",
+                    "Each TRAINING EVENT takes place at one LOCATION."
+                ],
+                a: 2
+            },
+            {
+                q: "Q26. Which of the following best describes a transferable relationship in database design? (From Image)",
+                o: [
+                    "A relationship that cannot be moved once created",
+                    "A relationship where an entity instance can change associations over time",
+                    "A relationship that must always be one-to-one",
+                    "A relationship that has no business rules"
+                ],
+                a: 1
+            },
+            {
+                q: "Q27. In an ERD, how is a non-transferable relationship represented? (From Image)",
+                o: [
+                    "With a circle symbol",
+                    "With a diamond on the relationship line",
+                    "With a dashed line",
+                    "With a crows-foot symbol"
+                ],
+                a: 1
+            },
+            {
+                q: "Q28. A many-to-many (M:M) relationship in an early model usually indicates:",
+                o: [
+                    "That entities are independent and unrelated",
+                    "That an entity (an intersection entity) is missing from the model",
+                    "That the model is complete and finalized",
+                    "That redundancy has been eliminated"
+                ],
+                a: 1
+            },
+            {
+                q: "Q29. Which of the following is NOT a redundant relationship? (From Image)",
+                o: [
+                    "COUNTRY–PERSON (location of) derived from COUNTRY–TOWN–PERSON",
+                    "PERSON–COUNTRY (birthplace of) alongside PERSON–TOWN (living in)",
+                    "TOWN–COUNTRY (located in) plus PERSON–TOWN (living in) [Implies PERSON-COUNTRY (living in)]",
+                    "PERSON–COUNTRY derived from existing relationships"
+                ],
+                a: 1
+            },
+            {
+                q: "Q30. Which of the following entities violates First Normal Form (1NF)? (From Image)",
+                o: [
+                    "SCHOOL BUILDING with code, name, and address",
+                    "TEAM with ID, name, and player attributes",
+                    "PLAYER with number, name, and position",
+                    "SUBJECT with ID and name"
+                ],
+                a: 1
+            },
+
+            // --- SECTION 3: W1-W2 SURGICAL & TEACH-BACK QUESTIONS ---
+            {
+                section: "Weeks 1-2 Surgical Review",
+                q: "Q31. (W1) A grocery store receipt with a list of items, prices, and a total is an example of...?",
+                o: [
+                    "Raw Data",
+                    "Information",
+                    "A Procedural Rule",
+                    "A 1NF Violation"
+                ],
+                a: 1
+            },
+            {
+                q: "Q32. (W1) In the 3-Step Database Development Process, what is the *output* of the 'Analyze' (Conceptual) step?",
+                o: [
+                    "An Entity-Relationship Diagram (ERD)",
+                    "A set of Table Definitions",
+                    "A `CREATE TABLE` SQL script",
+                    "A list of business rules"
+                ],
+                a: 0 // The ERD is the logical model/blueprint. The conceptual is just the idea. This is a trick question. Q11 is better. Let's re-write this.
+            },
+            {
+                q: "Q32. (W1) In the 3-Step Database Development Process, what is the *output* of the 'Design' (Logical) step?",
+                o: [
+                    "The business requirements document",
+                    "The SQL code",
+                    "The Entity-Relationship Diagram (ERD) and Table Definitions",
+                    "The N-Tier Architecture plan"
+                ],
+                a: 2
+            },
+            {
+                q: "Q33. (W1) Who proposed the Entity-Relationship Model (ERM), which is the foundation for drawing ERDs?",
+                o: [
+                    "E. F. Codd",
+                    "P. Chen",
+                    "Larry Ellison",
+                    "A Database Administrator"
+                ],
+                a: 1
+            },
+            {
+                q: "Q34. (W1) An airline manager asks, 'What is our average revenue per seat on the Lagos-to-Abuja route?' This is a request for...?",
+                o: [
+                    "Data",
+                    "Information",
+                    "A Procedural Rule",
+                    "A Physical Model"
+                ],
+                a: 1
+            },
+            {
+                q: "Q35. (W1) Which of the following is the best analogy for a 1970s Mainframe-Dumb Terminal architecture?",
+                o: [
+                    "A central kitchen (mainframe) sends food to a dining hall that only has forks (dumb terminals).",
+                    "Every house (client) has its own small kitchen, but gets ingredients from a central supermarket (server).",
+                    "A restaurant with a front desk (web server), a kitchen (app server), and a pantry (database server).",
+                    "A group of kitchens all sharing one power grid."
+                ],
+                a: 0
+            },
+            {
+                q: "Q36. (W2) What is the most precise definition of an 'Instance'?",
+                o: [
+                    "A category or blueprint of a thing (e.g., 'STUDENT').",
+                    "A property or characteristic of a thing (e.g., 'First Name').",
+                    "A single, unique occurrence of an entity (e.g., you, 'Okafor Chiedozie Kevin').",
+                    "A connection between two entities."
+                ],
+                a: 2
+            },
+            {
+                q: "Q37. (W2) An attribute `oCellPhoneNumber` is an example of what kind of attribute?",
+                o: [
+                    "Mandatory",
+                    "Optional",
+                    "Composite",
+                    "Volatile"
+                ],
+                a: 1
+            },
+            {
+                q: "Q38. (W2) The relationship from `STUDENT` to `COURSE` is 'Each STUDENT *may* enroll in *one or more* COURSES'. Which part is the Cardinality?",
+                o: [
+                    "'may'",
+                    "'one or more'",
+                    "'STUDENT'",
+                    "'COURSES'"
+                ],
+                a: 1
+            },
+            {
+                q: "Q39. (W2) The relationship from `COURSE` to `STUDENT` is 'Each COURSE *may* be enrolled in by *one or more* STUDENTS'. Which part is the Optionality?",
+                o: [
+                    "'may'",
+                    "'one or more'",
+                    "'COURSE'",
+                    "'STUDENTS'"
+                ],
+                a: 0
+            },
+            {
+                q: "Q40. (W2) Why is `First Name` + `Last Name` a *bad* Unique Identifier (UID) for a `STUDENT` entity?",
+                o: [
+                    "It is not a mandatory attribute.",
+                    "It is a volatile attribute.",
+                    "It is not guaranteed to be unique; two students might have the same name.",
+                    "It is not an artificial attribute."
+                ],
+                a: 2
+            },
+
+            // --- SECTION 4: W3-W4 SURGICAL & TEACH-BACK QUESTIONS ---
+            {
+                section: "Weeks 3-4 Surgical Review",
+                q: "Q41. (W3) What is the 6-part formula for 'ERDish'?",
+                o: [
+                    "EACH + Entity A + Optionality + Relationship Name + Cardinality + Entity B",
+                    "Entity A + Relationship Name + Entity B + Cardinality + Optionality",
+                    "EACH + Entity A + Cardinality + Relationship Name + Optionality + Entity B",
+                    "Entity A + UID + Attribute + Optionality + Cardinality + Entity B"
+                ],
+                a: 0
+            },
+            {
+                q: "Q42. (W3) A diagram shows `[COURSE] ---| ... |—< [TEACHER]`. What is the ERDish from `TEACHER` to `COURSE`?",
+                o: [
+                    "Each TEACHER must teach one or more COURSES.",
+                    "Each TEACHER may teach one or more COURSES.",
+                    "Each TEACHER must teach one and only one COURSE.",
+                    "Each TEACHER may teach one and only one COURSE."
+                ],
+                a: 3 // Dashed line (---) = may. Single toe (|) = one and only one.
+            },
+            {
+                q: "Q43. (W3) Using the same diagram `[COURSE] ---| ... |—< [TEACHER]`, what is the ERDish from `COURSE` to `TEACHER`?",
+                o: [
+                    "Each COURSE must be taught by one or more TEACHERS.",
+                    "Each COURSE may be taught by one or more TEACHERS.",
+                    "Each COURSE must be taught by one and only one TEACHER.",
+                    "Each COURSE may be taught by one and only one TEACHER."
+                ],
+                a: 0 // Solid line (—) = must. Crow's foot (<) = one or more.
+            },
+            {
+                q: "Q44. (W3) A relationship where `EMPLOYEE` is related to `EMPLOYEE` is called a:",
+                o: [
+                    "Redundant Relationship",
+                    "Recursive Relationship",
+                    "Nontransferable Relationship",
+                    "Barred Relationship"
+                ],
+                a: 1
+            },
+            {
+                q: "Q45. (W4) A bank tracks `LOANS`. 'HOME LOANS' and 'CAR LOANS' are both 'a kind of' `LOAN` and share common attributes. How should this be modeled?",
+                o: [
+                    "With an Arc",
+                    "With a Supertype/Subtype structure",
+                    "With a M:M recursive relationship",
+                    "This is a 1NF violation."
+                ],
+                a: 1
+            },
+            {
+                q: "Q46. (W4) A `SHIPMENT` must be sent by *either* a `TRUCKING COMPANY` *or* an `EXTERNAL COURIER`, but *not both*. The entities are dissimilar. How should this be modeled?",
+                o: [
+                    "With an Arc",
+                    "With a Supertype/Subtype structure",
+                    "With a M:M recursive relationship",
+                    "This is a 3NF violation."
+                ],
+                a: 0
+            },
+            {
+                q: "Q47. (W4) The rule that an instance of a supertype can *only* be one subtype at a time (e.g., a loan can't be a `HOME LOAN` and a `CAR LOAN`) is called:",
+                o: [
+                    "Exhaustive",
+                    "Mutually Exclusive",
+                    "Mandatory",
+                    "Nontransferable"
+                ],
+                a: 1
+            },
+            {
+                q: "Q48. (W4) The rule that all instances of a supertype *must* fit into one of the available subtypes (e.g., all `PAYMENTS` are `CASH`, `CHECK`, or `OTHER`) is called:",
+                o: [
+                    "Exhaustive",
+                    "Mutually Exclusive",
+                    "Mandatory",
+                    "Nontransferable"
+                ],
+                a: 0
+            },
+            {
+                q: "Q49. (W4) A rule states: 'A STUDENT must pay their fees *before* they can register for a COURSE.' What type of rule is this?",
+                o: [
+                    "Structural (can be drawn on ERD)",
+                    "Procedural (cannot be drawn on ERD)",
+                    "A 1NF Violation",
+                    "A 3NF Violation"
+                ],
+                a: 1
+            },
+            {
+                q: "Q50. (W4) A rule states: 'Every STUDENT *must* have a unique Student ID.' What type of rule is this?",
+                o: [
+                    "Structural (can be drawn on ERD)",
+                    "Procedural (cannot be drawn on ERD)",
+                    "A 1NF Violation",
+                    "A 3NF Violation"
+                ],
+                a: 0
+            },
+
+            // --- SECTION 5: W5-W6 SURGICAL & TEACH-BACK QUESTIONS ---
+            {
+                section: "Weeks 5-6 Surgical Review",
+                q: "Q51. (W5) A `STUDENT`-`COURSE` M:M relationship needs to store the 'Grade'. Why is this a problem?",
+                o: [
+                    "The 'Grade' attribute is multi-valued, which is a 1NF violation.",
+                    "The 'Grade' attribute is only dependent on 'STUDENT', which is a 2NF violation.",
+                    "The 'Grade' attribute describes the relationship itself, and an M:M relationship has no place to store it.",
+                    "The 'Grade' attribute is a procedural rule."
+                ],
+                a: 2
+            },
+            {
+                q: "Q52. (W5) How do you *resolve* the problem in the previous question?",
+                o: [
+                    "Create a new Intersection Entity (e.g., 'ENROLLMENT') and create two 1:M relationships to it.",
+                    "Create a Supertype 'GRADES' with subtypes 'STUDENT' and 'COURSE'.",
+                    "Add 'Grade' as an attribute to the 'STUDENT' entity.",
+                    "Add 'Grade' as an attribute to the 'COURSE' entity."
+                ],
+                a: 0
+            },
+            {
+                q: "Q53. (W5) A model has: `EMPLOYEE` -> `BRANCH` -> `REGION`. A new relationship `EMPLOYEE` -> `REGION` is added with the name 'was hired in'. Is this redundant?",
+                o: [
+                    "Yes, because you can already find the region by going through BRANCH.",
+                    "No, because 'was hired in' is new information that is not the same as 'works in'.",
+                    "Yes, because all hierarchies are redundant.",
+                    "No, because it is an Arc."
+                ],
+                a: 1
+            },
+            {
+                q: "Q54. (W5) A business rule states: 'A `RECEIPT` is issued to one `STUDENT` and can *never* be transferred to another student.' How do you draw this?",
+                o: [
+                    "As a 1:1 relationship.",
+                    "With a diamond (`<>`) symbol on the relationship line to show it is nontransferable.",
+                    "With an Arc.",
+                    "With a solid line to show it is mandatory."
+                ],
+                a: 1
+            },
+            {
+                q: "Q55. (W5) A manager needs to 'print a weekly **report** of all sales'. In a CRUD analysis, this rule tells you:",
+                o: [
+                    "You need a 'CREATE' function.",
+                    "You must have 'SALES' and 'EMPLOYEE' entities (or similar) to 'RETRIEVE' data from.",
+                    "You need to delete the sales data every week.",
+                    "You have a 3NF violation."
+                ],
+                a: 1
+            },
+            {
+                q: "Q56. (W6) What is the key difference between a Primary UID and a Primary Key (PK)?",
+                o: [
+                    "There is no difference.",
+                    "A Primary UID is for the logical model (the ERD), while a Primary Key is for the physical database (the code).",
+                    "A Primary UID must be artificial, but a Primary Key can be natural.",
+                    "A Primary Key must be artificial, but a Primary UID can be natural."
+                ],
+                a: 1
+            },
+            {
+                q: "Q57. (W6) What is the difference between a Composite UID and a Candidate UID?",
+                o: [
+                    "A Composite UID is made of 2+ attributes; a Candidate UID is one of *multiple choices* for a Primary UID.",
+                    "A Composite UID is one choice; a Candidate UID is a UID made of 2+ attributes.",
+                    "A Composite UID is artificial; a Candidate UID is natural.",
+                    "There is no difference."
+                ],
+                a: 0
+            },
+            {
+                q: "Q58. (W6) An entity `TEAM` has an attribute `*Player_Names` that stores a list of all players (e.g., 'John, Jane, Bob'). This violates which Normal Form?",
+                o: [
+                    "1NF (multi-valued attribute)",
+                    "2NF (partial dependency)",
+                    "3NF (transitive dependency)",
+                    "This is not a violation."
+                ],
+                a: 0
+            },
+            {
+                q: "Q59. (W6) How do you fix the 1NF violation in the previous question?",
+                o: [
+                    "Do nothing, 1NF is optional.",
+                    "Make the attribute mandatory.",
+                    "Create a new 'PLAYER' entity and link it to 'TEAM' with a 1:M relationship.",
+                    "Add the player names to the 'TEAM' primary key."
+                ],
+                a: 2
+            },
+            {
+                q: "Q60. (W6) An entity has a composite UID of (#CourseID, #StudentID). The attribute 'StudentName' is in this entity. This is a violation of which normal form?",
+                o: [
+                    "1NF (multi-valued attribute)",
+                    "2NF (partial dependency)",
+                    "3NF (transitive dependency)",
+                    "This is not a violation."
+                ],
+                a: 1
+            },
+            {
+                q: "Q61. (W6) A 2NF violation is also known as a...",
+                o: [
+                    "Transitive dependency",
+                    "Partial dependency",
+                    "Multi-valued attribute",
+                    "Recursive relationship"
+                ],
+                a: 1
+            },
+            {
+                q: "Q62. (W6) An entity has a simple UID of #EmployeeID. It contains the attributes 'ManagerName' and 'ManagerPhoneNumber'. This is a violation of which normal form?",
+                o: [
+                    "1NF (multi-valued attribute)",
+                    "2NF (partial dependency)",
+                    "3NF (transitive dependency)",
+                    "This is not a violation."
+                ],
+                a: 2
+            },
+            {
+                q: "Q63. (W6) A 3NF violation is also known as a...",
+                o: [
+                    "Transitive dependency",
+                    "Partial dependency",
+                    "Multi-valued attribute",
+                    "Recursive relationship"
+                ],
+                a: 0
+            },
+            {
+                q: "Q64. (W6) You fix a 3NF violation (e.g., 'StoreAddress' in a 'CD' entity) by:",
+                o: [
+                    "Deleting the 'StoreAddress' attribute entirely.",
+                    "Creating a new 'STORE' entity, moving 'StoreName' and 'StoreAddress' there, and linking 'CD' to 'STORE'.",
+                    "Adding 'StoreAddress' to the Primary Key of 'CD'.",
+                    "Making 'StoreAddress' an optional attribute."
+                ],
+                a: 1
+            },
+            {
+                q: "Q65. (W6) The primary goal of normalization is to:",
+                o: [
+                    "Make the database run faster.",
+                    "Remove data redundancy and prevent data anomalies (errors).",
+                    "Ensure all UIDs are artificial.",
+                    "Create as many tables as possible."
+                ],
+                a: 1
+            },
+            
+            // --- SECTION 6: W7-W8 SURGICAL & TEACH-BACK QUESTIONS ---
+            {
+                section: "Weeks 7-8 Surgical Review",
+                q: "Q66. (W7) You need to model a company's organizational chart where managers also appear as employees. What is the *simplest* and most flexible way to model this, using only one entity?",
+                o: [
+                    "A Supertype/Subtype model",
+                    "An Arc",
+                    "A 1:M Recursive Relationship",
+                    "A Hierarchical Model with many entities"
+                ],
+                a: 2
+            },
+            {
+                q: "Q67. (W7) A 'Bill of Materials' (e.g., a 'CAR' is made of many 'COMPONENTS', and a 'SCREW' is part of many 'COMPONENTS') is a classic example of what?",
+                o: [
+                    "A 1:M Recursive Relationship",
+                    "A M:M Recursive Relationship",
+                    "An Arc",
+                    "A 3NF Violation"
+                ],
+                a: 1
+            },
+            {
+                q: "Q68. (W7) What is the main *advantage* of using a full Hierarchical Model (e.g., `PRESIDENT` entity, `DIRECTOR` entity) instead of a recursive one?",
+                o: [
+                    "It is simpler and less busy.",
+                    "It is more explicit and allows you to set mandatory attributes (like `*CarPlan`) that only apply to a specific level.",
+                    "It resolves all M:M relationships automatically.",
+                    "It is the only way to model a hierarchy."
+                ],
+                a: 1
+            },
+            {
+                q: "Q69. (W7) You are modeling a `LOAN` entity. `HOME LOAN` and `CAR LOAN` are both 'a kind of' `LOAN`. This is a clear case for what structure?",
+                o: [
+                    "An Arc",
+                    "A Supertype/Subtype",
+                    "A Recursive Relationship",
+                    "A 3NF fix"
+                ],
+                a: 1
+            },
+            {
+                q: "Q70. (W7) You are modeling an `EVENT`. An `EVENT` can be held at *either* a `PRIVATE HOME` *or* a `PUBLIC SPACE`. The two 'venue' entities are very different. This is a clear case for what structure?",
+                o: [
+                    "An Arc",
+                    "A Supertype/Subtype",
+                    "A Recursive Relationship",
+                    "A 2NF fix"
+                ],
+                a: 0
+            },
+            {
+                q: "Q71. (W8) A business wants to store the *history* of an employee's salary, not just the current one. How should this be modeled?",
+                o: [
+                    "Add an 'Old_Salary' attribute to the 'EMPLOYEE' entity.",
+                    "Create a 'SALARY_HISTORY' entity and link it to 'EMPLOYEE' with a 1:M relationship.",
+                    "Create an Arc to a 'SALARY' entity.",
+                    "This is a procedural rule and cannot be modeled."
+                ],
+                a: 1
+            },
+            {
+                q: "Q72. (W8) When should you use 'DAY' as an *entity* instead of 'date' as an *attribute*?",
+                o: [
+                    "Always. 'Date' should never be an attribute.",
+                    "When you only need to know *when* something happened.",
+                    "When you need to store *facts about the day itself* (e.g., 'High Temperature' or 'Holiday').",
+                    "Never. 'DAY' is not a valid entity."
+                ],
+                a: 2
+            },
+            {
+                q: "Q73. (W8) An entity `PURCHASE` has a simple UID (`#PurchaseID`) and two non-UID attributes: `*Date` and `*DailyHighTemperature`. This is a violation of:",
+                o: [
+                    "1NF (multi-valued attribute)",
+                    "2NF (partial dependency)",
+                    "3NF (transitive dependency)",
+                    "This is not a violation."
+                ],
+                a: 2 // *DailyHighTemperature depends on *Date, which is a non-UID attribute.
+            },
+            {
+                q: "Q74. (W8) What is 'Journaling' in the context of database modeling?",
+                o: [
+                    "A procedural rule that cannot be modeled.",
+                    "A 1NF violation.",
+                    "The process of creating a log or audit trail (e.g., `SALARY_CHANGE` entity) to track *who* changed *what*, and *when*.",
+                    "A rule for making an ERD more readable."
+                ],
+                a: 2
+            },
+            {
+                q: "Q75. (W8) A rule states: 'A shift can be reassigned to a new employee, *unless* the shift has already started.' This rule (which cannot be drawn) is called:",
+                o: [
+                    "Conditional Non-transferability",
+                    "A 2NF Violation",
+                    "An Exclusive OR Constraint",
+                    "Journaling"
+                ],
+                a: 0
+            },
+            {
+                q: "Q76. (W8) What is the main goal of making an ERD readable (e.g., avoiding crossed lines, using white space)?",
+                o: [
+                    "To satisfy 3NF.",
+                    "To ensure the database compiles without errors.",
+                    "To make the model an effective tool for communication with the client and other developers.",
+                    "To create a barred relationship."
+                ],
+                a: 2
+            },
+            {
+                q: "Q77. (W8) An entity that is 'central' to the business and will have a large number of instances (like `ENROLLMENT` or `ORDER_LINE`) is called a:",
+                o: [
+                    "Recursive Entity",
+                    "High-Volume Entity",
+                    "Supertype Entity",
+                    "Nontransferable Entity"
+                ],
+                a: 1
+            },
+            {
+                q: "Q78. (W8) You create a `SALARY_HISTORY` entity to track pay raises. What would be the best UID for this entity?",
+                o: [
+                    "`#EmployeeID` alone",
+                    "`#StartDate` alone",
+                    "A composite UID of (`#EmployeeID`, `#StartDate`)",
+                    "An artificial UID `#HistoryID`"
+                ],
+                a: 2 // This is the most common and "natural" way to form the UID
+            },
+            {
+                q: "Q79. (W8) An `ORDER` is placed on a `DATE`. The `DATE` entity stores `*isHoliday`. This is a good model because `*isHoliday` depends only on the `DATE`. This model correctly satisfies...",
+                o: [
+                    "1NF",
+                    "2NF",
+                    "3NF",
+                    "All of the above"
+                ],
+                a: 3 // By separating DAY, the PURCHASE/ORDER entity doesn't have a 3NF violation.
+            },
+            {
+                q: "Q80. (W8) A rule states: 'A shift's start time may be updated, *unless* the shift has already begun.' This is an example of:",
+                o: [
+                    "A structural rule",
+                    "A 1NF violation",
+                    "Conditional non-transferability",
+                    "A matrix diagram"
+                ],
+                a: 2
+            },
+
+            // --- SECTION 7: FINAL CUMULATIVE SCENARIOS ---
+            {
+                section: "Final Scenario Questions",
+                q: "Q81. (Scenario) A `BOOK` has an attribute `oAuthors` which stores 'John Smith, Jane Doe'. This is a clear violation of:",
+                o: [
+                    "1NF",
+                    "2NF",
+                    "3NF",
+                    "This is not a violation."
+                ],
+                a: 0
+            },
+            {
+                q: "Q82. (Scenario) You fix the problem in the previous question by creating a M:M relationship between `BOOK` and `AUTHOR`. This M:M is resolved with an `AUTHORSHIP` entity. Where does the attribute 'Royalty_Split' belong?",
+                o: [
+                    "In the `BOOK` entity.",
+                    "In the `AUTHOR` entity.",
+                    "In the `AUTHORSHIP` intersection entity.",
+                    "It's a procedural rule and cannot be stored."
+                ],
+                a: 2
+            },
+            {
+                q: "Q83. (Scenario) Your `AUTHORSHIP` entity has a composite UID of (`#BookID`, `#AuthorID`). You add the attribute `Author_Bio`. This creates a:",
+                o: [
+                    "1NF Violation (multi-valued attribute)",
+                    "2NF Violation (partial dependency, `Author_Bio` only depends on `#AuthorID`)",
+                    "3NF Violation (transitive dependency)",
+                    "This is a valid model."
+                ],
+                a: 1
+            },
+            {
+                q: "Q84. (Scenario) Your `BOOK` entity has a simple UID of `#ISBN`. You add attributes `Publisher_Name` and `Publisher_City`. This creates a:",
+                o: [
+                    "1NF Violation (multi-valued attribute)",
+                    "2NF Violation (partial dependency)",
+                    "3NF Violation (transitive dependency, `Publisher_City` depends on `Publisher_Name`)",
+                    "This is a valid model."
+                ],
+                a: 2
+            },
+            {
+                q: "Q85. (Scenario) A `LIBRARY` has two types of `ASSETS`: `BOOKS` (with `#ISBN`) and `DVDS` (with `*Studio`). Both share a common attribute `*Title`. This should be modeled as:",
+                o: [
+                    "A Supertype `ASSET` with subtypes `BOOK` and `DVD`",
+                    "An Arc from `ASSET` to `BOOK` and `DVD`",
+                    "A M:M relationship between `BOOK` and `DVD`",
+                    "A 1:M recursive relationship"
+                ],
+                a: 0
+            },
+            {
+                q: "Q86. (Scenario) A `LIBRARY` has `LOANS`. A `LOAN` must be for *either* a `BOOK` *or* a `DVD`, but *not both*. The entities `BOOK` and `DVD` are dissimilar. This should be modeled as:",
+                o: [
+                    "A Supertype `ASSET` with subtypes `BOOK` and `DVD`",
+                    "An Arc from `LOAN` to `BOOK` and `DVD`",
+                    "A M:M relationship between `BOOK` and `DVD`",
+                    "A 1:M recursive relationship"
+                ],
+                a: 1
+            },
+            {
+                q: "Q87. (Scenario) A business rule says: 'A `LOAN` cannot be transferred to a new `MEMBER`.' This is a ________ relationship, drawn with a ________.",
+                o: [
+                    "Nontransferable, Diamond (`<>`)",
+                    "Recursive, Loop",
+                    "Optional, Dashed line (`---`)",
+                    "Redundant, Solid line (`—`)"
+                ],
+                a: 0
+            },
+            {
+                q: "Q88. (Scenario) A business rule says: 'A manager must review a `LOAN` *before* it can be approved.' This is a:",
+                o: [
+                    "Structural Rule (drawn with an Arc)",
+                    "Structural Rule (drawn with a Supertype)",
+                    "Procedural Rule (cannot be drawn on ERD)",
+                    "1NF Violation"
+                ],
+                a: 2
+            },
+            {
+                q: "Q89. (Scenario) A `LOAN` entity has a `*Date_Borrowed` attribute. The business also wants to know the `*Day_of_Week` (e.g., 'Monday'). This creates a 3NF violation because `Day_of_Week` is transitively dependent on `Date_Borrowed`. How do you fix this?",
+                o: [
+                    "Delete 'Day_of_Week' and just store 'Date_Borrowed'.",
+                    "Create a `DAY` entity, store 'Day_of_Week' there, and link `LOAN` to the `DAY` entity.",
+                    "Add 'Day_of_Week' to the primary key.",
+                    "This is a 2NF violation, not 3NF."
+                ],
+                a: 1
+            },
+            {
+                q: "Q90. (Scenario) The business wants to track *all* price changes for a `BOOK` over time, not just the current price. How do you model this?",
+                o: [
+                    "Add 'Old_Price' and 'New_Price' to the `BOOK` entity.",
+                    "Create a new 'PRICE_HISTORY' entity and link it to `BOOK` with a 1:M relationship.",
+                    "Create a 'PRICE' supertype and a 'BOOK' subtype.",
+                    "This is a procedural rule and cannot be modeled."
+                ],
+                a: 1
+            },
+            {
+                q: "Q91. (W6) You are given an entity `PROJECT_ASSIGNMENT` with a composite UID of (`#EmployeeID`, `#ProjectID`). Which of the following attributes would be a **2NF VIOLATION**?",
+                o: [
+                    "`*HoursWorked` (depends on both Employee and Project)",
+                    "`*EmployeeName` (depends only on EmployeeID)",
+                    "`*TaskName` (depends on both Employee and Project)",
+                    "This entity has no violations."
+                ],
+                a: 1
+            },
+            {
+                q: "Q92. (W6) You are given an entity `PROJECT` with a simple UID of `#ProjectID`. Which of the following sets of attributes would be a **3NF VIOLATION**?",
+                o: [
+                    "`*ProjectName`, `*Deadline`",
+                    "`#ProjectID`, `*ProjectName`",
+                    "`*ProjectName`, `*ClientName`, `*ClientPhoneNumber` (`ClientPhoneNumber` depends on `ClientName`)",
+                    "This entity has no violations."
+                ],
+                a: 2
+            },
+            {
+                q: "Q93. (W6) The primary goal of Normalization is to:",
+                o: [
+                    "Make the ERD diagram look simpler and less busy.",
+                    "Reduce data redundancy and prevent update/delete anomalies.",
+                    "Ensure every entity has a composite UID.",
+                    "Speed up all database queries."
+                ],
+                a: 1
+            },
+            {
+                q: "Q94. (W7) A 'Bill of Materials' (e.g., a `PRODUCT` is made of many `COMPONENTS`, and a `COMPONENT` is also part of many `PRODUCTS`) is a classic example of a:",
+                o: [
+                    "1:M Recursive Relationship",
+                    "M:M Recursive Relationship",
+                    "Hierarchical Model",
+                    "Supertype/Subtype"
+                ],
+                a: 1
+            },
+            {
+                q: "Q95. (W7) You model an org chart with separate entities: `DIRECTOR`, `MANAGER`, `EMPLOYEE`. What is the *main advantage* of this Hierarchical model?",
+                o: [
+                    "It's simple and flexible.",
+                    "It's explicit and lets you have different mandatory attributes for each level (e.g., `*BonusPlan` for `DIRECTOR` only).",
+                    "It's the only way to satisfy 3NF.",
+                    "It avoids the use of relationships."
+                ],
+                a: 1
+            },
+            {
+                q: "Q96. (W8) A business wants to track *who* changed an employee's salary, *when* it was changed, and *what the old value was*. This is called:",
+                o: [
+                    "Normalization",
+                    "Journaling (or Logging)",
+                    "A Recursive Relationship",
+                    "Conditional Non-transferability"
+                ],
+                a: 1
+            },
+            {
+                q: "Q97. (W8) A rule states: 'A `COURSE`'s grade can be updated by a professor, *unless* the university `REGISTRAR` has officially locked the semester.' This is a:",
+                o: [
+                    "Structural Rule (Nontransferable)",
+                    "Procedural Rule (Conditional Non-transferability)",
+                    "3NF Violation (Transitive Dependency)",
+                    "1NF Violation (Multi-valued attribute)"
+                ],
+                a: 1
+            },
+            {
+                q: "Q98. (W8) Why is it a good idea to break a very large, complex ERD into smaller sub-diagrams?",
+                o: [
+                    "To satisfy the 'exhaustive' rule.",
+                    "To improve readability and make it easier to communicate with different business departments.",
+                    "To resolve all M:M relationships.",
+                    "To ensure all UIDs are artificial."
+                ],
+                a: 1
+            },
+            {
+                q: "Q99. (W1) The output of the 'Build' (Physical) step of the database development process is:",
+                o: [
+                    "The ERD",
+                    "The business requirements document",
+                    "The functioning database, built with SQL commands like `CREATE TABLE`",
+                    "The conceptual model"
+                ],
+                a: 2
+            },
+            {
+                q: "Q100. (W2) What is the most precise definition of an 'Attribute'?",
+                o: [
+                    "A single, unique occurrence of an entity.",
+                    "A property or characteristic of an entity (e.g., 'First Name', 'Shoe Size').",
+                    "The category or idea of a thing (e.g., 'STUDENT').",
+                    "A relationship between two entities."
+                ],
+                a: 1
+            }
+        ];
+
+        function loadQuiz() {
+            const form = document.getElementById('quiz-form');
+            let quizHTML = '';
+            let currentSection = "";
+            questions.forEach((q, index) => {
+                if (q.section && q.section !== currentSection) {
+                    currentSection = q.section;
+                    quizHTML += `<h2 class="section-title">${currentSection}</h2>`;
+                }
+                quizHTML += `<div class="question-block" id="q-block-${index}">`;
+                quizHTML += `<div class="question-text">${q.q}</div>`;
+                q.o.forEach((option, i) => {
+                    quizHTML += `
+                        <label class="option" id="q${index}-o${i}">
+                            <input type="radio" name="q${index}" value="${i}">
+                            <label for="q${index}-o${i}">${option}</label>
+                        </label>
+                    `;
+                });
+                quizHTML += `<div id="feedback-${index}"></div>`;
+                quizHTML += `</div>`;
+            });
+            form.innerHTML = quizHTML;
+        }
+
+        function checkAnswers() {
+            let score = 0;
+            questions.forEach((q, index) => {
+                const form = document.getElementById('quiz-form');
+                const selected = form.querySelector(`input[name="q${index}"]:checked`);
+                const feedbackDiv = document.getElementById(`feedback-${index}`);
+
+                // Clear previous feedback
+                for (let i = 0; i < q.o.length; i++) {
+                    document.getElementById(`q${index}-o${i}`).classList.remove('correct', 'incorrect');
+                }
+                feedbackDiv.innerHTML = '';
+
+                if (selected) {
+                    const answer = parseInt(selected.value);
+                    const correctLabel = document.getElementById(`q${index}-o${q.a}`);
+                    
+                    if (answer === q.a) {
+                        score++;
+                        document.getElementById(`q${index}-o${answer}`).classList.add('correct');
+                        feedbackDiv.innerHTML = `<span class="correct-feedback">Correct!</span>`;
+                    } else {
+                        document.getElementById(`q${index}-o${answer}`).classList.add('incorrect');
+                        correctLabel.classList.add('correct');
+                        feedbackDiv.innerHTML = `
+                            <span class="incorrect-feedback">Incorrect.</span>
+                            <div class="correct-answer">The correct answer is: ${q.o[q.a]}</div>
+                        `;
+                    }
+                } else {
+                    // If no answer is selected
+                    feedbackDiv.innerHTML = `<span class="incorrect-feedback">You did not answer this question.</span>`;
+                    document.getElementById(`q${index}-o${q.a}`).classList.add('correct');
+                }
+            });
+
+            const results = document.getElementById('results');
+            results.classList.add('results-show');
+            results.innerHTML = `
+                <span id="score">Your Score: ${score} out of ${questions.length}</span>
+            `;
+            window.scrollTo(0, 0); // Scroll to top to see results
+        }
+        
+        // Back to top button logic
+        const topButton = document.getElementById("back-to-top");
+        window.onscroll = function() {
+            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                topButton.style.display = "block";
+            } else {
+                topButton.style.display = "none";
+            }
+        };
+
+        // Load the quiz as soon as the page opens
+        window.onload = loadQuiz;
+    </script>
+
+</body>
+</html>
+
