@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game AI Lab: Minimax in Tic-Tac-Toe</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Inter font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Light gray background for light mode */
+        }
+        .dark body {
+            background-color: #111827; /* Dark gray background for dark mode */
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem; /* p-6 */
+            margin-bottom: 2rem; /* mb-8 */
+        }
+        .dark .card {
+            background-color: #1f2937; /* gray-800 */
+        }
+        .card-title {
+            font-size: 1.5rem; /* text-2xl */
+            font-weight: 700; /* font-bold */
+            color: #111827; /* gray-900 */
+        }
+        .dark .card-title {
+            color: #ffffff;
+        }
+        .card-subtitle {
+            font-size: 1rem; /* text-lg */
+            font-weight: 500;
+            color: #4b5563; /* gray-600 */
+            margin-bottom: 1rem; /* mb-4 */
+        }
+        .dark .card-subtitle {
+            color: #d1d5db; /* gray-300 */
+        }
+        .log {
+            font-family: monospace;
+            background-color: #f9fafb; /* gray-50 */
+            border: 1px solid #e5e7eb; /* gray-200 */
+            border-radius: 0.5rem; /* rounded-lg */
+            padding: 1rem; /* p-4 */
+            height: 300px;
+            overflow-y: auto;
+            font-size: 0.875rem; /* text-sm */
+            color: #374151; /* gray-700 */
+        }
+        .dark .log {
+            background-color: #374151; /* gray-700 */
+            border-color: #4b5563; /* gray-600 */
+            color: #e5e7eb; /* gray-200 */
+        }
+        .log-entry {
+            white-space: pre-wrap;
+            border-bottom: 1px solid #e5e7eb; /* gray-200 */
+            padding-bottom: 4px;
+            margin-bottom: 4px;
+        }
+        .dark .log-entry {
+            border-color: #4b5563; /* gray-600 */
+        }
+        .log-entry.decision {
+            font-weight: bold;
+            color: #059669; /* emerald-600 */
+        }
+        .dark .log-entry.decision {
+            color: #a7f3d0; /* emerald-200 */
+        }
+        .log-entry.eval {
+            color: #4f46e5; /* indigo-600 */
+        }
+        .dark .log-entry.eval {
+            color: #a5b4fc; /* indigo-300 */
+        }
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            color: white;
+            transition: background-color 0.2s;
+            background-color: #4f46e5; /* indigo-600 */
+        }
+        .btn:hover {
+            background-color: #4338ca; /* indigo-700 */
+        }
+
+        /* Tic-Tac-Toe Grid */
+        .tic-tac-toe-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem; /* gap-2 */
+            width: 240px;
+            height: 240px;
+            margin: 1.5rem auto; /* my-6 */
+        }
+        .tic-tac-toe-cell {
+            width: 100%;
+            height: 100%;
+            background-color: #e5e7eb; /* gray-200 */
+            border-radius: 0.5rem; /* rounded-lg */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            position: relative; /* For positioning the label */
+        }
+        .dark .tic-tac-toe-cell {
+            background-color: #4b5563; /* gray-600 */
+        }
+        .tic-tac-toe-cell:hover {
+            background-color: #d1d5db; /* gray-300 */
+        }
+        .dark .tic-tac-toe-cell:hover {
+            background-color: #525f76; /* gray-500 */
+        }
+        
+        /* Cell Label (0-8) */
+        .cell-label {
+            position: absolute;
+            top: 4px;
+            left: 8px;
+            font-size: 0.875rem; /* text-sm */
+            font-weight: normal;
+            color: #9ca3af; /* gray-400 */
+        }
+        .dark .cell-label {
+            color: #374151; /* gray-700 */
+        }
+        
+        /* Cell Content (X or O) */
+        .cell-content {
+            font-size: 3rem; /* text-5xl */
+            font-weight: bold;
+        }
+        
+        .tic-tac-toe-cell.X .cell-content { color: #ef4444; /* red-500 */ }
+        .tic-tac-toe-cell.O .cell-content { color: #3b82f6; /* blue-500 */ }
+        
+        /* Hide label when cell is played */
+        .tic-tac-toe-cell.X .cell-label,
+        .tic-tac-toe-cell.O .cell-label {
+            display: none;
+        }
+    </style>
+</head>
+<body class="dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-8">
+
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-4xl font-bold text-center mb-4">Game AI Lab</h1>
+        <h2 class_="text-2xl text-center text-gray-600 dark:text-gray-300 mb-10">Section 5: Simple Minimax Algorithm</h2>
+
+        <!-- Section 1: Minimax (Tic-Tac-Toe) -->
+        <section class="card">
+            <h2 class="card-title">Minimax in Action (Tic-Tac-Toe)</h2>
+            <p class="card-subtitle">Play against a perfect AI (O). The AI uses the Minimax algorithm to find the 100% optimal move by searching the entire game tree. Watch the "Thought Process" log to see how it evaluates each possible move.</p>
+            
+            <div class="flex flex-col md:flex-row gap-6">
+                <!-- Game Board -->
+                <div class="flex-shrink-0">
+                    <div class="tic-tac-toe-grid" id="tic-tac-toe-board">
+                        <!-- Cells will be generated by JS -->
+                    </div>
+                    <button id="reset-ttt-btn" class="btn w-full">Reset Game</button>
+                    <p id="ttt-status" class="text-center font-semibold text-lg mt-4"></p>
+                </div>
+
+                <!-- Log -->
+                <div class="flex-grow">
+                    <h3 class="text-lg font-semibold dark:text-white">AI Thought Process (Scores: +10=AI Win, -10=You Win, 0=Draw):</h3>
+                    <div id="ttt-log" class="log"></div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tttBoardElement = document.getElementById('tic-tac-toe-board');
+            const tttLogElement = document.getElementById('ttt-log');
+            const tttStatusElement = document.getElementById('ttt-status');
+            const tttResetBtn = document.getElementById('reset-ttt-btn');
+
+            let board = Array(9).fill(null);
+            const HUMAN_PLAYER = 'X';
+            const AI_PLAYER = 'O';
+            let gameActive = true;
+
+            function logTTT(message, type = '') {
+                const entry = document.createElement('div');
+                entry.className = `log-entry ${type}`;
+                entry.textContent = message;
+                tttLogElement.appendChild(entry);
+                tttLogElement.scrollTop = tttLogElement.scrollHeight;
+            }
+
+            function createBoard() {
+                tttBoardElement.innerHTML = '';
+                board.forEach((cell, index) => {
+                    const cellElement = document.createElement('div');
+                    cellElement.classList.add('tic-tac-toe-cell');
+                    cellElement.dataset.index = index;
+                    
+                    const labelElement = document.createElement('span');
+                    labelElement.classList.add('cell-label');
+                    labelElement.textContent = index;
+                    
+                    const contentElement = document.createElement('span');
+                    contentElement.classList.add('cell-content');
+                    
+                    cellElement.appendChild(labelElement);
+                    cellElement.appendChild(contentElement);
+                    
+                    cellElement.addEventListener('click', handleCellClick);
+                    tttBoardElement.appendChild(cellElement);
+                });
+            }
+
+            function handleCellClick(e) {
+                if (!gameActive) return;
+                const index = e.currentTarget.dataset.index;
+                if (board[index] === null) {
+                    makeMove(index, HUMAN_PLAYER);
+                    if (gameActive) {
+                        // Use a short delay so the player sees their move before the AI "thinks"
+                        setTimeout(aiTurn, 300);
+                    }
+                }
+            }
+
+            function makeMove(index, player) {
+                if (!gameActive || board[index] !== null) return false;
+                
+                board[index] = player;
+                const cellElement = tttBoardElement.children[index];
+                const contentElement = cellElement.querySelector('.cell-content');
+                
+                contentElement.textContent = player;
+                cellElement.classList.add(player);
+                
+                if (checkWin(board, player)) {
+                    tttStatusElement.textContent = `${player} wins!`;
+                    logTTT(`GAME OVER: ${player} wins!`, 'decision');
+                    gameActive = false;
+                } else if (board.every(cell => cell !== null)) {
+                    tttStatusElement.textContent = "It's a draw!";
+                    logTTT(`GAME OVER: It's a draw!`, 'decision');
+                    gameActive = false;
+                }
+                return true;
+            }
+
+            function aiTurn() {
+                logTTT('AI (O) is thinking...');
+                const bestMove = findBestMove();
+                logTTT(`=== AI's Decision ===`, 'decision');
+                logTTT(`The best move is cell ${bestMove.index} (score: ${bestMove.score}).`, 'decision');
+                makeMove(bestMove.index, AI_PLAYER);
+            }
+
+            function findBestMove() {
+                let bestScore = -Infinity;
+                let move = { index: -1, score: -Infinity };
+                
+                const availableMoves = board.map((cell, i) => cell === null ? i : null).filter(i => i !== null);
+                logTTT(`Available moves: [${availableMoves.join(', ')}]`);
+
+                for (let i = 0; i < board.length; i++) {
+                    if (board[i] === null) {
+                        board[i] = AI_PLAYER;
+                        logTTT(`--- Evaluating move in cell ${i} ---`, 'eval');
+                        
+                        // This recursive call explores the *entire* game tree from this move
+                        let score = minimax(board, 0, false); // 'false' because it's now MIN's (human's) turn
+                        
+                        board[i] = null; // Undo the move to try the next one
+                        
+                        logTTT(`Move ${i} resulted in a final score of: ${score}`);
+
+                        if (score > bestScore) {
+                            bestScore = score;
+                            move = { index: i, score: score };
+                            logTTT(`This is better than the current best. New best move: ${i}.`);
+                        } else {
+                            logTTT(`This is not better than the current best (score: ${bestScore}).`);
+                        }
+                    }
+                }
+                return move;
+            }
+
+            function minimax(currentBoard, depth, isMaximizing) {
+                // These are the "Utility Function" scores from the document
+                const scores = { [AI_PLAYER]: 10, [HUMAN_PLAYER]: -10, draw: 0 };
+                
+                const winner = checkWin(currentBoard);
+                if (winner) {
+                    // This is a "terminal node" (end of game)
+                    // We adjust score by depth to prefer faster wins
+                    return scores[winner] - (winner === AI_PLAYER ? depth : -depth);
+                }
+                if (currentBoard.every(cell => cell !== null)) {
+                    // This is also a "terminal node" (a draw)
+                    return scores.draw;
+                }
+
+                if (isMaximizing) { // AI's (MAX) turn
+                    let bestScore = -Infinity;
+                    for (let i = 0; i < currentBoard.length; i++) {
+                        if (currentBoard[i] === null) {
+                            currentBoard[i] = AI_PLAYER;
+                            let score = minimax(currentBoard, depth + 1, false);
+                            currentBoard[i] = null;
+                            bestScore = Math.max(score, bestScore);
+                        }
+                    }
+                    return bestScore;
+                } else { // Human's (MIN) turn
+                    let bestScore = Infinity;
+                    for (let i = 0; i < currentBoard.length; i++) {
+                        if (currentBoard[i] === null) {
+                            currentBoard[i] = HUMAN_PLAYER;
+                            let score = minimax(currentBoard, depth + 1, true);
+                            currentBoard[i] = null;
+                            bestScore = Math.min(score, bestScore);
+                        }
+                    }
+                    return bestScore;
+                }
+            }
+
+            function checkWin(board) {
+                const lines = [
+                    [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+                    [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+                    [0, 4, 8], [2, 4, 6]  // Diagonals
+                ];
+                for (let line of lines) {
+                    const [a, b, c] = line;
+                    if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+                        return board[a]; // Returns 'X' or 'O'
+                    }
+                }
+                if (board.every(cell => cell !== null)) return 'draw';
+                return null;
+            }
+            
+            function resetTTT() {
+                board = Array(9).fill(null);
+                gameActive = true;
+                tttStatusElement.textContent = '';
+                tttLogElement.innerHTML = '';
+                createBoard(); // This will recreate the labeled board
+                logTTT('Game started. You are X.');
+                logTTT('Scores: +10 (AI Win), -10 (You Win), 0 (Draw)');
+            }
+            
+            tttResetBtn.addEventListener('click', resetTTT);
+            resetTTT(); // Initial game setup
+        });
+    </script>
+</body>
+</html>
