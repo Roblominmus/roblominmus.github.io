@@ -62,6 +62,8 @@
         <div class="flex justify-between items-center">
           <button id="prev" class="px-4 py-2 bg-gray-700 text-gray-200 rounded disabled:opacity-50" disabled>Previous</button>
           <div class="flex gap-2">
+            <button id="skip" class="px-4 py-2 bg-orange-600 text-white rounded hidden">Skip</button>
+            <button id="submit" class="px-4 py-2 bg-green-600 text-white rounded hidden">Submit</button>
             <button id="restart" class="px-4 py-2 bg-yellow-500 text-white rounded hidden">Restart</button>
             <button id="next" class="px-4 py-2 bg-blue-700 text-white rounded hidden">Next</button>
           </div>
@@ -92,6 +94,8 @@
     const questionEl = document.getElementById('question');
     const optionsEl = document.getElementById('options');
     const prevBtn = document.getElementById('prev');
+    const skipBtn = document.getElementById('skip');
+    const submitBtn = document.getElementById('submit');
     const nextBtn = document.getElementById('next');
     const restartBtn = document.getElementById('restart');
 
@@ -99,6 +103,8 @@
     let index = 0;
     let score = 0;
     let userAnswers = [];
+    let submittedAnswers = []; // Track which answers have been submitted/revealed
+    let selectedAnswer = null; // Temporarily selected answer before submission
     let quizKey = null;
 
     buttons.forEach(b => b.addEventListener('click', () => startLoad(b.dataset.key)));
@@ -112,6 +118,8 @@
       index = 0;
       score = 0;
       userAnswers = [];
+      submittedAnswers = [];
+      selectedAnswer = null;
       try {
         // Try data file first
         const dataResp = await fetch(info.dataFile).catch(() => null);
@@ -191,27 +199,132 @@
       scoreEl.textContent = `Score: ${score}`;
       questionEl.textContent = current.question || '(no question)';
       optionsEl.innerHTML = '';
+      
+      const hasSubmitted = submittedAnswers[index] !== undefined;
+      
       current.options.forEach((opt, i) => {
         const btn = document.createElement('button');
-        btn.className = 'quiz-option block w-full text-left p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition';
+        btn.className = 'quiz-option block w-full text-left p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition cursor-pointer';
         btn.textContent = opt;
         btn.tabIndex = 0;
         btn.setAttribute('aria-label', opt);
-        btn.addEventListener('click', () => selectOption(i, btn));
-        if (typeof userAnswers[index] !== 'undefined') {
+        
+        // If answer is submitted, show green (correct) and red (wrong)
+        if (hasSubmitted) {
           btn.disabled = true;
-          if (i === questions[index].answerIndex) btn.classList.add('bg-green-700');
-          if (i === userAnswers[index] && i !== questions[index].answerIndex) btn.classList.add('bg-red-700');
+          // Clear any previous inline styles
+          btn.style.backgroundColor = '';
+          btn.style.color = '';
+          if (i === current.answerIndex) {
+            // green
+            btn.style.backgroundColor = '#16a34a';
+            btn.style.color = '#ffffff';
+          } else if (i === submittedAnswers[index] && i !== current.answerIndex) {
+            // red
+            btn.style.backgroundColor = '#dc2626';
+            btn.style.color = '#ffffff';
+          }
+        } else {
+          // Before submission: allow selection, highlight selected option
+          btn.disabled = false;
+          // Ensure base styles (clear inline color unless selected)
+          btn.style.backgroundColor = '';
+          btn.style.color = '';
+          if (i === selectedAnswer) {
+            // blue selection
+            btn.style.backgroundColor = '#3b82f6';
+            btn.style.color = '#ffffff';
+          }
+          btn.addEventListener('click', () => selectAnswer(i));
         }
+        
         optionsEl.appendChild(btn);
       });
+      
+      // Update button visibility
       prevBtn.disabled = index === 0;
+      skipBtn.classList.add('hidden');
+      submitBtn.classList.add('hidden');
       nextBtn.classList.add('hidden');
       restartBtn.classList.add('hidden');
-      if (typeof userAnswers[index] !== 'undefined') {
-        if (index < questions.length - 1) nextBtn.classList.remove('hidden');
-        else restartBtn.classList.remove('hidden');
+      
+      if (hasSubmitted) {
+        // Answer has been submitted, show Next or Restart
+        if (index < questions.length - 1) {
+          nextBtn.classList.remove('hidden');
+        } else {
+          restartBtn.classList.remove('hidden');
+          setTimeout(showSummary, 500);
+        }
+      } else {
+        // Answer not submitted yet, show Skip and Submit (if answer selected)
+        skipBtn.classList.remove('hidden');
+        if (selectedAnswer !== null) {
+          submitBtn.classList.remove('hidden');
+        }
       }
+    }
+    
+    function selectAnswer(i) {
+      selectedAnswer = i;
+      // Re-render to show selection highlight
+      const current = questions[index];
+      Array.from(optionsEl.children).forEach((btn, idx) => {
+        // clear any inline color first
+        btn.style.backgroundColor = '';
+        btn.style.color = '';
+        if (idx === i) {
+          btn.style.backgroundColor = '#3b82f6';
+          btn.style.color = '#ffffff';
+        }
+      });
+      // Show Submit button now that an answer is selected
+      submitBtn.classList.remove('hidden');
+    }
+    
+    function submitAnswer() {
+      if (selectedAnswer === null) return;
+      
+      submittedAnswers[index] = selectedAnswer;
+      userAnswers[index] = selectedAnswer;
+      
+      const current = questions[index];
+      if (selectedAnswer === current.answerIndex) {
+        score++;
+        scoreEl.textContent = `Score: ${score}`;
+      }
+      
+      // Hide submit and skip buttons
+      submitBtn.classList.add('hidden');
+      skipBtn.classList.add('hidden');
+      
+      // Show next or restart
+      if (index < questions.length - 1) {
+        nextBtn.classList.remove('hidden');
+      } else {
+        restartBtn.classList.remove('hidden');
+      }
+      
+      // Re-render to show correct/incorrect colors
+      renderQuestion();
+    }
+    
+    function skipQuestion() {
+      submittedAnswers[index] = null; // Mark as skipped (no answer submitted)
+      userAnswers[index] = null;
+      selectedAnswer = null;
+      
+      skipBtn.classList.add('hidden');
+      submitBtn.classList.add('hidden');
+      
+      if (index < questions.length - 1) {
+        nextBtn.classList.remove('hidden');
+      } else {
+        restartBtn.classList.remove('hidden');
+        setTimeout(showSummary, 500);
+      }
+      
+      renderQuestion();
     }
 
     function showSummary() {
@@ -225,13 +338,15 @@
         q.options.forEach((opt, j) => {
           let style = 'px-3 py-1 rounded';
           if (j === q.answerIndex) style += ' bg-green-700 text-white';
-          else if (typeof user !== 'undefined' && j === user && j !== q.answerIndex) style += ' bg-red-700 text-white';
+          else if (typeof user !== 'undefined' && user !== null && j === user && j !== q.answerIndex) style += ' bg-red-700 text-white';
           else style += ' bg-gray-700 text-gray-200';
           html += `<span class='${style}'>${opt}</span>`;
         });
         html += `</div>`;
-        if (typeof user !== 'undefined') {
-          html += `<div class='text-xs mt-1 text-gray-400'>Your answer: <span class='${user === q.answerIndex ? 'text-green-400' : 'text-red-400'}'>${typeof user !== 'undefined' ? q.options[user] : '—'}</span></div>`;
+        if (typeof user !== 'undefined' && user !== null) {
+          html += `<div class='text-xs mt-1 text-gray-400'>Your answer: <span class='${user === q.answerIndex ? 'text-green-400' : 'text-red-400'}'>${q.options[user]}</span></div>`;
+        } else if (user === null) {
+          html += `<div class='text-xs mt-1 text-gray-400'>Skipped</div>`;
         }
         html += `</div>`;
       });
@@ -240,41 +355,34 @@
       html += `<a href='index.html' class='ml-4 px-6 py-2 bg-gray-700 text-gray-200 rounded shadow hover:bg-gray-600'>Back to Quiz Selection</a>`;
       html += `</div>`;
       quizArea.innerHTML = html;
-      document.getElementById('restart-final').onclick = () => { index = 0; score = 0; userAnswers = []; location.reload(); };
+      document.getElementById('restart-final').onclick = () => { index = 0; score = 0; userAnswers = []; submittedAnswers = []; selectedAnswer = null; location.reload(); };
     }
 
-    function selectOption(i, btn) {
-      if (typeof userAnswers[index] !== 'undefined') return;
-      userAnswers[index] = i;
-      const current = questions[index];
-      const correct = current.answerIndex;
-      Array.from(optionsEl.children).forEach((c, j) => {
-        c.disabled = true;
-        if (j === correct) c.classList.add('bg-green-700');
-        if (j === i && i !== correct) c.classList.add('bg-red-700');
-      });
-      if (i === correct) {
-        score++;
-        scoreEl.textContent = `Score: ${score}`;
-      }
-      if (index < questions.length - 1) {
-        nextBtn.classList.remove('hidden');
-      } else {
-        restartBtn.classList.remove('hidden');
-        setTimeout(showSummary, 800);
-      }
-    }
+    
 
     nextBtn.addEventListener('click', () => {
-      if (index < questions.length - 1) index++;
+      if (index < questions.length - 1) {
+        index++;
+        selectedAnswer = null;
+      }
       renderQuestion();
     });
     prevBtn.addEventListener('click', () => {
-      if (index > 0) index--;
+      if (index > 0) {
+        index--;
+        selectedAnswer = submittedAnswers[index] !== undefined ? submittedAnswers[index] : null;
+      }
       renderQuestion();
     });
+    skipBtn.addEventListener('click', skipQuestion);
+    submitBtn.addEventListener('click', submitAnswer);
     restartBtn.addEventListener('click', () => {
-      index = 0; score = 0; userAnswers = []; renderQuestion();
+      index = 0; 
+      score = 0; 
+      userAnswers = []; 
+      submittedAnswers = [];
+      selectedAnswer = null;
+      location.reload();
     });
   </script>
 </body>

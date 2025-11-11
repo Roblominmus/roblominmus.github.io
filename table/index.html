@@ -287,6 +287,12 @@
         <!-- Current Task Display -->
         <p id="current-task"></p>
 
+            <!-- Current Time Display -->
+            <div style="text-align: center; margin: 16px 0; padding: 12px; border-radius: 8px; background: rgba(59, 130, 246, 0.1); border-left: 3px solid #3b82f6;">
+                <div style="font-size: 0.875em; opacity: 0.8;">Current Time (WAT)</div>
+                <div id="current-time" style="font-size: 1.75em; font-weight: 700; font-family: 'Courier New', monospace; margin-top: 4px;">--:--:--</div>
+            </div>
+
         <!-- Schedule Table -->
         <table id="schedule-table">
             <thead>
@@ -328,49 +334,78 @@
         // ============ SCHEDULE DATA ============
         const schedule = {
             "Monday": {
+                "6:00 AM - 7:30 AM": "Wake up, Pray & Bible Study",
                 "9 AM - 10 AM": "BIS - AMPHITHEATER",
                 "11 AM - 1 PM": "LINUX - BDEL LAB 1",
                 "1 PM - 2 PM": "CAF - FRIED RICE",
+                "3 PM - 5 PM": "School Reading (Linux) with Gemini",
                 "5 PM - 6 PM": "LINUX - BDEL LAB 1",
-                "6 PM - 7 PM": "CAF - POTATO AND EGG SAUCE"
+                "6 PM - 7 PM": "CAF - POTATO AND EGG SAUCE",
+                "7 PM - 10 PM": "Lounging / Chat with Family"
             },
             "Tuesday": {
-                "8 AM - 9 AM": "CHRISTIAN FAITH - OGDEN ACTIVITY HALL",
+                "6:00 AM - 7:30 AM": "Wake up, Pray & Bible Study",
+                "8 AM - 9 AM": "CHRISTIAN FAITH - OGDN HALL",
                 "10 AM - 1 PM": "NETWORKING - BDEL ROOM 1",
                 "1 PM - 2 PM": "CAF - SWALLOW",
                 "2 PM - 5 PM": "DATABASE MANAGEMENT - BDEL LAB 1",
-                "5 PM - 6 PM": "CAF - RICE & BEANS"
+                "5 PM - 6 PM": "CAF - RICE & BEANS",
+                "6:30 PM - 8:00 PM": "Hall Worship",
+                "8:30 PM - 10:00 PM": "School Stuff (Homework: Networking, DB)",
+                "10:00 PM - 10:30 PM": "Lounging / Chat with Family"
             },
             "Wednesday": {
+                "6:00 AM - 7:30 AM": "Wake up, Pray & Bible Study",
                 "8 AM - 10 AM": "AI - BDEL LAB 2",
+                "10 AM - 11:30 AM": "School Reading (AI) with Gemini",
+                "11:30 AM - 1:00 PM": "School Stuff (Assignments)",
                 "1 PM - 2 PM": "CAF - BEANS",
-                "3 PM - 4 PM": "DATA STRUCTURES",
+                "2 PM - 5 PM": "Cyber Security Study (Focused Block)",
                 "5 PM - 6 PM": "CAF - SPAG",
-                "6 PM - 7 PM": "CHURCH - AMPHITHEATER"
+                "6 PM - 7 PM": "CHURCH - AMPHITHEATER",
+                "7 PM - 10 PM": "Lounging / Chat with Family"
             },
             "Thursday": {
+                "6:00 AM - 7:30 AM": "Wake up, Pray & Bible Study",
+                "9 AM - 10 AM": "School Stuff (Assignments)",
                 "10 AM - 12 PM": "DATA STRUCTURES",
+                "12 PM - 1 PM": "School Reading (Data Structures)",
                 "1 PM - 2 PM": "CAF - SWALLOW",
-                "4 PM - 6 PM": "CHRISTIAN FAITH - OGDEN ACTIVITY HALL",
-                "6 PM - 7 PM": "CAF - MIXED RICE"
+                "4 PM - 6 PM": "CHRISTIAN FAITH - OGDN HALL",
+                "6 PM - 7 PM": "CAF - MIXED RICE",
+                "8 PM - 10 PM": "Cyber Security Study"
             },
             "Friday": {
+                "6:00 AM - 7:30 AM": "Wake up, Pray & Bible Study",
+                "7:30 AM - 10:00 AM": "Jogging (incl. transit & prep)",
+                "11:30 AM - 1:00 PM": "Cyber Security (Weekly Project)",
                 "1 PM - 2 PM": "CAF - BEANS",
+                "2 PM - 5 PM": "Social Time / Lounging",
                 "5 PM - 6 PM": "CAF - YAM & STEW",
-                "6 PM - 7 PM": "CHURCH - AMPHITHEATER"
+                "6 PM - 7 PM": "CHURCH - AMPHITHEATER",
+                "7 PM - 11 PM": "Social Time / Chat with Family"
             },
             "Saturday": {
+                "8:00 AM - 9:00 AM": "Wake up, Pray & Bible Study",
                 "9 AM - 11 AM": "CHURCH - AMPHITHEATER",
                 "11 AM - 1 PM": "CAF - JOLLOF RICE",
+                "3 PM - 5 PM": "School Stuff (Prepare for next week)",
                 "5 PM - 6 PM": "CAF - FRIED YAM",
-                "6 PM - 7 PM": "CHURCH - AMPHITHEATER"
+                "6 PM - 7 PM": "CHURCH - AMPHITHEATER",
+                "7 PM - 11 PM": "Social Time / Lounging"
             },
             "Sunday": {
+                "9:00 AM - 10:30 AM": "Wake up, Pray & Bible Study",
+                "10:30 AM - 11 AM": "Chat with Family",
                 "11 AM - 1 PM": "CAF - BEANS",
-                "5 PM - 6 PM": "CAF - WHITE RICE"
+                "2:00 PM - 4:30 PM": "Jogging (incl. transit & prep)",
+                "5 PM - 6 PM": "CAF - WHITE RICE",
+                "6 PM - 8 PM": "School Reading (General Review)",
+                "8 PM - 9 PM": "Plan Week Ahead",
+                "9 PM - 10 PM": "Lounging / Relax"
             }
         };
-
+        
         // ============ UTILITY FUNCTIONS ============
         const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
@@ -404,6 +439,21 @@
         const daySelector = document.getElementById('day-selector');
         const tableBody = document.querySelector('#schedule-table tbody');
         const currentTaskElement = document.getElementById('current-task');
+
+        // ============ CURRENT TIME DISPLAY ============
+        const currentTimeElement = document.getElementById('current-time');
+        
+        function updateCurrentTimeDisplay() {
+            const now = getCurrentWATTime();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            currentTimeElement.textContent = `${hours}:${minutes}:${seconds}`;
+        }
+        
+        // Update time immediately and then every second
+        updateCurrentTimeDisplay();
+        setInterval(updateCurrentTimeDisplay, 1000);
 
         function renderSchedule() {
             const selectedDay = daySelector.value;
