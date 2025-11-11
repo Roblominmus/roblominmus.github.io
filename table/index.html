@@ -311,26 +311,6 @@
     <script src="../assets/theme.js"></script>
     <script>
 
-        // ============ PASSWORD GATE ============
-        function checkPassword() {
-            const pw = prompt('Enter password to view timetable:', '');
-            if (pw === null) {
-                // User cancelled
-                window.location.href = '../index.html';
-                return false;
-            }
-            if (pw !== 'allow') {
-                alert('Incorrect password. Returning to hub.');
-                window.location.href = '../index.html';
-                return false;
-            }
-            return true;
-        }
-
-        if (!checkPassword()) {
-            throw new Error('Password authentication failed');
-        }
-
         // ============ SCHEDULE DATA ============
         const schedule = {
             "Monday": {
@@ -513,6 +493,14 @@
             });
         }
 
+        // ============ HELPER FOR DYNAMIC TASKS ============
+        // List of keywords to identify tasks that should be broken down
+        const studiableTasks = [
+            'study', 'reading', 'school stuff', 'assignments', 'project',
+            'cyber security', 'ai', 'linux', 'networking', 'db', 'database', 'data structures'
+        ];
+
+        // ============ (NEW) DYNAMIC CURRENT TASK ============
         function updateCurrentTask() {
             const todayName = getTodayName();
             const selectedDay = daySelector.value;
@@ -539,10 +527,46 @@
                 }
                 const startTime = parseTime(startStr);
                 const endTime = parseTime(endStr);
+
+                // CHECK IF THIS IS THE CURRENT TASK
                 if (currentTime >= startTime && currentTime <= endTime) {
-                    currentTaskElement.textContent = `Current task: ${task}`;
                     foundCurrent = true;
-                    break;
+                    const taskLower = task.toLowerCase();
+
+                    // Check if this is a "studiable" task from our helper list
+                    const isStudiable = studiableTasks.some(keyword => taskLower.includes(keyword));
+
+                    if (isStudiable) {
+                        // --- This is the new "Smart" Logic ---
+
+                        const totalBlockDuration = endTime - startTime;
+                        const minutesIntoBlock = currentTime - startTime;
+                        const BUFFER_TIME = 10; // 10-minute buffer at the end
+
+                        // 1. Check for Buffer Time
+                        if (totalBlockDuration - minutesIntoBlock <= BUFFER_TIME) {
+                            currentTaskElement.innerHTML = `<strong>Buffer Time:</strong> Pack up & prep for next event.`;
+                        } else {
+                            // 2. Do Pomodoro Logic
+                            const cycleLength = 30; // 25 min study + 5 min break
+                            const minutesIntoCycle = minutesIntoBlock % cycleLength;
+
+                            if (minutesIntoCycle < 25) {
+                                // Focus Block
+                                const timeLeft = 25 - minutesIntoCycle;
+                                currentTaskElement.innerHTML = `<strong>FOCUS:</strong> ${task} (${timeLeft} min left)`;
+                            } else {
+                                // Break Block
+                                const timeLeft = 30 - minutesIntoCycle;
+                                currentTaskElement.innerHTML = `<strong>MOVEMENT BREAK</strong> (${timeLeft} min left). Stand up!`;
+                            }
+                        }
+
+                    } else {
+                        // --- This is a normal, non-studiable task ---
+                        currentTaskElement.textContent = `Current task: ${task}`;
+                    }
+                    break; // Exit loop once task is found
                 }
             }
 
@@ -551,25 +575,76 @@
             }
         }
 
+        // ============ SECURE PASSWORD GATE & INITIALIZATION ============
+
+        // This is a simple, reliable "hashing" function that will work in any browser.
+        // It's not for high security, but it "hides" your password in the code.
+        function simpleHash(str) {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                const char = str.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash; // Convert to 32bit integer
+            }
+            return hash.toString(); // Return as a string
+        }
+
+
+        const correctHash = '3327275';
+
+        function checkPassword() {
+            let pw = prompt('Enter password to view timetable:', '');
+            
+            if (pw === null) {
+                // User cancelled
+                window.location.href = '../index.html';
+                return false;
+            }
+
+            // Sanitize the input
+            const sanitizedPw = pw.trim().toLowerCase();
+
+            // Hash the sanitized input
+            const inputHash = simpleHash(sanitizedPw);
+
+            if (inputHash !== correctHash) {
+                alert('Incorrect password. Returning to hub.');
+                window.location.href = '../index.html';
+                return false;
+            }
+            
+            // Password is correct
+            return true;
+        }
+
         // ============ INITIALIZATION ============
-        daySelector.value = getTodayName();
-        renderSchedule();
-        updateCurrentTask();
 
-        // ============ EVENT LISTENERS ============
-        daySelector.addEventListener('change', () => {
+        // Run the password check *first*.
+        // If it fails, the script stops here.
+        if (checkPassword()) {
+            
+            // 1. Initialize the page
+            daySelector.value = getTodayName();
             renderSchedule();
             updateCurrentTask();
-        });
 
-        // Update current task every minute
-        setInterval(updateCurrentTask, 60000);
+            // 2. NOW we can add the event listeners
+            
+            // Update on day change
+            daySelector.addEventListener('change', () => {
+                renderSchedule();
+                updateCurrentTask();
+            });
 
-        // Update when window regains focus
-        window.addEventListener('focus', () => {
-            renderSchedule();
-            updateCurrentTask();
-        });
+            // Update current task every minute
+            setInterval(updateCurrentTask, 60000);
+
+            // Update when window regains focus
+            window.addEventListener('focus', () => {
+                renderSchedule();
+                updateCurrentTask();
+            });
+        }
     </script>
 </body>
 </html>
