@@ -153,11 +153,14 @@
         }
     </style>
 </head>
-<body class="dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-8">
+<body style="background:linear-gradient(135deg,#18181b 0%,#27272a 100%);color:#f3f4f6;min-height:100vh;" class="ttt-dark-mode">
 
-    <div class="max-w-4xl mx-auto">
-        <h1 class="text-4xl font-bold text-center mb-4">Game AI Lab</h1>
-        <h2 class_="text-2xl text-center text-gray-600 dark:text-gray-300 mb-10">Section 5: Simple Minimax Algorithm</h2>
+    <div id="container" style="max-width:700px;margin:2rem auto 0 auto;padding:2rem;background:rgba(24,24,27,0.95);border-radius:1.5rem;box-shadow:0 4px 24px #0005;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+            <h1 style="font-size:2rem;font-weight:800;margin:0;">Tic-Tac-Toe Minimax</h1>
+            <button id="mode-toggle" class="mode-toggle px-4 py-2 rounded font-semibold transition" aria-label="Toggle dark/light mode">☀️</button>
+        </div>
+    <h2 class="text-2xl text-center text-gray-600 dark:text-gray-300 mb-10">Section 5: Simple Minimax Algorithm</h2>
 
         <!-- Section 1: Minimax (Tic-Tac-Toe) -->
         <section class="card">
@@ -177,17 +180,21 @@
                 <!-- Log -->
                 <div class="flex-grow">
                     <h3 class="text-lg font-semibold dark:text-white">AI Thought Process (Scores: +10=AI Win, -10=You Win, 0=Draw):</h3>
-                    <div id="ttt-log" class="log"></div>
+                    <div id="log" class="log"></div>
+                    <div style="margin-top:2rem;text-align:center;">
+                        <button onclick="history.back()" style="background:#333;color:#fff;padding:0.5em 1.5em;border-radius:6px;border:none;box-shadow:0 2px 8px #0002;cursor:pointer;">&larr; Back</button>
+                    </div>
                 </div>
             </div>
         </section>
 
     </div>
 
+    <script src="../assets/theme.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const tttBoardElement = document.getElementById('tic-tac-toe-board');
-            const tttLogElement = document.getElementById('ttt-log');
+            const tttLogElement = document.getElementById('ttt-log') || document.getElementById('log');
             const tttStatusElement = document.getElementById('ttt-status');
             const tttResetBtn = document.getElementById('reset-ttt-btn');
 

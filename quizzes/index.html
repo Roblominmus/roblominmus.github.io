@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Quizzes — Robs Hub</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body.light-mode {
+      background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+      color: #1f2937;
+    }
+    body.dark-mode {
+      background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+      color: #e5e7eb;
+    }
+    body.light-mode .quiz-container {
+      background: white;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+    body.dark-mode .quiz-container {
+      background: rgba(17, 24, 39, 0.9);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.25);
+    }
+    body.light-mode .quiz-option {
+      background: #f3f4f6;
+      color: #1f2937;
+      border: 1px solid #e5e7eb;
+    }
+    body.dark-mode .quiz-option {
+      background: rgba(31, 41, 55, 0.5);
+      color: #e5e7eb;
+      border: 1px solid rgba(75, 85, 99, 0.2);
+    }
+    body.light-mode .quiz-option:hover {
+      background: #e5e7eb;
+    }
+    body.dark-mode .quiz-option:hover {
+      background: rgba(75, 85, 99, 0.3);
+    }
+  </style>
+</head>
+<body class="dark-mode min-h-screen flex flex-col items-center justify-center p-4">
+  <div class="w-full max-w-2xl">
+    <div class="flex justify-between items-center mb-4">
+      <h1 class="text-4xl font-extrabold tracking-tight">Quiz Hub</h1>
+      <button id="mode-toggle" class="mode-toggle px-4 py-2 rounded font-semibold transition" aria-label="Toggle dark/light mode">☀️</button>
+    </div>
+    <div class="quiz-container rounded-xl shadow-xl p-6">
+      <div id="chooser" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <button class="bg-blue-700/90 hover:bg-blue-800/90 text-white py-4 rounded-lg shadow-lg font-semibold text-lg transition" data-key="linux">Linux</button>
+        <button class="bg-indigo-700/90 hover:bg-indigo-800/90 text-white py-4 rounded-lg shadow-lg font-semibold text-lg transition" data-key="ai">AI Foundations</button>
+        <button class="bg-green-700/90 hover:bg-green-800/90 text-white py-4 rounded-lg shadow-lg font-semibold text-lg transition" data-key="db">Database Design</button>
+      </div>
+      <div id="quiz-area" class="hidden">
+        <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-4 gap-2">
+          <div id="q-counter" class="text-sm">Question 0 / 0</div>
+          <div id="score" class="text-sm">Score: 0</div>
+        </div>
+        <div id="question" class="text-xl font-bold min-h-[64px] mb-4"></div>
+        <div id="options" class="space-y-3 mb-4"></div>
+        <div class="flex justify-between items-center">
+          <button id="prev" class="px-4 py-2 bg-gray-700 text-gray-200 rounded disabled:opacity-50" disabled>Previous</button>
+          <div class="flex gap-2">
+            <button id="restart" class="px-4 py-2 bg-yellow-500 text-white rounded hidden">Restart</button>
+            <button id="next" class="px-4 py-2 bg-blue-700 text-white rounded hidden">Next</button>
+          </div>
+        </div>
+      </div>
+      <div id="loader" class="text-center text-sm hidden">Loading questions…</div>
+    </div>
+    <div class="flex flex-col sm:flex-row justify-between items-center gap-2 mt-8">
+      <footer class="text-xs text-center opacity-70">&copy; Robs Hub &mdash; All questions loaded from original quizzes.</footer>
+      <button onclick="history.back()" class="px-4 py-2 bg-gray-700 text-gray-200 rounded hover:bg-gray-600 transition">&larr; Back</button>
+    </div>
+  </div>
+
+  <script src="../assets/theme.js"></script>
+
+  <script>
+    // Modern Quiz UI with grading, review, and dark mode
+    const mapping = {
+      linux: { label: 'Linux', dataFile: '../data/linux-questions.js', htmlFile: 'lquiz.html' },
+      ai: { label: 'AI Foundations', dataFile: '../data/ai-questions.js', htmlFile: 'aquiz.html' },
+      db: { label: 'Database Design', dataFile: '../data/db-questions.js', htmlFile: 'dquiz.html' }
+    };
+    const buttons = document.querySelectorAll('#chooser button');
+    const quizArea = document.getElementById('quiz-area');
+    const loader = document.getElementById('loader');
+    const qCounter = document.getElementById('q-counter');
+    const scoreEl = document.getElementById('score');
+    const questionEl = document.getElementById('question');
+    const optionsEl = document.getElementById('options');
+    const prevBtn = document.getElementById('prev');
+    const nextBtn = document.getElementById('next');
+    const restartBtn = document.getElementById('restart');
+
+    let questions = [];
+    let index = 0;
+    let score = 0;
+    let userAnswers = [];
+    let quizKey = null;
+
+    buttons.forEach(b => b.addEventListener('click', () => startLoad(b.dataset.key)));
+
+    async function startLoad(key) {
+      quizKey = key;
+      const info = mapping[key];
+      quizArea.classList.add('hidden');
+      loader.classList.remove('hidden');
+      questions = [];
+      index = 0;
+      score = 0;
+      userAnswers = [];
+      try {
+        // Try data file first
+        const dataResp = await fetch(info.dataFile).catch(() => null);
+        if (dataResp && dataResp.ok) {
+          const txt = await dataResp.text();
+          try { eval(txt); } catch (e) { console.warn('eval failed for data file', e); }
+          if (key === 'linux' && window.LINUX_QUESTIONS) questions = normalizeLinux(window.LINUX_QUESTIONS);
+          if (key === 'ai' && window.AI_QUESTIONS) questions = normalizeAI(window.AI_QUESTIONS);
+          if (key === 'db' && window.DB_QUESTIONS) questions = normalizeDB(window.DB_QUESTIONS);
+        }
+        if (!questions.length) {
+          const html = await fetch(info.htmlFile).then(r => r.text());
+          questions = extractFromHTML(html);
+        }
+        if (!questions.length) throw new Error('No questions found for ' + key);
+        loader.classList.add('hidden');
+        quizArea.classList.remove('hidden');
+        renderQuestion();
+      } catch (err) {
+        loader.classList.add('hidden');
+        alert('Failed to load questions: ' + (err && err.message));
+        console.error(err);
+      }
+    }
+
+    function extractFromHTML(html) {
+      const patterns = [
+        /const\s+quizData\s*=\s*(\[[\s\S]*?\]);/m,
+        /const\s+fullQuestions\s*=\s*(\[[\s\S]*?\]);/m,
+        /const\s+Q\s*=\s*(\[[\s\S]*?\]);/m
+      ];
+      for (const p of patterns) {
+        const m = html.match(p);
+        if (m && m[1]) {
+          try { return normalizeAny(eval('(' + m[1] + ')')); } catch (e) { console.warn('Failed to eval extracted array', e); }
+        }
+      }
+      return [];
+    }
+
+    function normalizeAny(arr) {
+      if (!Array.isArray(arr) || arr.length === 0) return [];
+      const item = arr[0];
+      if (item && item.q && item.o && typeof item.a !== 'undefined') {
+        return arr.map(x => ({ question: x.q, options: x.o.slice(), answerIndex: x.a }));
+      }
+      if (item && item.question && Array.isArray(item.options)) {
+        return arr.map(x => {
+          const opts = x.options.map(o => typeof o === 'object' ? o.text : o);
+          let ansIndex = -1;
+          if (typeof x.correctAnswer === 'string' && x.correctAnswer.length === 1) {
+            ansIndex = opts.findIndex((_,i) => ['A','B','C','D'][i] === x.correctAnswer || opts[i] === x.correctAnswer);
+          } else if (typeof x.correctAnswer === 'string') {
+            ansIndex = opts.findIndex(o => o === x.correctAnswer);
+          } else if (Array.isArray(x.correctAnswer)) {
+            // multi-answer: take first for now
+            ansIndex = opts.findIndex(o => o === x.correctAnswer[0]);
+          } else if (typeof x.correctAnswer === 'number') {
+            ansIndex = x.correctAnswer;
+          }
+          return { question: x.question, options: opts, answerIndex: ansIndex, correctAnswers: x.correctAnswer };
+        });
+      }
+      if (item && item.question && Array.isArray(item.options)) {
+        return arr.map(x => ({ question: x.question, options: x.options.slice(), answerIndex: x.correctAnswer }));
+      }
+      return arr.map(x => ({ question: x.question || x.q || 'Question', options: x.options || x.o || [], answerIndex: x.correctAnswer || x.a || 0 }));
+    }
+    function normalizeLinux(arr) { return normalizeAny(arr); }
+    function normalizeAI(arr) { return normalizeAny(arr); }
+    function normalizeDB(arr) { return normalizeAny(arr); }
+
+    function renderQuestion() {
+      const total = questions.length;
+      const current = questions[index];
+      qCounter.textContent = `Question ${index + 1} / ${total}`;
+      scoreEl.textContent = `Score: ${score}`;
+      questionEl.textContent = current.question || '(no question)';
+      optionsEl.innerHTML = '';
+      current.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-option block w-full text-left p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition';
+        btn.textContent = opt;
+        btn.tabIndex = 0;
+        btn.setAttribute('aria-label', opt);
+        btn.addEventListener('click', () => selectOption(i, btn));
+        if (typeof userAnswers[index] !== 'undefined') {
+          btn.disabled = true;
+          if (i === questions[index].answerIndex) btn.classList.add('bg-green-700');
+          if (i === userAnswers[index] && i !== questions[index].answerIndex) btn.classList.add('bg-red-700');
+        }
+        optionsEl.appendChild(btn);
+      });
+      prevBtn.disabled = index === 0;
+      nextBtn.classList.add('hidden');
+      restartBtn.classList.add('hidden');
+      if (typeof userAnswers[index] !== 'undefined') {
+        if (index < questions.length - 1) nextBtn.classList.remove('hidden');
+        else restartBtn.classList.remove('hidden');
+      }
+    }
+
+    function showSummary() {
+      let html = `<div class='text-center p-8'><h2 class='text-3xl font-extrabold mb-4 text-gray-100'>Quiz Complete!</h2><p class='text-lg mb-6 text-gray-200'>You scored <span class='font-bold text-green-400'>${score}</span> out of <span class='font-bold'>${questions.length}</span>.</p>`;
+      html += `<div class='text-left max-h-[40vh] overflow-y-auto mb-6'>`;
+      questions.forEach((q, i) => {
+        const user = userAnswers[i];
+        html += `<div class='mb-4 p-4 rounded-lg bg-gray-800/80'>`;
+        html += `<div class='font-semibold text-gray-100 mb-1'>Q${i+1}: ${q.question}</div>`;
+        html += `<div class='flex flex-wrap gap-2 mb-1'>`;
+        q.options.forEach((opt, j) => {
+          let style = 'px-3 py-1 rounded';
+          if (j === q.answerIndex) style += ' bg-green-700 text-white';
+          else if (typeof user !== 'undefined' && j === user && j !== q.answerIndex) style += ' bg-red-700 text-white';
+          else style += ' bg-gray-700 text-gray-200';
+          html += `<span class='${style}'>${opt}</span>`;
+        });
+        html += `</div>`;
+        if (typeof user !== 'undefined') {
+          html += `<div class='text-xs mt-1 text-gray-400'>Your answer: <span class='${user === q.answerIndex ? 'text-green-400' : 'text-red-400'}'>${typeof user !== 'undefined' ? q.options[user] : '—'}</span></div>`;
+        }
+        html += `</div>`;
+      });
+      html += `</div>`;
+      html += `<button id='restart-final' class='mt-4 px-6 py-2 bg-yellow-500 text-white rounded shadow hover:bg-yellow-600'>Restart Quiz</button>`;
+      html += `<a href='index.html' class='ml-4 px-6 py-2 bg-gray-700 text-gray-200 rounded shadow hover:bg-gray-600'>Back to Quiz Selection</a>`;
+      html += `</div>`;
+      quizArea.innerHTML = html;
+      document.getElementById('restart-final').onclick = () => { index = 0; score = 0; userAnswers = []; location.reload(); };
+    }
+
+    function selectOption(i, btn) {
+      if (typeof userAnswers[index] !== 'undefined') return;
+      userAnswers[index] = i;
+      const current = questions[index];
+      const correct = current.answerIndex;
+      Array.from(optionsEl.children).forEach((c, j) => {
+        c.disabled = true;
+        if (j === correct) c.classList.add('bg-green-700');
+        if (j === i && i !== correct) c.classList.add('bg-red-700');
+      });
+      if (i === correct) {
+        score++;
+        scoreEl.textContent = `Score: ${score}`;
+      }
+      if (index < questions.length - 1) {
+        nextBtn.classList.remove('hidden');
+      } else {
+        restartBtn.classList.remove('hidden');
+        setTimeout(showSummary, 800);
+      }
+    }
+
+    nextBtn.addEventListener('click', () => {
+      if (index < questions.length - 1) index++;
+      renderQuestion();
+    });
+    prevBtn.addEventListener('click', () => {
+      if (index > 0) index--;
+      renderQuestion();
+    });
+    restartBtn.addEventListener('click', () => {
+      index = 0; score = 0; userAnswers = []; renderQuestion();
+    });
+  </script>
+</body>
+</html>

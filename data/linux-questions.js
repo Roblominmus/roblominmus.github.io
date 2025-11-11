@@ -1,0 +1,1368 @@
+window.LINUX_QUESTIONS = [
+  {
+    "chapter": 1,
+    "question": "Which of the following are applications? (Choose two.)",
+    "options": [
+      "Linux",
+      "MySQL",
+      "VMware",
+      "DOS",
+      "Active Directory"
+    ],
+    "correctAnswer": [
+      "MySQL",
+      "VMware"
+    ]
+  },
+  {
+    "chapter": 1,
+    "question": "Your company recently purchased 12 new computer systems. The computers have Intel Pentium IV 2.5 GHz CPUs and 40MB hard drives. Your supervisor wants to install Linux on them, but is concerned that it can't be done because they already have Windows XP Professional installed. Can this be done?",
+    "options": [
+      "Yes, but you must install a new hard drive for Linux.",
+      "No, Windows is embedded in the system hardware. You must purchase systems without an operating system installed.",
+      "No, modern motherboards are hard-coded to recognize your Windows Certificate of Authority. If it doesn't find this, the system won't boot.",
+      "Yes, you can erase the hard drive and install Linux."
+    ],
+    "correctAnswer": "Yes, you can erase the hard drive and install Linux."
+  },
+  {
+    "chapter": 1,
+    "question": "Which of the following is the true operating system component within Linux?",
+    "options": [
+      "Linux libraries",
+      "Linux kernel",
+      "X Window System",
+      "bash shell"
+    ],
+    "correctAnswer": "Linux kernel"
+  },
+  {
+    "chapter": 1,
+    "question": "Which of the following provides pre-written code that programmers can use in Linux programs?",
+    "options": [
+      "Linux kernel",
+      "X Window System",
+      "bash shell",
+      "Linux libraries",
+      "Window manager"
+    ],
+    "correctAnswer": "Linux libraries"
+  },
+  {
+    "chapter": 1,
+    "question": "What was the name of the UNIX clone written by Andrew Tanenbaum?",
+    "options": [
+      "CPM",
+      "DR-DOS",
+      "Linux",
+      "Minix",
+      "Solaris",
+      "AIX"
+    ],
+    "correctAnswer": "Minix"
+  },
+  {
+    "chapter": 1,
+    "question": "What did Linus Torvalds do with the source code for Linux?",
+    "options": [
+      "He sold it to IBM.",
+      "He gave it to Microsoft for free.",
+      "He developed Minix.",
+      "He patented and copyrighted it.",
+      "He posted it on the Internet for anyone who wanted a copy."
+    ],
+    "correctAnswer": "He posted it on the Internet for anyone who wanted a copy."
+  },
+  {
+    "chapter": 1,
+    "question": "Who initiated the GNU Project?",
+    "options": [
+      "Richard Stallman",
+      "Andrew Tanenbaum",
+      "Linus Torvalds",
+      "Richard Berkley"
+    ],
+    "correctAnswer": "Richard Stallman"
+  },
+  {
+    "chapter": 1,
+    "question": "You are a computer programmer. Your supervisor wants you to download the source code for the latest Linux kernel and modify it to support a custom application your company is developing for use in-house. Can you do this?",
+    "options": [
+      "No, the source code for Linux is no longer available on the Internet.",
+      "No, the copyright on the source code won't permit it.",
+      "Yes, but you must pay a royalty to the GNU Project.",
+      "Yes, you can create a new Linux flavor and even redistribute it as long as the source code remains freely available."
+    ],
+    "correctAnswer": "Yes, you can create a new Linux flavor and even redistribute it as long as the source code remains freely available."
+  },
+  {
+    "chapter": 1,
+    "question": "You have been tasked with setting up an e-mail server for your organization of 150 people. You're considering using a Linux system to do this. Is this possible?",
+    "options": [
+      "Yes, Linux can be configured to provide e-mail services.",
+      "No, while Linux can be configured to provide e-mail services, it's not recommended for more than 25 users.",
+      "Yes, but you'll have to purchase special e-mail software that's compatible with Linux.",
+      "No. E-mail software is not currently available for Linux."
+    ],
+    "correctAnswer": "Yes, Linux can be configured to provide e-mail services."
+  },
+  {
+    "chapter": 1,
+    "question": "Which Linux services can be used to provide network printing? (Choose two.)",
+    "options": [
+      "MySQL",
+      "NFS",
+      "CUPS",
+      "Samba",
+      "NIS",
+      "OpenPrint"
+    ],
+    "correctAnswer": [
+      "CUPS",
+      "Samba"
+    ]
+  },
+  {
+    "chapter": 1,
+    "question": "Which Linux services could be used to provide network file storage for users? (Choose two.)",
+    "options": [
+      "MySQL",
+      "NFS",
+      "PostgreSQL",
+      "Samba",
+      "NIS",
+      "FileManager"
+    ],
+    "correctAnswer": [
+      "NFS",
+      "Samba"
+    ]
+  },
+  {
+    "chapter": 1,
+    "question": "Which Linux services could be used as a database server? (Choose two.)",
+    "options": [
+      "MySQL",
+      "NFS",
+      "PostgreSQL",
+      "Samba",
+      "NIS",
+      "Access"
+    ],
+    "correctAnswer": [
+      "MySQL",
+      "PostgreSQL"
+    ]
+  },
+  {
+    "chapter": 1,
+    "question": "Which Linux service can be used to turn a Linux system into an application-level gateway?",
+    "options": [
+      "MySQL",
+      "NFS",
+      "PostgreSQL",
+      "Samba",
+      "NIS",
+      "Squid"
+    ],
+    "correctAnswer": "Squid"
+  },
+  {
+    "chapter": 1,
+    "question": "Which shell is the default shell for most Linux distributions?",
+    "options": [
+      "sh",
+      "csh",
+      "bash",
+      "zsh"
+    ],
+    "correctAnswer": "bash"
+  },
+  {
+    "chapter": 1,
+    "question": "Which shell is the default shell for most FreeBSD systems?",
+    "options": [
+      "sh",
+      "csh",
+      "zsh",
+      "tsch"
+    ],
+    "correctAnswer": "tsch"
+  },
+  {
+    "chapter": 1,
+    "question": "You are working with a bash shell on a Linux system. You are in the middle of installing an application on the system when you discover that the installation program needs to access a license diskette in the floppy drive. You need to mount the floppy so this can happen, but this requires access to the shell prompt. You don't want to halt the installation to do this. What can you do?",
+    "options": [
+      "Nothing, you must halt the installation, mount the floppy, then restart the installation.",
+      "You can press CTRL PAUSE On the keyboard. This will pause the installation while you mount the floppy.",
+      "You can press ALT F2 to open an alternate console screen and mount the floppy.",
+      "Insert the floppy and press CTRL SHIFT F6. This will automatically mount the floppy without pausing the program."
+    ],
+    "correctAnswer": "You can press ALT F2 to open an alternate console screen and mount the floppy."
+  },
+  {
+    "chapter": 1,
+    "question": "Which x86 processor mode allows the Linux kernel to run multiple shell sessions at the same time?",
+    "options": [
+      "Real",
+      "Protected",
+      "486 Enhanced",
+      "586 Emulation"
+    ],
+    "correctAnswer": "Protected"
+  },
+  {
+    "chapter": 1,
+    "question": "You've downloaded an executable file named updatedb.sh from your company's FTP server to /tmp on your Linux system. You open a shell and change to the /tmp directory. When you enter updatedb.sh, the shell indicates that it can't find the file. What can you do?",
+    "options": [
+      "Enter the file name in all capital letters.",
+      "Add a ./ before the file name when entering it at the prompt.",
+      "Enter the file name without the sh extension.",
+      "Move the file to your home directory and then execute it."
+    ],
+    "correctAnswer": "Add a ./ before the file name when entering it at the prompt."
+  },
+  {
+    "chapter": 1,
+    "question": "You need to find out what directories in the Linux file system are parts of the path. What command can you use? (Choose two.)",
+    "options": [
+      "env",
+      "show $PATH",
+      "man path",
+      "echo $PATH",
+      "writeln PATH"
+    ],
+    "correctAnswer": [
+      "env",
+      "echo $PATH"
+    ]
+  },
+  {
+    "chapter": 1,
+    "question": "You've downloaded an executable file named updatedb.sh from your company's FTP server to /tmp on your Linux system. You open a shell and change to the /tmp directory. When you enter ./Updatedb.sh, the shell indicates that it can't find the file. What can you do?",
+    "options": [
+      "Enter the file name in all lower-case letters.",
+      "Add a before the file name when entering it at the prompt.",
+      "Enter the file name without the sh extension.",
+      "Move the file to your home directory and then execute it."
+    ],
+    "correctAnswer": "Enter the file name in all lower-case letters."
+  },
+  {
+    "chapter": 1,
+    "question": "Which Linux utility can be used to display a list of all running processes on your system?",
+    "options": [
+      "env",
+      "procman",
+      "processes",
+      "top",
+      "echo $PROCESSES"
+    ],
+    "correctAnswer": "top"
+  },
+  {
+    "chapter": 1,
+    "question": "Which Linux utility can be used to display your network board configuration?",
+    "options": [
+      "netstat",
+      "route",
+      "ifconfig",
+      "ipconfig",
+      "echo $NETWORK_CONFIG"
+    ],
+    "correctAnswer": "ifconfig"
+  },
+  {
+    "chapter": 1,
+    "question": "Which Linux utility can be used to change to a different user account at the shell prompt?",
+    "options": [
+      "user",
+      "chuser",
+      "swuser",
+      "su"
+    ],
+    "correctAnswer": "su"
+  },
+  {
+    "chapter": 2,
+    "question": "What DC voltage levels does a power supply provide? (Choose two.)",
+    "options": [
+      "3.3 volts",
+      "24 volts",
+      "6 volts",
+      "5 volts",
+      "18 volts"
+    ],
+    "correctAnswer": [
+      "3.3 volts",
+      "5 volts"
+    ]
+  },
+  {
+    "chapter": 2,
+    "question": "You need to install Linux on a workstation. The hard drive has been wiped and is ready for the new operating system. You insert your first Linux installation CD in the CD drive and boot the system. Instead of starting the installation routine, the screen displays an error message indicating that an operating system couldn’t be found. What’s causing the problem?",
+    "options": [
+      "Your Linux CD is damaged.",
+      "The hard drive is failing and needs to be replaced.",
+      "The CD drive is malfunctioning.",
+      "The boot device order is set incorrectly in the BIOS."
+    ],
+    "correctAnswer": "The boot device order is set incorrectly in the BIOS."
+  },
+  {
+    "chapter": 2,
+    "question": "Which of the following is an Intel CPU?",
+    "options": [
+      "Celeron",
+      "Athlon",
+      "Sempron",
+      "Opteron"
+    ],
+    "correctAnswer": "Celeron"
+  },
+  {
+    "chapter": 2,
+    "question": "Which of the following CPU sockets is used for the AMD Athlon CPU?",
+    "options": [
+      "Socket 370",
+      "Socket 423",
+      "Socket 478",
+      "Socket A",
+      "Socket AMD"
+    ],
+    "correctAnswer": "Socket A"
+  },
+  {
+    "chapter": 2,
+    "question": "What type of memory is used to create the CPU cache?",
+    "options": [
+      "DRAM",
+      "SDRAM",
+      "SRAM",
+      "FPM RAM",
+      "EDO RAM"
+    ],
+    "correctAnswer": "SRAM"
+  },
+  {
+    "chapter": 2,
+    "question": "Which type of memory is used in 72-pin SIMM modules? (Choose two.)",
+    "options": [
+      "SDRAM",
+      "SRAM",
+      "FPM RAM",
+      "EDO RAM",
+      "DDR-SDRAM"
+    ],
+    "correctAnswer": [
+      "FPM RAM",
+      "EDO RAM"
+    ]
+  },
+  {
+    "chapter": 2,
+    "question": "Which type of memory is used in 184-pin DIMM modules?",
+    "options": [
+      "SDRAM",
+      "SRAM",
+      "FPM RAM",
+      "EDO RAM",
+      "DDR-SDRAM"
+    ],
+    "correctAnswer": "DDR-SDRAM"
+  },
+  {
+    "chapter": 2,
+    "question": "How wide is the ISA expansion bus? (Choose two.)",
+    "options": [
+      "8 bits",
+      "16 bits",
+      "24 bits",
+      "32 bits",
+      "64 bits"
+    ],
+    "correctAnswer": [
+      "8 bits",
+      "16 bits"
+    ]
+  },
+  {
+    "chapter": 2,
+    "question": "How wide is the standard PCI expansion bus?",
+    "options": [
+      "8 bits",
+      "16 bits",
+      "24 bits",
+      "32 bits",
+      "64 bits"
+    ],
+    "correctAnswer": "32 bits"
+  },
+  {
+    "chapter": 2,
+    "question": "What is the clock speed of a standard PCI expansion bus?",
+    "options": [
+      "4.77 MHz",
+      "8.33 MHz",
+      "16 MHz",
+      "24 MHz",
+      "33 MHz"
+    ],
+    "correctAnswer": "33 MHz"
+  },
+  {
+    "chapter": 2,
+    "question": "Which PCI component functions as an intermediary between the PCI bus and other expansion buses on the motherboard?",
+    "options": [
+      "Northbridge",
+      "Southbridge",
+      "PCI Gateway",
+      "ISA Bridge"
+    ],
+    "correctAnswer": "Southbridge"
+  },
+  {
+    "chapter": 2,
+    "question": "Your motherboard has a built-in AGP video board as well as an available AGP slot. You’ve heard that you can implement a dual-monitor system by installing two video boards in the PC. Can you do this with the open AGP slot and the integrated video adapter?",
+    "options": [
+      "Yes, you can install a second adapter in the open AGP slot.",
+      "No, Linux doesn’t support dual-monitor systems.",
+      "Yes, but you’ll have to configure your BIOS to enable both devices.",
+      "No, only a single adapter can function on the AGP bus at any given time."
+    ],
+    "correctAnswer": "No, only a single adapter can function on the AGP bus at any given time."
+  },
+  {
+    "chapter": 2,
+    "question": "You’re installing two ISA expansion boards in an older PC system. One is a sound board, the other a network board. The system has INT 2 and INT 9 available. Can you assign these interrupts to these two boards?",
+    "options": [
+      "Yes, either board can use either interrupt.",
+      "Yes, but the sound board must use INT 2 and the network board must use INT 9.",
+      "No, sound boards can’t use INT 2 or INT 9.",
+      "No, network boards can’t use INT 2 or INT 9.",
+      "No, INT 2 and INT 9 can’t be used at the same time."
+    ],
+    "correctAnswer": "No, INT 2 and INT 9 can’t be used at the same time."
+  },
+  {
+    "chapter": 2,
+    "question": "You’re installing an ISA board in a system that includes both ISA and PCI expansion slots. INT 5 is currently in use by a PCI board. However, you’ve heard that PCI cards can share interrupts. Can you configure the ISA board to use INT 5 too?",
+    "options": [
+      "Yes, PCI cards can share interrupts.",
+      "Yes, but you must enable the PCI Bridge in the CMOS setup program.",
+      "No, ISA boards can’t use INT 5. They are reserved for PCI boards.",
+      "No, PCI cards can’t share interrupts with ISA boards."
+    ],
+    "correctAnswer": "No, PCI cards can’t share interrupts with ISA boards."
+  },
+  {
+    "chapter": 2,
+    "question": "Which of the following hard drive parameters refers to a set of concentric, parallel tracks on all sides of all platters in a hard disk drive?",
+    "options": [
+      "Cylinders",
+      "Heads",
+      "Sectors Per Track",
+      "Write Precompensation",
+      "Landing Zone"
+    ],
+    "correctAnswer": "Cylinders"
+  },
+  {
+    "chapter": 2,
+    "question": "How many slave drives can be configured on the Secondary IDE channel? (Choose two.)",
+    "options": [
+      "0",
+      "1",
+      "2",
+      "4",
+      "6",
+      "8"
+    ],
+    "correctAnswer": [
+      "0",
+      "1"
+    ]
+  },
+  {
+    "chapter": 2,
+    "question": "If there are two hard drives on a Primary IDE channel, how many master drives must be configured on the channel?",
+    "options": [
+      "0",
+      "1",
+      "2",
+      "Unlimited"
+    ],
+    "correctAnswer": "1"
+  },
+  {
+    "chapter": 2,
+    "question": "Suppose you have an IDE DVD drive and an IDE hard drive connected to the Secondary IDE channel. The DVD drive is connected to the first connector on the ribbon cable; the hard drive is connected to the second connector. Which drive must be set to be the master drive?",
+    "options": [
+      "The DVD drive.",
+      "The hard drive.",
+      "Either device can be the master.",
+      "Neither device can be the master if dissimilar devices are connected to the same IDE channel."
+    ],
+    "correctAnswer": "Either device can be the master."
+  },
+  {
+    "chapter": 2,
+    "question": "Which SCSI ID has the highest priority?",
+    "options": [
+      "0",
+      "1",
+      "3",
+      "5",
+      "7"
+    ],
+    "correctAnswer": "0"
+  },
+  {
+    "chapter": 2,
+    "question": "Suppose you have a SCSI chain with four devices connected on an internal ribbon cable: An internal hard drive (hd0) at the end of the cable followed by a second hard drive (hd1), an internal CD drive (cd0), and then the SCSI controller (sc0). Which devices should have termination enabled? (Choose two.)",
+    "options": [
+      "Hd0",
+      "Hd1",
+      "Cd0",
+      "Sc0"
+    ],
+    "correctAnswer": [
+      "Hd0",
+      "Sc0"
+    ]
+  },
+  {
+    "chapter": 2,
+    "question": "Which USB category includes devices such as printers, scanners, and hard drives?",
+    "options": [
+      "Hub",
+      "Function",
+      "Hub and Function",
+      "Terminal Device"
+    ],
+    "correctAnswer": "Function"
+  },
+  {
+    "chapter": 2,
+    "question": "What is the maximum number of USB devices that can be connected to a single USB bus?",
+    "options": [
+      "8",
+      "24",
+      "63",
+      "127",
+      "256"
+    ],
+    "correctAnswer": "127"
+  },
+  {
+    "chapter": 2,
+    "question": "How fast does FireWire transfer data?",
+    "options": [
+      "12 Mbps",
+      "64 Mbps",
+      "400 Mbps",
+      "480 Mbps"
+    ],
+    "correctAnswer": "400 Mbps"
+  },
+  {
+    "chapter": 2,
+    "question": "You currently have an external FireWire hard drive connected to the FireWire port in your computer. You need to disconnect the hard drive and connect a FireWire digital video camera to your FireWire port. Can you do this without rebooting the system?",
+    "options": [
+      "No, you must bring the system down to do this.",
+      "No, you can’t connect a FireWire digital video camera to a FireWire port used by an external hard drive.",
+      "Yes, you can shut down the hard drive and connect the camera.",
+      "Yes, but you must use a different port for each device."
+    ],
+    "correctAnswer": "Yes, you can shut down the hard drive and connect the camera."
+  },
+  {
+    "chapter": 3,
+    "question": "When conducting a needs assessment, what questions should you ask? (Choose two.)",
+    "options": [
+      "What problem will this installation fix?",
+      "Which distribution should I use?",
+      "Where can I get the best price on a new server?",
+      "Who is requesting the new systems?"
+    ],
+    "correctAnswer": [
+      "What problem will this installation fix?",
+      "Who is requesting the new systems?"
+    ]
+  },
+  {
+    "chapter": 3,
+    "question": "Which of the following is a properly stated goal in a needs assessment?",
+    "options": [
+      "Mike’s boss wants a new server, so we’re gong to install it.",
+      "We’re going to install Linux.",
+      "We need a new Linux system.",
+      "The new Linux system will provide a network database to increase the documentation team’s productivity by an anticipated 20 percent."
+    ],
+    "correctAnswer": "The new Linux system will provide a network database to increase the documentation team’s productivity by an anticipated 20 percent."
+  },
+  {
+    "chapter": 3,
+    "question": "Suppose Karen from Customer Service approaches you and asks for a new Linux server for her team. Who else should you talk to as a part of your needs assessment? (Choose two.)",
+    "options": [
+      "Karen’s boss",
+      "Karen’s co-workers",
+      "The Technical Support supervisor",
+      "Your hardware vendor"
+    ],
+    "correctAnswer": [
+      "Karen’s boss",
+      "Karen’s co-workers"
+    ]
+  },
+  {
+    "chapter": 3,
+    "question": "Which of the following are components of your project scope? (Choose two.)",
+    "options": [
+      "Customer demands",
+      "Management decision-making",
+      "Schedule",
+      "Scale"
+    ],
+    "correctAnswer": [
+      "Schedule",
+      "Scale"
+    ]
+  },
+  {
+    "chapter": 3,
+    "question": "You’re responsible for implementing five new Linux servers in your organization’s Technical Support department. The Technical Support supervisor has asked that four additional servers be added to the project. Due to time constraints, he won’t allow you to adjust the original schedule to accommodate the additional servers. Which of the following is the most appropriate response?",
+    "options": [
+      "Ignore the request.",
+      "Inform the supervisor that additional resources will have to be added to the project.",
+      "Resign in protest.",
+      "Cheerfully agree to the request and then miss the deadline."
+    ],
+    "correctAnswer": "Inform the supervisor that additional resources will have to be added to the project."
+  },
+  {
+    "chapter": 3,
+    "question": "You’re installing new Linux systems that will be used by software engineers to develop advanced computer-aided design applications. Which distributions would be the best choice for this deployment? (Choose two.)",
+    "options": [
+      "Red Hat Enterprise Linux ES",
+      "Red Hat Enterprise Linux AS",
+      "Red Hat Desktop",
+      "Red Hat Enterprise Linux WS",
+      "SUSE Linux Enterprise Server",
+      "SUSE Linux Enterprise Desktop"
+    ],
+    "correctAnswer": [
+      "Red Hat Enterprise Linux WS",
+      "SUSE Linux Enterprise Desktop"
+    ]
+  },
+  {
+    "chapter": 3,
+    "question": "You’re installing a new Linux system that will be used by an administrative assistant to type documents, create presentations, and manage e-mail. Which distribution would be the best choice for this deployment?",
+    "options": [
+      "Red Hat Enterprise Linux ES",
+      "Red Hat Enterprise Linux AS",
+      "Red Hat Desktop",
+      "Red Hat Enterprise Linux WS",
+      "SUSE Linux Enterprise Server",
+      "SUSE Linux Enterprise Desktop"
+    ],
+    "correctAnswer": "Red Hat Desktop"
+  },
+  {
+    "chapter": 3,
+    "question": "You’re installing a new Linux server that will be used to host mission-critical database applications. This server will be heavily utilized by a large number of users every day. Which distributions would be the best choice for this deployment? (Choose two.)",
+    "options": [
+      "Red Hat Enterprise Linux ES",
+      "Red Hat Enterprise Linux AS",
+      "Red Hat Desktop",
+      "Red Hat Enterprise Linux WS",
+      "SUSE Linux Enterprise Server",
+      "SUSE Linux Enterprise Desktop"
+    ],
+    "correctAnswer": [
+      "Red Hat Enterprise Linux AS",
+      "SUSE Linux Enterprise Server"
+    ]
+  },
+  {
+    "chapter": 3,
+    "question": "You’re planning to install Linux on a system that you’ve built out of spare parts. Several components in the system aren’t listed on your distribution’s HCL. This system will be used by your team’s administrative assistant to manage employee schedules, send and receive e-mail, and track employee hours. What should you do?",
+    "options": [
+      "Install the distribution anyway and hope for the best.",
+      "Install the distribution and then install the latest product updates.",
+      "Replace the incompatible parts with supported hardware.",
+      "Spend three days scouring the Internet looking for drivers."
+    ],
+    "correctAnswer": "Replace the incompatible parts with supported hardware."
+  },
+  {
+    "chapter": 3,
+    "question": "You’re planning to install Fedora on a system that uses a Pentium IV Celeron CPU. Which distribution architecture should you download?",
+    "options": [
+      "IA-64",
+      "x86-Celeron",
+      "x86-64",
+      "x86",
+      "PPC"
+    ],
+    "correctAnswer": "x86"
+  },
+  {
+    "chapter": 3,
+    "question": "You’re planning to install Fedora on a system that uses a 64-bit AMD CPU. Which distribution architecture should you download?",
+    "options": [
+      "IA-64",
+      "x86-AMD",
+      "x86-64",
+      "x86",
+      "PPC"
+    ],
+    "correctAnswer": "x86-64"
+  },
+  {
+    "chapter": 3,
+    "question": "You’re installing a new Linux system. This system will be used by a civil engineer to model the behavior of buildings and bridges during an earthquake. This system must run as fast as possible. It must protect the integrity of the data if the system goes down unexpectedly. If it does go down, the system needs to be back up and running as quickly as possible. Which file system would be the best choice?",
+    "options": [
+      "VFAT",
+      "FAT32",
+      "Reiser",
+      "ext3",
+      "ext2"
+    ],
+    "correctAnswer": "Reiser"
+  },
+  {
+    "chapter": 3,
+    "question": "Which partition is used for virtual memory by a Linux system?",
+    "options": [
+      "pagefile",
+      "swap",
+      "/swap",
+      "/boot",
+      "/tmp"
+    ],
+    "correctAnswer": "swap"
+  },
+  {
+    "chapter": 3,
+    "question": "If your system has 1GB of RAM installed, how big should your swap partition be?",
+    "options": [
+      "256MB",
+      "1GB",
+      "512GB",
+      "2GB"
+    ],
+    "correctAnswer": "2GB"
+  },
+  {
+    "chapter": 3,
+    "question": "Which of the following directories should have their own partition? (Choose three.)",
+    "options": [
+      "/bin",
+      "/boot",
+      "/etc",
+      "/usr",
+      "/home",
+      "/root",
+      "/dev"
+    ],
+    "correctAnswer": [
+      "/boot",
+      "/usr",
+      "/home"
+    ]
+  },
+  {
+    "chapter": 3,
+    "question": "You’re installing a new Linux server. This system will function as an e-mail server for your organization. What ports should you open on its host firewall? (Choose three.)",
+    "options": [
+      "110",
+      "80",
+      "25",
+      "143",
+      "443"
+    ],
+    "correctAnswer": [
+      "110",
+      "25",
+      "143"
+    ]
+  },
+  {
+    "chapter": 3,
+    "question": "You need to install Linux on a workstation. The hard drive has been wiped and is ready for the new operating system. You insert your first Linux installation CD in the CD drive and boot the system. Instead of starting the installation routine, the screen displays an error message indicating that an operating system couldn’t be found. What’s the most likely cause of the problem?",
+    "options": [
+      "Your Linux CD is damaged.",
+      "The hard drive is failing...",
+      "The CD drive is malfunctioning.",
+      "The boot device order is set incorrectly in the BIOS."
+    ],
+    "correctAnswer": "The boot device order is set incorrectly in the BIOS."
+  },
+  {
+    "chapter": 3,
+    "question": "Your Linux system uses two SCSI hard disk drives. The first drive is assigned SCSI ID 0; the second drive is assigned SCSI ID 1. Which of the following refers to the second SCSI drive in the system?",
+    "options": [
+      "/dev/sda",
+      "/dev/sdc",
+      "/dev/sdb",
+      "/dev/sdd"
+    ],
+    "correctAnswer": "/dev/sdb"
+  },
+  {
+    "chapter": 3,
+    "question": "Your Linux system uses a single IDE hard disk drive. Which of the following refers to the first partition on the IDE drive?",
+    "options": [
+      "/dev/hda1",
+      "/dev/hdb1",
+      "/dev/hda2",
+      "/dev/hdb2"
+    ],
+    "correctAnswer": "/dev/hda1"
+  },
+  {
+    "chapter": 3,
+    "question": "Your Linux system uses a single IDE hard disk drive. Which of the following refers to the second partition on the IDE drive?",
+    "options": [
+      "/dev/hda1",
+      "/dev/hdb1",
+      "/dev/hda2",
+      "/dev/hdb2"
+    ],
+    "correctAnswer": "/dev/hda2"
+  },
+  {
+    "chapter": 3,
+    "question": "Your Linux system uses two SCSI hard disk drives. The first drive is assigned SCSI ID 0; the second drive is assigned SCSI ID 1. Which of the following refers to the first partition on the second SCSI drive in the system?",
+    "options": [
+      "/dev/sda1",
+      "/dev/sdc1",
+      "/dev/sdb1",
+      "/dev/sdd1"
+    ],
+    "correctAnswer": "/dev/sdb1"
+  },
+  {
+    "chapter": 4,
+    "question": "Which utility is used to view manual pages?",
+    "options": [
+      "man",
+      "manual",
+      "viewman",
+      "Kwrite"
+    ],
+    "correctAnswer": "man"
+  },
+  {
+    "chapter": 4,
+    "question": "Which environment variable contains the directory where man page files are located?",
+    "options": [
+      "MANUAL",
+      "MANUALPATH",
+      "MANPAGEPATH",
+      "MANPATH"
+    ],
+    "correctAnswer": "MANPATH"
+  },
+  {
+    "chapter": 4,
+    "question": "Which file can be used to configure the path to the man page files?",
+    "options": [
+      "/etc/man.config",
+      "/etc/man.conf",
+      "/etc/man.txt",
+      "/etc/manual.conf"
+    ],
+    "correctAnswer": "/etc/man.config"
+  },
+  {
+    "chapter": 4,
+    "question": "Which of the following manual sections contains man pages for administrative utilities used by the root user?",
+    "options": [
+      "1",
+      "3",
+      "8",
+      "9"
+    ],
+    "correctAnswer": "8"
+  },
+  {
+    "chapter": 4,
+    "question": "Which of the following manual sections contains man pages for utilities and commands that can be used by any user?",
+    "options": [
+      "9",
+      "1",
+      "3",
+      "7"
+    ],
+    "correctAnswer": "1"
+  },
+  {
+    "chapter": 4,
+    "question": "You need to learn about the options available for the mkdir utility. Which command will display its manual page?",
+    "options": [
+      "cat mkdir |more",
+      "cat mkdir |man",
+      "manual mkdir",
+      "man mkdir"
+    ],
+    "correctAnswer": "man mkdir"
+  },
+  {
+    "chapter": 4,
+    "question": "You need to learn about the options available for the chmod utility. Which command will display its manual page?",
+    "options": [
+      "cat chmod |man",
+      "manual chmod",
+      "man chmod",
+      "display chmod man page"
+    ],
+    "correctAnswer": "man chmod"
+  },
+  {
+    "chapter": 4,
+    "question": "Which section in a man page provides a brief review of the syntax used for a particular command or utility?",
+    "options": [
+      "REVIEW",
+      "SYNOPSIS",
+      "DESCRIPTION",
+      "SYNTAX"
+    ],
+    "correctAnswer": "SYNOPSIS"
+  },
+  {
+    "chapter": 4,
+    "question": "Which section in a man page provides a list of man pages or other resources related to the particular command or utility?",
+    "options": [
+      "DESCRIPTION",
+      "VERSION",
+      "SEE ALSO",
+      "REFERENCES"
+    ],
+    "correctAnswer": "SEE ALSO"
+  },
+  {
+    "chapter": 4,
+    "question": "You’re using man to view the man page for the chown utility. Which keystroke will unload the current man page and exit man?",
+    "options": [
+      "e",
+      "x",
+      "k",
+      "q"
+    ],
+    "correctAnswer": "q"
+  },
+  {
+    "chapter": 4,
+    "question": "You’re using man to view the man page for the Samba service. Which keystrokes can you use to search for the term “password” in the man page?",
+    "options": [
+      "/“password”",
+      "Ctrl F",
+      "/password",
+      "search “password”"
+    ],
+    "correctAnswer": "/password"
+  },
+  {
+    "chapter": 4,
+    "question": "After searching for a term within a man page, you need to jump to the next instance of the term in the page. Which keystroke will do this?",
+    "options": [
+      "q",
+      "f",
+      "n",
+      "j"
+    ],
+    "correctAnswer": "n"
+  },
+  {
+    "chapter": 4,
+    "question": "You need to search for man pages that relate to the Samba service. Which command will do this?",
+    "options": [
+      "man –s samba",
+      "man –k samba",
+      "search samba |man",
+      "which samba"
+    ],
+    "correctAnswer": "man –k samba"
+  },
+  {
+    "chapter": 4,
+    "question": "You need to search for man pages that relate to the PAM service. Which command will do this?",
+    "options": [
+      "which pam",
+      "man –s pam",
+      "search pam |man",
+      "apropos pam"
+    ],
+    "correctAnswer": "apropos pam"
+  },
+  {
+    "chapter": 4,
+    "question": "You need to use info to view information about using the smbpasswd utility. Which command will do this?",
+    "options": [
+      "info /smbpasswd",
+      "info “smbpasswd”",
+      "show info smbpasswd",
+      "info smbpasswd"
+    ],
+    "correctAnswer": "info smbpasswd"
+  },
+  {
+    "chapter": 4,
+    "question": "While viewing an info node, which keystroke can be used to navigate to the next node?",
+    "options": [
+      "/next",
+      "p",
+      "n",
+      "u"
+    ],
+    "correctAnswer": "n"
+  },
+  {
+    "chapter": 4,
+    "question": "While viewing an info node, which keystroke can be used to navigate to the previous node?",
+    "options": [
+      "p",
+      "/prev",
+      "n",
+      "/up"
+    ],
+    "correctAnswer": "p"
+  },
+  {
+    "chapter": 4,
+    "question": "While viewing an info node, which keystroke can be used to navigate to the beginning of the node?",
+    "options": [
+      "Ctrl G",
+      "/top",
+      "Home",
+      "End"
+    ],
+    "correctAnswer": "Home"
+  },
+  {
+    "chapter": 4,
+    "question": "Where are the README files for the packages installed on a Fedora system located?",
+    "options": [
+      "/bin/packages/README",
+      "/usr/share/README",
+      "/usr/share/doc",
+      "/bin/share/doc"
+    ],
+    "correctAnswer": "/usr/share/doc"
+  },
+  {
+    "chapter": 4,
+    "question": "What is the URL for The Linux Documentation Project Web site?",
+    "options": [
+      "http://www.linuxdoc.com",
+      "http://www.linuxdocumentationproject.org",
+      "http://www.tldp.org",
+      "http://www.linuxdocs.org"
+    ],
+    "correctAnswer": "http://www.tldp.org"
+  },
+  {
+    "chapter": 4,
+    "question": "You need to troubleshoot an error encountered with the httpd service on a Linux server. Which resource would be the best place to search for a resolution?",
+    "options": [
+      "The httpd info node",
+      "The Linux Documentation Project",
+      "The knowledgebase on your vendor’s Web site",
+      "The httpd man page"
+    ],
+    "correctAnswer": "The knowledgebase on your vendor’s Web site"
+  },
+  {
+    "chapter": 4,
+    "question": "You need to learn how to set up and configure the Samba service on a Linux server. Which resource would be the best place to search for instructions?",
+    "options": [
+      "The samba info node",
+      "The Linux Documentation Project",
+      "The knowledgebase on your vendor’s Web site",
+      "The samba man page"
+    ],
+    "correctAnswer": "The Linux Documentation Project"
+  },
+  {
+    "chapter": 4,
+    "question": "You need to look up an error code displayed when your Linux workstation booted. Which resource would be the best place to search for a resolution?",
+    "options": [
+      "info",
+      "The Linux Documentation Project",
+      "A search engine such as Google or Yahoo",
+      "man"
+    ],
+    "correctAnswer": "A search engine such as Google or Yahoo"
+  },
+  {
+    "chapter": 5,
+    "question": "Where are operating system and application configuration parameters stored on a Linux system?",
+    "options": [
+      "In text files",
+      "In the Registry",
+      "In .ini files",
+      "In the system database"
+    ],
+    "correctAnswer": "In text files"
+  },
+  {
+    "chapter": 5,
+    "question": "Where are most configuration files stored in the Linux file system?",
+    "options": [
+      "/boot",
+      "/var",
+      "/usr",
+      "/etc"
+    ],
+    "correctAnswer": "/etc"
+  },
+  {
+    "chapter": 5,
+    "question": "Where can you find the vi symbolic link file on most Linux distributions?",
+    "options": [
+      "/usr/bin",
+      "/boot",
+      "/etc",
+      "/var/vi"
+    ],
+    "correctAnswer": "/usr/bin"
+  },
+  {
+    "chapter": 5,
+    "question": "Which of the following is an advantage of the vi editor?",
+    "options": [
+      "It provides a syntax checker.",
+      "It provides a menu-driven user interface.",
+      "It is small enough to fit on a floppy.",
+      "It can be used to edit Microsoft Word files."
+    ],
+    "correctAnswer": "It is small enough to fit on a floppy."
+  },
+  {
+    "chapter": 5,
+    "question": "You have a terminal window open and the current directory is /tmp. You need to use vi to open a file named vnc in the /etc/xinetd.d directory on your system. Which of the following commands will do this?",
+    "options": [
+      "vi vnc",
+      "vi /tmp/vnc",
+      "vi /etc/xinetd.d/vnc",
+      "vi /etc/xinetd.d"
+    ],
+    "correctAnswer": "vi /etc/xinetd.d/vnc"
+  },
+  {
+    "chapter": 5,
+    "question": "You have a terminal window open and the current directory is your user’s home directory. You need to create a new file in your home directory named resources.txt using vi. Which of the following commands will do this?",
+    "options": [
+      "vi resources.txt –new",
+      "vi resources",
+      "vi ~/resources",
+      "vi resources.txt"
+    ],
+    "correctAnswer": "vi resources.txt"
+  },
+  {
+    "chapter": 5,
+    "question": "Which mode does vi open in by default?",
+    "options": [
+      "Command mode",
+      "Insert mode",
+      "Normal mode",
+      "Replace mode"
+    ],
+    "correctAnswer": "Normal mode"
+  },
+  {
+    "chapter": 5,
+    "question": "You’ve opened a text file named list.txt in vi. You move the cursor using the arrow keys to the point in the file where you need to make several changes. You try to type, but nothing happens. Why is this happening?",
+    "options": [
+      "The vi editor is in insert mode. You need to switch to normal mode.",
+      "The vi editor is in normal mode. You need to switch to insert mode.",
+      "The vi editor is in insert mode. You need to switch to replace mode.",
+      "The text file is corrupt."
+    ],
+    "correctAnswer": "The vi editor is in normal mode. You need to switch to insert mode."
+  },
+  {
+    "chapter": 5,
+    "question": "Which keystroke will switch vi from normal mode to insert mode?",
+    "options": [
+      "d",
+      "Esc",
+      "i",
+      "q"
+    ],
+    "correctAnswer": "i"
+  },
+  {
+    "chapter": 5,
+    "question": "You’re using vi to edit a text file in insert mode. Because of the nature of the changes you’re making to the file, you need to switch to replace mode. Which keystroke will do this?",
+    "options": [
+      "Esc",
+      "Ctrl R",
+      ":",
+      "Insert"
+    ],
+    "correctAnswer": "Insert"
+  },
+  {
+    "chapter": 5,
+    "question": "You’re using vi to edit a file in insert mode. You need to switch back to normal mode. Which keystroke will do this?",
+    "options": [
+      "Insert",
+      ":",
+      "Esc",
+      "q"
+    ],
+    "correctAnswer": "Esc"
+  },
+  {
+    "chapter": 5,
+    "question": "You’re using vi to edit a file in insert mode. You try to use the Backspace key to delete a word, but nothing happens. What’s wrong with the system?",
+    "options": [
+      "You need to switch to normal mode.",
+      "You need to switch to replace mode.",
+      "Nothing is wrong. Backspace doesn’t work in vi.",
+      "You need to switch to command mode."
+    ],
+    "correctAnswer": "Nothing is wrong. Backspace doesn’t work in vi."
+  },
+  {
+    "chapter": 5,
+    "question": "You’ve created a new file using vi and now need to save the file. Which command will do this?",
+    "options": [
+      ":s",
+      ":w",
+      ":save",
+      ":writeln"
+    ],
+    "correctAnswer": ":w"
+  },
+  {
+    "chapter": 5,
+    "question": "You’ve created a new file using vi and need to save the file to disk and exit the program. Which command will do this? (Choose two.)",
+    "options": [
+      ":w",
+      ":se",
+      ":wq",
+      ":exit",
+      ":q"
+    ],
+    "correctAnswer": [
+      ":wq",
+      ":exit"
+    ]
+  },
+  {
+    "chapter": 5,
+    "question": "You’ve made several changes to a configuration file using vi. You realize that you’ve made a myriad of mistakes and want to quit without saving the changes so you can start over. Which command will do this?",
+    "options": [
+      ":q!",
+      ":exit",
+      ":q",
+      ":exit!"
+    ],
+    "correctAnswer": ":q!"
+  },
+  {
+    "chapter": 5,
+    "question": "You’re working with a file in vi in normal mode. You locate a word in the file that needs to be deleted and place your cursor at the beginning of that word. Which command will delete this word without deleting the space that follows the word?",
+    "options": [
+      "dw",
+      "de",
+      "d$",
+      "dd"
+    ],
+    "correctAnswer": "de"
+  },
+  {
+    "chapter": 5,
+    "question": "You’re viewing a configuration file in vi in normal mode. You need to locate a directive named server in the file. However, the file is very long and you don’t want to scan through it line by line. What command can you use to search for this term?",
+    "options": [
+      "/server",
+      "search=server",
+      "/“server”",
+      "find “server”"
+    ],
+    "correctAnswer": "/server"
+  },
+  {
+    "chapter": 5,
+    "question": "Which keystroke will open a file in the Emacs text editor?",
+    "options": [
+      "Ctrl X Ctrl F",
+      "Ctrl S",
+      "Ctrl X Ctrl S",
+      "Ctrl O"
+    ],
+    "correctAnswer": "Ctrl X Ctrl F"
+  },
+  {
+    "chapter": 5,
+    "question": "Which keystroke will save a file in the Emacs text editor?",
+    "options": [
+      "Ctrl X Ctrl F",
+      "Ctrl S",
+      "Ctrl X Ctrl S",
+      "Ctrl W"
+    ],
+    "correctAnswer": "Ctrl X Ctrl S"
+  },
+  {
+    "chapter": 5,
+    "question": "Which command will start Quick Emacs from the shell prompt?",
+    "options": [
+      "Emacs",
+      "quickemacs",
+      "QuickEmacs",
+      "qemacs"
+    ],
+    "correctAnswer": "qemacs"
+  },
+  {
+    "chapter": 5,
+    "question": "Which is an advantage of using a graphical text editor in Linux?",
+    "options": [
+      "It can be used in an emergency repair situation.",
+      "It is small enough to fit on an emergency boot diskette.",
+      "It can be used to work on Microsoft Word files.",
+      "It is generally easier to use than a text-based editor."
+    ],
+    "correctAnswer": "It is generally easier to use than a text-based editor."
+  },
+  {
+    "chapter": 5,
+    "question": "Which desktop environment uses Kate as the default graphical text editor?",
+    "options": [
+      "GNOME",
+      "Sawfish",
+      "KDE",
+      "ICE"
+    ],
+    "correctAnswer": "KDE"
+  },
+  {
+    "chapter": 5,
+    "question": "Which command can be used... to run the graphical version of Emacs?",
+    "options": [
+      "xemacs",
+      "gemacs",
+      "emacs -gui",
+      "emacs -x"
+    ],
+    "correctAnswer": "xemacs"
+  },
+  {
+    "chapter": 5,
+    "question": "Which desktop environment uses gedit as the default graphical text editor?",
+    "options": [
+      "GNOME",
+      "Sawfish",
+      "KDE",
+      "ICE"
+    ],
+    "correctAnswer": "GNOME"
+  }
+];
