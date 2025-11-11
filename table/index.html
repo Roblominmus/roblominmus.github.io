@@ -350,8 +350,8 @@
                 "1 PM - 2 PM": "CAF - SWALLOW",
                 "2 PM - 5 PM": "DATABASE MANAGEMENT - BDEL LAB 1",
                 "5 PM - 6 PM": "CAF - RICE & BEANS",
-                "6:30 PM - 8:00 PM": "Hall Worship",
-                "8:30 PM - 10:00 PM": "School Stuff (Homework: Networking, DB)",
+                "6 PM - 7:30 PM": "Hall Worship",
+                "8 PM - 10:00 PM": "School Stuff (Homework: Networking, DB)",
                 "10:00 PM - 10:30 PM": "Lounging / Chat with Family"
             },
             "Wednesday": {
@@ -445,10 +445,13 @@
         
         function updateCurrentTimeDisplay() {
             const now = getCurrentWATTime();
-            const hours = String(now.getHours()).padStart(2, '0');
+            let hours = now.getHours();
             const minutes = String(now.getMinutes()).padStart(2, '0');
             const seconds = String(now.getSeconds()).padStart(2, '0');
-            currentTimeElement.textContent = `${hours}:${minutes}:${seconds}`;
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            if (hours === 0) hours = 12;
+            currentTimeElement.textContent = `${hours}:${minutes}:${seconds} ${ampm}`;
         }
         
         // Update time immediately and then every second
@@ -489,9 +492,18 @@
 
                 // Highlight current task if viewing today
                 if (isToday) {
-                    const [startStr, endStr] = time.split(' - ');
+                    // Support time ranges with AM/PM in both start and end
+                    let [startStr, endStr] = time.split(' - ');
+                    // If endStr is missing AM/PM, inherit from startStr
+                    if (startStr && endStr && !/(am|pm)/i.test(endStr) && /(am|pm)/i.test(startStr)) {
+                        const match = startStr.match(/(am|pm)/i);
+                        if (match) endStr = endStr + ' ' + match[1];
+                    }
                     const startTime = parseTime(startStr);
                     const endTime = parseTime(endStr);
+                    if (task === 'Hall Worship') {
+                        console.log(`Hall Worship: startStr="${startStr}" endStr="${endStr}" startTime=${startTime} endTime=${endTime} currentTime=${currentTime} isHighlighted=${currentTime >= startTime && currentTime <= endTime}`);
+                    }
                     if (currentTime >= startTime && currentTime <= endTime) {
                         row.classList.add('highlight');
                     }
@@ -519,7 +531,12 @@
 
             let foundCurrent = false;
             for (const [time, task] of Object.entries(dayTasks)) {
-                const [startStr, endStr] = time.split(' - ');
+                let [startStr, endStr] = time.split(' - ');
+                // If endStr is missing AM/PM, inherit from startStr
+                if (startStr && endStr && !/(am|pm)/i.test(endStr) && /(am|pm)/i.test(startStr)) {
+                    const match = startStr.match(/(am|pm)/i);
+                    if (match) endStr = endStr + ' ' + match[1];
+                }
                 const startTime = parseTime(startStr);
                 const endTime = parseTime(endStr);
                 if (currentTime >= startTime && currentTime <= endTime) {

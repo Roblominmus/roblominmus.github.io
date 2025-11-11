@@ -48,9 +48,7 @@
     </div>
     <div class="quiz-container rounded-xl shadow-xl p-6">
       <div id="chooser" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-        <button class="bg-blue-700/90 hover:bg-blue-800/90 text-white py-4 rounded-lg shadow-lg font-semibold text-lg transition" data-key="linux">Linux</button>
-        <button class="bg-indigo-700/90 hover:bg-indigo-800/90 text-white py-4 rounded-lg shadow-lg font-semibold text-lg transition" data-key="ai">AI Foundations</button>
-        <button class="bg-green-700/90 hover:bg-green-800/90 text-white py-4 rounded-lg shadow-lg font-semibold text-lg transition" data-key="db">Database Design</button>
+        <!-- Quiz buttons will be populated dynamically -->
       </div>
       <div id="quiz-area" class="hidden">
         <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-4 gap-2">
@@ -86,7 +84,8 @@
       ai: { label: 'AI Foundations', dataFile: '../data/ai-questions.js', htmlFile: 'aquiz.html' },
       db: { label: 'Database Design', dataFile: '../data/db-questions.js', htmlFile: 'dquiz.html' }
     };
-    const buttons = document.querySelectorAll('#chooser button');
+    
+    const chooser = document.getElementById('chooser');
     const quizArea = document.getElementById('quiz-area');
     const loader = document.getElementById('loader');
     const qCounter = document.getElementById('q-counter');
@@ -106,8 +105,32 @@
     let submittedAnswers = []; // Track which answers have been submitted/revealed
     let selectedAnswer = null; // Temporarily selected answer before submission
     let quizKey = null;
-
-    buttons.forEach(b => b.addEventListener('click', () => startLoad(b.dataset.key)));
+    
+    // Load quiz buttons dynamically
+    async function loadQuizButtons() {
+      try {
+        const response = await fetch('quizzes.json');
+        const quizzes = await response.json();
+        
+        chooser.innerHTML = '';
+        quizzes.forEach(quiz => {
+          const button = document.createElement('button');
+          button.className = `${quiz.color} text-white py-4 rounded-lg shadow-lg font-semibold text-lg transition`;
+          button.textContent = quiz.label;
+          
+          // Extract key from label (simple approach)
+          const key = quiz.label.toLowerCase().replace(' ', '-').split('-')[0];
+          button.addEventListener('click', () => startLoad(key));
+          
+          chooser.appendChild(button);
+        });
+      } catch (err) {
+        console.error('Failed to load quizzes:', err);
+        chooser.innerHTML = '<div class="text-center text-red-400">Failed to load quizzes</div>';
+      }
+    }
+    
+    document.addEventListener('DOMContentLoaded', loadQuizButtons);
 
     async function startLoad(key) {
       quizKey = key;

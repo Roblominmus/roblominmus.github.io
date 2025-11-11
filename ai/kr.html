@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge Representation Visualization</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Use Inter font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for the visualization */
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow: hidden; /* Hide scrollbars for the visualization layout */
+        }
+        
+        /* Light Mode */
+        body.light-mode {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            color: #1f2937;
+        }
+        
+        /* Dark Mode */
+        body.dark-mode {
+            background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+            color: #e5e7eb;
+        }
+
+        /* Main container for the mind map */
+        .mind-map-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Base style for all nodes */
+        .node {
+            position: absolute;
+            padding: 1.25rem 1.5rem; /* p-5 p-6 */
+            border-radius: 9999px; /* rounded-full */
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-weight: 600; /* font-semibold */
+        }
+        
+        body.light-mode .node {
+            background-color: white;
+            color: #1f2937;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        body.dark-mode .node {
+            background-color: rgba(31, 41, 55, 0.8);
+            color: #e5e7eb;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+
+        .node:hover {
+            transform: scale(1.05);
+            border-color: #3b82f6; /* border-blue-500 */
+        }
+        
+        body.light-mode .node:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        body.dark-mode .node:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Central node style */
+        .central-node {
+            font-size: 1.5rem; /* text-2xl */
+            padding: 2rem 2.5rem; /* p-8 p-10 */
+            z-index: 20; /* Ensure it's on top of lines */
+            background-color: #3b82f6; /* bg-blue-500 */
+            color: white;
+            border-color: #1d4ed8; /* border-blue-700 */
+        }
+
+        /* Positions for child nodes (using transform for centering) */
+        /* These will be adjusted for responsiveness via JS or could be hardcoded */
+        #logic { transform: translate(-20rem, -10rem); }
+        #rules { transform: translate(0, -15rem); }
+        #frames { transform: translate(20rem, -10rem); }
+        #semantic { transform: translate(-12rem, 12rem); }
+        #ontologies { transform: translate(12rem, 12rem); }
+
+        /* Connecting lines */
+        .line {
+            position: absolute;
+            height: 2px;
+            z-index: 1;
+            transform-origin: 0 0;
+        }
+        
+        body.light-mode .line {
+            background-color: #d1d5db;
+        }
+        
+        body.dark-mode .line {
+            background-color: #4b5563;
+        }
+
+        /* Modal styles */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 40;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+        
+        body.light-mode .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
+        body.dark-mode .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.75);
+        }
+
+        .modal-content {
+            border-radius: 0.75rem; /* rounded-lg */
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); /* shadow-2xl */
+            width: 90%;
+            max-width: 42rem; /* max-w-2xl */
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.95);
+            transition: all 0.3s ease;
+        }
+        
+        body.light-mode .modal-content {
+            background-color: white;
+            color: #1f2937;
+        }
+        
+        body.dark-mode .modal-content {
+            background-color: rgba(17, 24, 39, 0.95);
+            color: #e5e7eb;
+        }
+
+        .modal-overlay.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-overlay.visible .modal-content {
+            transform: scale(1);
+        }
+        
+        body.light-mode .modal-title {
+            color: #1e40af;
+        }
+        
+        body.dark-mode .modal-title {
+            color: #60a5fa;
+        }
+        
+        body.light-mode .modal-section-title {
+            color: #1f2937;
+        }
+        
+        body.dark-mode .modal-section-title {
+            color: #e5e7eb;
+        }
+        
+        body.light-mode .modal-text {
+            color: #374151;
+        }
+        
+        body.dark-mode .modal-text {
+            color: #d1d5db;
+        }
+        
+        body.light-mode .modal-border {
+            border-color: #e5e7eb;
+            background-color: #f9fafb;
+        }
+        
+        body.dark-mode .modal-border {
+            border-color: #4b5563;
+            background-color: rgba(31, 41, 55, 0.5);
+        }
+
+        /* Header styles */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        body.light-mode header {
+            color: #1f2937;
+        }
+        
+        body.dark-mode header {
+            color: #e5e7eb;
+        }
+        
+        .header-content {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .header-controls {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        
+        .mode-toggle, .back-btn {
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid;
+            transition: all 0.2s ease;
+        }
+        
+        body.light-mode .mode-toggle {
+            background-color: #e5e7eb;
+            color: #1f2937;
+            border-color: #d1d5db;
+        }
+        
+        body.light-mode .mode-toggle:hover {
+            background-color: #d1d5db;
+        }
+        
+        body.dark-mode .mode-toggle {
+            background-color: #374151;
+            color: #93c5fd;
+            border-color: #4b5563;
+        }
+        
+        body.dark-mode .mode-toggle:hover {
+            background-color: #4b5563;
+        }
+        
+        body.light-mode .back-btn {
+            background-color: #e5e7eb;
+            color: #1f2937;
+            border-color: #d1d5db;
+        }
+        
+        body.light-mode .back-btn:hover {
+            background-color: #d1d5db;
+        }
+        
+        body.dark-mode .back-btn {
+            background-color: #374151;
+            color: #93c5fd;
+            border-color: #4b5563;
+        }
+        
+        body.dark-mode .back-btn:hover {
+            background-color: #4b5563;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .node {
+                font-size: 0.875rem; /* text-sm */
+                padding: 0.75rem 1rem; /* p-3 p-4 */
+            }
+            .central-node {
+                font-size: 1.125rem; /* text-lg */
+                padding: 1.25rem 1.5rem; /* p-5 p-6 */
+            }
+            
+            /* Stack them vertically on mobile */
+            #logic { transform: translate(0, -13rem); }
+            #rules { transform: translate(0, -7rem); }
+            #frames { transform: translate(0, 7rem); }
+            #semantic { transform: translate(0, 13rem); }
+            #ontologies { transform: translate(0, 19rem); }
+
+            .modal-content {
+                width: 95%;
+            }
+            
+            header {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="dark-mode h-screen w-screen">
+
+    <!-- Title Header -->
+    <header class="absolute top-0 left-0 w-full p-6 z-30">
+        <div class="header-content">
+            <h1 class="text-3xl font-bold">Interactive Knowledge Representation</h1>
+            <p class="text-lg">Click on a concept to see its "Core Idea" and "Analogy"</p>
+        </div>
+        <div class="header-controls">
+            <button id="mode-toggle" class="mode-toggle" aria-label="Toggle dark/light mode">☀️</button>
+            <button onclick="history.back()" class="back-btn" title="Go Back">&larr; Back</button>
+        </div>
+    </header>
+
+    <!-- Visualization Area -->
+    <div id="mindMap" class="mind-map-container">
+        <!-- Connecting Lines will be injected here by JS -->
+
+        <!-- Central Node -->
+        <div id="kr" class="node central-node" data-concept="kr">
+            🧠<br>Knowledge Representation
+        </div>
+
+        <!-- Child Nodes -->
+        <div id="logic" class="node" data-concept="logic">
+            Logic
+        </div>
+        <div id="rules" class="node" data-concept="rules">
+            Rules
+        </div>
+        <div id="frames" class="node" data-concept="frames">
+            Frames
+        </div>
+        <div id="semantic" class="node" data-concept="semantic">
+            Semantic Networks
+        </div>
+        <div id="ontologies" class="node" data-concept="ontologies">
+            Ontologies
+        </div>
+    </div>
+
+    <!-- Modal Popup -->
+    <div id="modal" class="modal-overlay">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="flex justify-between items-center p-5 border-b modal-border">
+                <h2 id="modal-title" class="modal-title text-2xl font-bold"></h2>
+                <button id="close-modal" class="text-3xl modal-text">&times;</button>
+            </div>
+            <!-- Modal Body -->
+            <div class="p-6 space-y-6">
+                <!-- Core Idea Section -->
+                <div>
+                    <h3 class="modal-section-title text-xl font-semibold mb-2">The Core Idea</h3>
+                    <p id="modal-core-idea" class="modal-text leading-relaxed"></p>
+                </div>
+                <!-- Analogy Section -->
+                <div>
+                    <h3 class="modal-section-title text-xl font-semibold mb-2">The Analogy</h3>
+                    <div id="modal-analogy" class="modal-text leading-relaxed modal-border p-4 rounded-lg"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data object containing all the knowledge from your note
+        const conceptData = {
+            "kr": {
+                title: "🧠 Knowledge Representation (KR)",
+                coreIdea: "The core idea is to create a 'computer-readable' model of what we know. We need to find a formal structure to write down our human knowledge—our facts, rules, and common sense—so that an algorithm can process it effectively.",
+                analogy: "A **database** is like a **library's filing system**. It's fantastic at storing and retrieving specific, individual books (data).<br><br>**Knowledge Representation** is like a **human brain**. It doesn't just store the book; it *understands* it. It knows that 'War and Peace' is a *novel*, written by *Tolstoy*, set during the *Napoleonic Wars*. This rich map of connections is what allows for real reasoning."
+            },
+            "logic": {
+                title: "Logic",
+                coreIdea: "The core idea is to represent knowledge as formal, provable statements that are either TRUE or FALSE. It gives the AI a 'perfect' (but very rigid) way to reason and prove that a conclusion is valid.",
+                analogy: "A logic-based system is like a **perfectly written legal contract**.<br><ul><li class='list-disc ml-5'>Every term is **precisely defined** (the axioms).</li><li class='list-disc ml-5'>Every clause follows from the others with **no ambiguity** (the rules of inference).</li><li class='list-disc ml-5'>You can 'run' the contract to find out what happens... There is no 'maybe' or 'sort of.'</li></ul>"
+            },
+            "rules": {
+                title: "Rules (IF-THEN)",
+                coreIdea: "The core idea is to capture cause-and-effect or situational knowledge in a simple, intuitive format. It's excellent for encoding the 'rules of thumb' that a human expert would use.",
+                analogy: "A rule-based system is like a **smart thermostat**.<br><ul><li class='list-disc ml-5'>**Rule 1:** `IF` the time is between 6 AM and 9 AM `AND` motion is detected, `THEN` set temperature to 21°C.</li><li class='list-disc ml-5'>**Rule 2:** `IF` the time is between 10 AM and 4 PM `AND` no motion is detected for 60 minutes, `THEN` set temperature to 18°C.</li></ul>"
+            },
+            "frames": {
+                title: "Frames",
+                coreIdea: "The core idea is to organize knowledge about objects and their properties in a way that is similar to a 'fill-in-the-blanks' form. It's a way of grouping related information together.",
+                analogy: "A frame is exactly like a **baseball card**.<br><ul><li class='list-disc ml-5'>**Frame:** `Baseball_Player`</li><li class='list-disc ml-5'>**Slots:**</li><li class='list-disc ml-8'>`Name:` [Must be a string]</li><li class='list-disc ml-8'>`Team:` [Must be from a list of 'MLB Teams']</li><li class='list-disc ml-8'>`Batting_Average:` [Must be a number]</li></ul>"
+            },
+            "semantic": {
+                title: "Semantic Networks",
+                coreIdea: "The core idea is to create a visual map of how concepts are connected to each other. It's very good at showing hierarchies and inheritance (e.g., 'Tweety' *is-a* 'Canary,' which *is-a* 'Bird,' so 'Tweety' *can* 'Fly').",
+                analogy: "A semantic network is a **formal version of a mind map**. You start with a central idea (like 'Dog') and draw lines to all the related concepts:<br><ul><li class='list-disc ml-5'>Dog `---(is-a)--->` Mammal</li><li class='list-disc ml-5'>Dog `---(has-part)--->` Tail</li><li class='list-disc ml-5'>Dog `---(makes-sound)--->` 'Bark'</li></ul>"
+            },
+            "ontologies": {
+                title: "Ontologies",
+                coreIdea: "The core idea is to create a complete and formal 'dictionary of everything' for a specific topic (a 'domain'). It's a shared vocabulary that allows different systems (or people) to communicate without ambiguity.",
+                analogy: "An ontology is like the **full biological classification system (with rules)**.<br><ul><li class='list-disc ml-5'>It defines the **concepts**: 'Mammal,' 'Reptile.'</li><li class='list-disc ml-5'>It defines the **hierarchy**: A 'Bird' *is-a* 'Vertebrate.'</li><li class='list-disc ml-5'>It adds **strict rules (logic)**: `IF` an animal `is-a` 'Mammal' `AND` it `is-a` 'Platypus,' `THEN` it *is an exception* to the 'Gives-Live-Birth' rule.</li></ul>"
+            }
+        };
+
+        // Modal elements
+        const modal = document.getElementById('modal');
+        const closeModalBtn = document.getElementById('close-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalCoreIdea = document.getElementById('modal-core-idea');
+        const modalAnalogy = document.getElementById('modal-analogy');
+
+        // Function to show the modal
+        function showModal(conceptKey) {
+            const data = conceptData[conceptKey];
+            if (data) {
+                modalTitle.textContent = data.title;
+                modalCoreIdea.innerHTML = data.coreIdea;
+                modalAnalogy.innerHTML = data.analogy;
+                modal.classList.add('visible');
+            }
+        }
+
+        // Function to hide the modal
+        function hideModal() {
+            modal.classList.remove('visible');
+        }
+
+        // Add click listeners to all nodes
+        document.querySelectorAll('.node').forEach(node => {
+            node.addEventListener('click', (e) => {
+                // Get the concept key from the data-concept attribute
+                const conceptKey = e.currentTarget.dataset.concept;
+                showModal(conceptKey);
+            });
+        });
+
+        // Add click listener to close modal
+        closeModalBtn.addEventListener('click', hideModal);
+        // Also close modal if clicking on the overlay
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                hideModal();
+            }
+        });
+
+        // --- Draw connecting lines ---
+        // This is a bit more complex, we'll draw simple lines from the
+        // central node to each child node.
+        const mindMapContainer = document.getElementById('mindMap');
+        const centralNode = document.getElementById('kr');
+
+        function drawLines() {
+            // Clear existing lines
+            document.querySelectorAll('.line').forEach(line => line.remove());
+
+            const childNodes = document.querySelectorAll('.node:not(.central-node)');
+            const centralRect = centralNode.getBoundingClientRect();
+            const containerRect = mindMapContainer.getBoundingClientRect();
+
+            // Calculate center of the central node relative to the container
+            const centralX = centralRect.left - containerRect.left + centralRect.width / 2;
+            const centralY = centralRect.top - containerRect.top + centralRect.height / 2;
+
+            childNodes.forEach(child => {
+                const childRect = child.getBoundingClientRect();
+                // Calculate center of the child node relative to the container
+                const childX = childRect.left - containerRect.left + childRect.width / 2;
+                const childY = childRect.top - containerRect.top + childRect.height / 2;
+
+                // Calculate properties for the line
+                const deltaX = childX - centralX;
+                const deltaY = childY - centralY;
+                const length = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+                const angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI);
+
+                // Create the line element
+                const line = document.createElement('div');
+                line.className = 'line';
+                line.style.width = `${length}px`;
+                line.style.left = `${centralX}px`;
+                line.style.top = `${centralY}px`;
+                line.style.transform = `rotate(${angle}deg)`;
+                
+                mindMapContainer.appendChild(line);
+            });
+        }
+        
+        // Initial draw
+        window.onload = drawLines;
+        // Redraw on window resize
+        window.onresize = drawLines;
+
+    </script>
+
+        <!-- Theme Manager -->
+        <script src="../assets/theme.js"></script>
+    </body>
+    </html>

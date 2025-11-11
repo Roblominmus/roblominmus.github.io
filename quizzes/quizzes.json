@@ -1,0 +1,17 @@
+[
+  {
+    "dataFile": "../data/linux-questions.js",
+    "label": "Linux",
+    "color": "bg-blue-700/90 hover:bg-blue-800/90"
+  },
+  {
+    "dataFile": "../data/ai-questions.js",
+    "label": "AI Foundations",
+    "color": "bg-indigo-700/90 hover:bg-indigo-800/90"
+  },
+  {
+    "dataFile": "../data/db-questions.js",
+    "label": "Database Design",
+    "color": "bg-green-700/90 hover:bg-green-800/90"
+  }
+]

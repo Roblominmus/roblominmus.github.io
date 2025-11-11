@@ -30,8 +30,8 @@
       <h1 class="text-4xl font-extrabold tracking-tight">AI Visualizations</h1>
       <button id="mode-toggle" class="mode-toggle px-4 py-2 rounded font-semibold transition" aria-label="Toggle dark/light mode">☀️</button>
     </div>
-    <div class="w-full grid grid-cols-1 gap-4 mb-6">
-      <a class="block p-4 rounded-xl bg-indigo-700/90 hover:bg-indigo-800/90 text-white text-center text-lg font-semibold shadow-lg transition" href="tic-tac-toe-minimax.html">Tic-Tac-Toe (Minimax) — Thought Process Log</a>
+    <div id="sites-grid" class="w-full grid grid-cols-1 gap-4 mb-6">
+      <!-- Sites will be populated dynamically -->
     </div>
     <div class="w-full flex justify-end">
       <button onclick="history.back()" class="px-4 py-2 bg-gray-700 text-gray-200 rounded hover:bg-gray-600 transition">&larr; Back</button>
@@ -40,5 +40,28 @@
   </div>
 
   <script src="../assets/theme.js"></script>
-</body>
-</html>
+  
+  <script>
+    // Dynamically load and populate AI sites
+    async function loadAISites() {
+      const grid = document.getElementById('sites-grid');
+      try {
+        const response = await fetch('sites.json');
+        const sites = await response.json();
+        
+        grid.innerHTML = '';
+        sites.forEach(site => {
+          const link = document.createElement('a');
+          link.href = site.file;
+          link.className = 'block p-4 rounded-xl bg-indigo-700/90 hover:bg-indigo-800/90 text-white text-center text-lg font-semibold shadow-lg transition';
+          link.textContent = site.title;
+          grid.appendChild(link);
+        });
+      } catch (err) {
+        console.error('Failed to load sites:', err);
+        grid.innerHTML = '<div class="text-center text-red-400">Failed to load sites</div>';
+      }
+    }
+    
+    document.addEventListener('DOMContentLoaded', loadAISites);
+  </script>
