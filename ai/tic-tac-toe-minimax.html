@@ -11,74 +11,106 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6; /* Light gray background for light mode */
         }
-        .dark body {
-            background-color: #111827; /* Dark gray background for dark mode */
+        body.light-mode {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            color: #111827;
+        }
+        body.dark-mode {
+            background: linear-gradient(135deg, #18181b 0%, #27272a 100%);
+            color: #f3f4f6;
+        }
+        /* Container styling */
+        body.light-mode #container {
+            background-color: #ffffff;
+            color: #111827;
+        }
+        body.dark-mode #container {
+            background-color: rgba(31, 41, 55, 0.95);
+            color: #f3f4f6;
         }
         .card {
-            background-color: #ffffff;
             border-radius: 0.75rem; /* rounded-xl */
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
             padding: 1.5rem; /* p-6 */
             margin-bottom: 2rem; /* mb-8 */
+            transition: background-color 0.2s, color 0.2s;
         }
-        .dark .card {
+        body.light-mode .card {
+            background-color: #ffffff;
+            color: #111827;
+        }
+        body.dark-mode .card {
             background-color: #1f2937; /* gray-800 */
+            color: #f3f4f6;
         }
         .card-title {
             font-size: 1.5rem; /* text-2xl */
             font-weight: 700; /* font-bold */
+        }
+        body.light-mode .card-title {
             color: #111827; /* gray-900 */
         }
-        .dark .card-title {
+        body.dark-mode .card-title {
             color: #ffffff;
         }
         .card-subtitle {
             font-size: 1rem; /* text-lg */
             font-weight: 500;
-            color: #4b5563; /* gray-600 */
             margin-bottom: 1rem; /* mb-4 */
         }
-        .dark .card-subtitle {
+        body.light-mode .card-subtitle {
+            color: #4b5563; /* gray-600 */
+        }
+        body.dark-mode .card-subtitle {
             color: #d1d5db; /* gray-300 */
         }
         .log {
             font-family: monospace;
-            background-color: #f9fafb; /* gray-50 */
-            border: 1px solid #e5e7eb; /* gray-200 */
             border-radius: 0.5rem; /* rounded-lg */
             padding: 1rem; /* p-4 */
             height: 300px;
             overflow-y: auto;
             font-size: 0.875rem; /* text-sm */
+            transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+        }
+        body.light-mode .log {
+            background-color: #f9fafb; /* gray-50 */
+            border: 1px solid #e5e7eb; /* gray-200 */
             color: #374151; /* gray-700 */
         }
-        .dark .log {
+        body.dark-mode .log {
             background-color: #374151; /* gray-700 */
-            border-color: #4b5563; /* gray-600 */
+            border: 1px solid #4b5563; /* gray-600 */
             color: #e5e7eb; /* gray-200 */
         }
         .log-entry {
             white-space: pre-wrap;
-            border-bottom: 1px solid #e5e7eb; /* gray-200 */
             padding-bottom: 4px;
             margin-bottom: 4px;
+            transition: border-color 0.2s;
         }
-        .dark .log-entry {
-            border-color: #4b5563; /* gray-600 */
+        body.light-mode .log-entry {
+            border-bottom: 1px solid #e5e7eb; /* gray-200 */
+        }
+        body.dark-mode .log-entry {
+            border-bottom: 1px solid #4b5563; /* gray-600 */
         }
         .log-entry.decision {
             font-weight: bold;
+        }
+        body.light-mode .log-entry.decision {
             color: #059669; /* emerald-600 */
         }
-        .dark .log-entry.decision {
+        body.dark-mode .log-entry.decision {
             color: #a7f3d0; /* emerald-200 */
         }
         .log-entry.eval {
+        }
+        body.light-mode .log-entry.eval {
             color: #4f46e5; /* indigo-600 */
         }
-        .dark .log-entry.eval {
+        body.dark-mode .log-entry.eval {
             color: #a5b4fc; /* indigo-300 */
         }
         .btn {
@@ -105,7 +137,6 @@
         .tic-tac-toe-cell {
             width: 100%;
             height: 100%;
-            background-color: #e5e7eb; /* gray-200 */
             border-radius: 0.5rem; /* rounded-lg */
             display: flex;
             justify-content: center;
@@ -114,13 +145,16 @@
             transition: background-color 0.2s;
             position: relative; /* For positioning the label */
         }
-        .dark .tic-tac-toe-cell {
+        body.light-mode .tic-tac-toe-cell {
+            background-color: #e5e7eb; /* gray-200 */
+        }
+        body.dark-mode .tic-tac-toe-cell {
             background-color: #4b5563; /* gray-600 */
         }
-        .tic-tac-toe-cell:hover {
+        body.light-mode .tic-tac-toe-cell:hover {
             background-color: #d1d5db; /* gray-300 */
         }
-        .dark .tic-tac-toe-cell:hover {
+        body.dark-mode .tic-tac-toe-cell:hover {
             background-color: #525f76; /* gray-500 */
         }
         
@@ -131,10 +165,13 @@
             left: 8px;
             font-size: 0.875rem; /* text-sm */
             font-weight: normal;
+            transition: color 0.2s;
+        }
+        body.light-mode .cell-label {
             color: #9ca3af; /* gray-400 */
         }
-        .dark .cell-label {
-            color: #374151; /* gray-700 */
+        body.dark-mode .cell-label {
+            color: #6b7280; /* gray-500 for better visibility in dark */
         }
         
         /* Cell Content (X or O) */
@@ -153,14 +190,14 @@
         }
     </style>
 </head>
-<body style="background:linear-gradient(135deg,#18181b 0%,#27272a 100%);color:#f3f4f6;min-height:100vh;" class="ttt-dark-mode">
+<body class="min-h-screen transition-colors duration-200">
 
-    <div id="container" class="max-w-3xl mx-auto my-8 p-8 bg-white dark:bg-gray-800/95 rounded-2xl shadow-2xl">
+    <div id="container" class="max-w-3xl mx-auto my-8 p-8 rounded-2xl shadow-2xl transition-colors duration-200">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
             <h1 style="font-size:2rem;font-weight:800;margin:0;">Tic-Tac-Toe Minimax</h1>
             <button id="mode-toggle" class="mode-toggle px-4 py-2 rounded font-semibold transition" aria-label="Toggle dark/light mode">☀️</button>
         </div>
-    <h2 class="text-2xl text-center text-gray-600 dark:text-gray-300 mb-10">Section 5: Simple Minimax Algorithm</h2>
+    <h2 class="text-2xl text-center mb-10" style="opacity: 0.8;">Section 5: Simple Minimax Algorithm</h2>
 
         <!-- Section 1: Minimax (Tic-Tac-Toe) -->
         <section class="card">
@@ -179,7 +216,7 @@
 
                 <!-- Log -->
                 <div class="flex-grow">
-                    <h3 class="text-lg font-semibold dark:text-white">AI Thought Process (Scores: +10=AI Win, -10=You Win, 0=Draw):</h3>
+                    <h3 class="text-lg font-semibold mb-2">AI Thought Process (Scores: +10=AI Win, -10=You Win, 0=Draw):</h3>
                     <div id="log" class="log"></div>
                     <div style="margin-top:2rem;text-align:center;">
                         <button onclick="history.back()" style="background:#333;color:#fff;padding:0.5em 1.5em;border-radius:6px;border:none;box-shadow:0 2px 8px #0002;cursor:pointer;">&larr; Back</button>
