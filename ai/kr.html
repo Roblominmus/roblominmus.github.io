@@ -104,6 +104,14 @@
         body.dark-mode .action-button span {
             color: #cbd5e1;
         }
+
+        /* Checkbox styling */
+        .form-checkbox {
+            @apply w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600;
+        }
+        .form-label {
+            @apply ml-2 text-sm font-medium text-gray-900 dark:text-gray-300;
+        }
         
         /* Modal styling */
         body.light-mode #modal-panel {
@@ -152,17 +160,24 @@
         }
         
         /* Input styling */
-        body.light-mode input {
-            background-color: #f1f5f9;
+        body.light-mode input[type="text"] {
+            background-color: #f8fafc;
             border-color: #cbd5e1;
             color: #0f172a;
         }
         
-        body.dark-mode input {
+        body.dark-mode input[type="text"] {
             background-color: #334155;
             border-color: #475569;
             color: #f1f5f9;
         }
+        body.light-mode input.readonly-input {
+            background-color: #f1f5f9;
+        }
+        body.dark-mode input.readonly-input {
+            background-color: #334155;
+        }
+
         
         /* Course registration box styling */
         body.light-mode .bg-blue-50 {
@@ -184,6 +199,36 @@
         body.dark-mode .text-blue-700 {
             color: #93c5fd !important;
         }
+
+        /* Recommendation box styling */
+        body.light-mode .rec-box {
+            border-color: #facc15 !important;
+            background-color: #fefce8 !important;
+        }
+        body.light-mode .rec-box:hover {
+            background-color: #fef9c3 !important;
+        }
+        body.light-mode .rec-box strong {
+            color: #a16207 !important;
+        }
+        body.light-mode .rec-box span {
+            color: #ca8a04 !important;
+        }
+
+        body.dark-mode .rec-box {
+            border-color: #ca8a04 !important;
+            background-color: #2a2108 !important;
+        }
+        body.dark-mode .rec-box:hover {
+            background-color: #3b300c !important;
+        }
+        body.dark-mode .rec-box strong {
+            color: #fde047 !important;
+        }
+        body.dark-mode .rec-box span {
+            color: #eab308 !important;
+        }
+
         
         /* Header container */
         .header-container {
@@ -224,6 +269,11 @@
             border: none;
             cursor: pointer;
         }
+
+        /* Hide back button initially */
+        .back-btn {
+            display: none;
+        }
         
         body.light-mode .mode-toggle {
             background-color: #3b82f6;
@@ -260,6 +310,11 @@
         body.dark-mode .back-btn:hover {
             background-color: #334155;
         }
+
+        /* Main action button */
+        /* .primary-button {
+             @apply w-full bg-blue-600 text-white font-medium py-3 px-6 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200;
+        } */
         
         /* Responsive adjustments */
         @media (max-width: 768px) {
@@ -280,9 +335,9 @@
     <!-- Main Scenario "App" Window -->
     <main id="scenario-container" class="w-full max-w-2xl mx-auto p-6 md:p-10 rounded-lg shadow-2xl">
         <div class="header-container">
-            <h1 class="header-title">University Portal</h1>
+            <h1 id="header-title" class="header-title">KR Lab</h1>
             <div class="button-group">
-                <button id="back-btn" class="back-btn" onclick="history.back()" title="Go back">
+                <button id="back-btn" class="back-btn" title="Go back" onclick="history.back()">
                     ← Back
                 </button>
                 <button id="mode-toggle" class="mode-toggle" title="Toggle theme">
@@ -311,7 +366,6 @@
         </div>
     </div>
 
-    <script src="../assets/theme.js"></script>
     <script>
         // --- DOM Elements ---
         const contentArea = document.getElementById('content-area');
@@ -321,22 +375,34 @@
         const modalBody = document.getElementById('modal-body');
         const modalClose = document.getElementById('modal-close');
         const modalCloseX = document.getElementById('modal-close-x');
+        const themeToggle = document.getElementById('mode-toggle');
+        const body = document.body;
+        const headerTitle = document.getElementById('header-title');
+        const backBtn = document.getElementById('back-btn');
 
-        // --- Simulated Student Data ---
-        const student = {
-            name: "John Doe",
-            matric: "CSC/2021/042",
-            cgpa: 4.35,
-            status: "Active",
-            passedCourses: ["CSC 301", "MTH 301", "GNS 101"],
-            registeredCourses: [] // Track added courses
-        };
+        // --- Global State ---
+        let student = {}; // This will hold the *active* student object
+        let currentScreen = ''; // To manage back button state
 
         // --- Simulated Course Data ---
         const courses = {
             "CSC 405": { title: "Artificial Intelligence", prereq: "CSC 301" },
             "CSC 407": { title: "Compiler Construction", prereq: "CSC 303" }
         };
+
+        // --- Theme Toggle Logic ---
+        function setTheme(theme) {
+            body.className = theme + '-mode flex items-center justify-center min-h-screen p-4 md:p-8';
+            themeToggle.textContent = (theme === 'dark') ? '☀️' : '🌙';
+            localStorage.setItem('theme', theme);
+        }
+        themeToggle.addEventListener('click', () => {
+            const newTheme = body.classList.contains('dark-mode') ? 'light' : 'dark';
+            setTheme(newTheme);
+        });
+        // Initial theme setup
+        setTheme(localStorage.getItem('theme') || 'dark');
+
 
         // --- Modal Functions ---
         function showModal(title, bodyHTML) {
@@ -366,29 +432,166 @@
             }
         });
 
+        // --- Back Button Logic ---
+        /* REMOVED: State-based back button listener
+        backBtn.addEventListener('click', () => {
+            if (currentScreen === 'login') {
+                renderPersonaCreator();
+            } else if (currentScreen === 'dashboard') {
+                renderLogin();
+            } else if (currentScreen === 'courses') {
+                renderDashboard();
+            }
+        });
+        */
+
+        function setScreen(screenName) {
+            currentScreen = screenName;
+            backBtn.style.display = 'inline-block'; // ALWAYS show the back button
+            if (screenName === 'creator') {
+                headerTitle.textContent = "KR Lab: Create Persona";
+                // backBtn.style.display = 'none'; // REMOVED
+            } else if (screenName === 'login') {
+                headerTitle.textContent = "University Portal";
+                // backBtn.style.display = 'inline-block'; // REMOVED (now handled above)
+            } else if (screenName === 'dashboard') {
+                headerTitle.textContent = "Student Dashboard";
+                // backBtn.style.display = 'inline-block'; // REMOVED (now handled above)
+            } else if (screenName === 'courses') {
+                headerTitle.textContent = "Course Registration";
+                // backBtn.style.display = 'inline-block'; // REMOVED (now handled above)
+            }
+        }
+
+
         // --- Scenario Rendering Functions ---
 
         /**
-         * Renders the initial welcome/login screen
+         * NEW: Renders the initial Persona Creator Screen
+         */
+        function renderPersonaCreator() {
+            setScreen('creator');
+            contentArea.innerHTML = `
+                <header class="mb-6">
+                    <h1 class="text-2xl font-semibold">Create Your Student Persona</h1>
+                    <p class="text-base" style="opacity: 0.8;">Fill out the <strong>Frame</strong> (template) to create a student. The system's <strong>Rules</strong> will react to the data you provide.</p>
+                </header>
+                <div class="space-y-4">
+                    <!-- Field for Name -->
+                    <div>
+                        <label for="student-name" class="block text-sm font-medium" style="opacity: 0.9;">Student Name</label>
+                        <input type="text" id="student-name" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm" placeholder="e.g., 'Bisi Adewale'">
+                    </div>
+                    
+                    <!-- Checkboxes for Passed Courses -->
+                    <div class="pt-2">
+                        <label class="block text-sm font-medium" style="opacity: 0.9;">Passed Courses (Transcript)</label>
+                        <div class="mt-2 space-y-2">
+                            <div class="flex items-center">
+                                <input id="prereq-csc301" type="checkbox" value="CSC 301" class="form-checkbox">
+                                <label for="prereq-csc301" class="form-label">CSC 301 (AI Prerequisite)</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="prereq-csc303" type="checkbox" value="CSC 303" class="form-checkbox">
+                                <label for="prereq-csc303" class="form-label">CSC 303 (Compiler Prerequisite)</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="prereq-gns101" type="checkbox" value="GNS 101" class="form-checkbox">
+                                <label for="prereq-gns101" class="form-label">GNS 101 (Use of English)</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="pt-4 flex justify-center">
+                        <button id="start-simulation-btn" class="bg-blue-600 text-white font-medium py-3 px-6 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200">
+                            Start Simulation
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('start-simulation-btn').addEventListener('click', handleCreatePersona);
+        }
+
+        /**
+         * NEW: Handles creating the student and moving to login
+         */
+        function handleCreatePersona() {
+            const studentName = document.getElementById('student-name').value || "Default Student";
+            const passedCourses = [];
+            
+            if (document.getElementById('prereq-csc301').checked) {
+                passedCourses.push("CSC 301");
+            }
+            if (document.getElementById('prereq-csc303').checked) {
+                passedCourses.push("CSC 303");
+            }
+            if (document.getElementById('prereq-gns101').checked) {
+                passedCourses.push("GNS 101");
+            }
+
+            // Create the student object (the Frame Instance)
+            student = {
+                name: studentName,
+                matric: "CSC/2024/001", // A dynamic one
+                cgpa: 3.5 + (Math.random() * 1.5).toFixed(2), // Random CGPA
+                status: "Active",
+                passedCourses: passedCourses,
+                registeredCourses: []
+            };
+            
+            // Show a modal explaining what just happened (Frame creation)
+            showModal(
+                "KNOWLEDGE IN ACTION: 3. Frames",
+                `
+                <p>You just created an <strong>instance</strong> of a <strong>Frame</strong>.</p>
+                <p>The "Student" template (the Frame) was filled with your custom data. The system will now use this specific "instance" for the simulation.</p>
+                <div class="font-mono text-sm bg-slate-100 p-3 rounded-md">
+                    <strong>Frame Instance:</strong>
+                    <br>
+                    - Name: "${student.name}"
+                    <br>
+                    - Passed: [${student.passedCourses.join(', ')}]
+                </div>
+                <p>Click "Continue" to log in as this new student.</p>
+                `
+            );
+            
+            // Go to login screen after modal is closed
+            const onModalClose = () => {
+                renderLogin();
+                modalClose.removeEventListener('click', onModalClose);
+                modalCloseX.removeEventListener('click', onModalClose);
+            };
+            modalClose.addEventListener('click', onModalClose);
+            modalCloseX.addEventListener('click', onModalClose);
+        }
+
+
+        /**
+         * Renders the welcome/login screen
          */
         function renderLogin() {
+            setScreen('login');
             contentArea.innerHTML = `
                 <header class="mb-6 text-center">
                     <p class="text-lg mt-2" style="opacity: 0.8;">Knowledge Representation Lab</p>
                 </header>
                 <div class="space-y-4 max-w-md mx-auto">
-                    <p class="text-center" style="opacity: 0.9;">Let's begin the course registration simulation.</p>
+                    <p class="text-center" style="opacity: 0.9;">You are logging in as <strong>${student.name}</strong>.</p>
                     <div>
                         <label for="matric" class="block text-sm font-medium" style="opacity: 0.9;">Matriculation Number</label>
-                        <input type="text" id="matric" value="${student.matric}" readonly class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm cursor-not-allowed">
+                        <input type="text" id="matric" value="${student.matric}" readonly class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm cursor-not-allowed readonly-input">
                     </div>
                     <div>
                         <label for="password" class="block text-sm font-medium" style="opacity: 0.9;">Password</label>
-                        <input type="password" id="password" value="************" readonly class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm cursor-not-allowed">
+                        <input type="password" id="password" value="************" readonly class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm cursor-not-allowed readonly-input">
                     </div>
-                    <button id="login-button" class="w-full bg-blue-600 text-white font-medium py-3 px-6 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200">
-                        Login
-                    </button>
+                    <div class="flex justify-center">
+                        <button id="login-button" class="bg-blue-600 text-white font-medium py-3 px-6 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200">
+                            Login
+                        </button>
+                    </div>
                 </div>
             `;
             
@@ -399,6 +602,7 @@
          * Renders the student dashboard with choices
          */
         function renderDashboard() {
+            setScreen('dashboard');
             contentArea.innerHTML = `
                 <header class="mb-6">
                     <h1 class="text-2xl font-semibold">Welcome, ${student.name}</h1>
@@ -418,28 +622,29 @@
                         <span>Verify clearance and Senate approval.</span>
                     </button>
                 </div>
-                <button id="logout-button" class="mt-8 text-sm" style="opacity: 0.7;">Log Out</button>
+                <button id="logout-button" class="mt-8 text-sm" style="opacity: 0.7;">&larr; Change Student (Log Out)</button>
             `;
 
             // Attach new event listeners
             document.getElementById('profile-button').addEventListener('click', handleViewProfile);
             document.getElementById('register-button').addEventListener('click', renderCourseList);
             document.getElementById('graduate-button').addEventListener('click', handleGraduationCheck);
-            document.getElementById('logout-button').addEventListener('click', renderLogin);
+            document.getElementById('logout-button').addEventListener('click', renderPersonaCreator);
         }
 
         /**
          * Renders the course registration page
          */
         function renderCourseList() {
+            setScreen('courses');
             contentArea.innerHTML = `
                 <header class="mb-6">
                     <h1 class="text-2xl font-semibold">Course Registration</h1>
                     <p class="text-base" style="opacity: 0.8;">Attempt to add a 400-Level elective.</p>
                 </header>
                 <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg mb-6">
-                    <h4 class="font-semibold text-blue-800">Your (Simulated) Transcript:</h4>
-                    <p class="text-sm text-blue-700">You have passed: ${student.passedCourses.join(', ')}</p>
+                    <h4 class="font-semibold text-blue-800">Your Custom Transcript:</h4>
+                    <p class="text-sm text-blue-700">You have passed: ${student.passedCourses.length > 0 ? student.passedCourses.join(', ') : 'None'}</p>
                 </div>
                 
                 <div class="space-y-4">
@@ -480,7 +685,7 @@
                 <!-- NEW: Placeholder for Semantic Net recommendations -->
                 <div id="recommendation-box" class="mt-6"></div>
 
-                <button id="back-button" class="mt-8 text-sm" style="opacity: 0.7;">&larr; Back to Dashboard</button>
+                <button id="back-to-dash-button" class="mt-8 text-sm" style="opacity: 0.7;">&larr; Back to Dashboard</button>
             `;
 
             // --- NEW: Logic to update button states and show recommendations ---
@@ -492,9 +697,9 @@
             if (student.registeredCourses.includes("CSC 405")) {
                 const recBox = document.getElementById('recommendation-box');
                 recBox.innerHTML = `
-                    <button id="show-semantic-modal" class="w-full text-left p-4 rounded-lg border border-yellow-300 bg-yellow-50 hover:bg-yellow-100 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-yellow-500 transition-all duration-150">
-                        <strong class="block text-lg font-semibold text-yellow-800">Recommendations</strong>
-                        <span class="text-sm text-yellow-700">Because you added AI, you might like Machine Learning or Data Mining. <strong>Click to see why.</strong></span>
+                    <button id="show-semantic-modal" class="action-button rec-box">
+                        <strong>Recommendations</strong>
+                        <span>Because you added AI, you might like Machine Learning or Data Mining. <strong>Click to see why.</strong></span>
                     </button>
                 `;
                 document.getElementById('show-semantic-modal').addEventListener('click', handleShowSemanticModal);
@@ -506,7 +711,7 @@
             document.querySelectorAll('.add-course-btn').forEach(button => {
                 button.addEventListener('click', (e) => handleAddCourse(e.target.dataset.course, e.target));
             });
-            document.getElementById('back-button').addEventListener('click', renderDashboard);
+            document.getElementById('back-to-dash-button').addEventListener('click', renderDashboard);
         }
         
         /**
@@ -517,6 +722,8 @@
             const btn407 = document.getElementById('btn-csc407');
             const btn101 = document.getElementById('btn-gns101');
 
+            if (!btn405) return; // In case we're on another screen
+
             // Check CSC 405
             if (student.registeredCourses.includes("CSC 405")) {
                 styleButton(btn405, "Added", "disabled");
@@ -526,15 +733,12 @@
             if (student.registeredCourses.includes("CSC 407")) {
                 styleButton(btn407, "Added", "disabled");
             } 
-            // REMOVED: else if (!student.passedCourses.includes(courses["CSC 407"].prereq)) { ... }
-            // This logic was firing on page load, which was incorrect.
-            // It should only fire on click, which handleAddCourse does.
 
             // Check GNS 101
-            // REMOVED: if (student.passedCourses.includes("GNS 101")) { ... }
-            // This logic was also firing on page load.
-            // We want the user to click it and see *why* it fails.
-            if (student.registeredCourses.includes("GNS 101")) {
+            if (student.passedCourses.includes("GNS 101")) {
+                // You can't *add* it, but we'll let the click handler explain why
+                styleButton(btn101, "Passed", "disabled");
+            } else if (student.registeredCourses.includes("GNS 101")) {
                 styleButton(btn101, "Added", "disabled");
             }
         }
@@ -550,8 +754,14 @@
             
             if (state === "disabled") {
                 button.classList.add('bg-slate-400', 'cursor-not-allowed');
+                if (body.classList.contains('dark-mode')) {
+                    button.classList.add('dark:bg-slate-600');
+                }
             } else if (state === "failed") {
                 button.classList.add('bg-red-500', 'cursor-not-allowed');
+                if (body.classList.contains('dark-mode')) {
+                    button.classList.add('dark:bg-red-700');
+                }
             }
         }
         
@@ -564,13 +774,13 @@
                 "KNOWLEDGE IN ACTION: 4. Semantic Networks",
                 `
                 <p><strong>How did the system know these courses were related?</strong></p>
-                <p>It's not just a keyword match. It's navigating a "mind map" (a Semantic Network) that defines relationships.</p>
+                <p>This recommendation is <strong>not</strong> based on your custom profile. It's a "mind map" (a Semantic Network) that defines relationships between *concepts*.</p>
                 <div class="font-mono text-sm bg-slate-100 p-3 rounded-md">
                     (AI) ---[has-subfield]---> (Machine Learning)
                     <br>
                     (AI) ---[uses-technique]---> (Data Mining)
                 </div>
-                <p>By traversing this graph, the system can make intelligent recommendations.</p>
+                <p>By traversing this graph, the system can make intelligent recommendations, regardless of who the student is.</p>
                 `
             );
          }
@@ -590,11 +800,10 @@
                     <br>
                     THEN GrantAccess = <strong>TRUE</strong>
                 </div>
-                <p>Like a "Legal Contract," the rule is rigid and unambiguous. Access is granted.</p>
+                <p>Like a "Legal Contract," this rule is rigid and unambiguous. It doesn't care *who* you are, only that the credentials are valid.</p>
                 `
             );
             // Render the next screen (dashboard) after modal is closed
-            // We can do this by attaching a one-time listener to the close button
             const onModalClose = () => {
                 renderDashboard();
                 modalClose.removeEventListener('click', onModalClose);
@@ -609,8 +818,8 @@
             showModal(
                 "KNOWLEDGE IN ACTION: 3. Frames",
                 `
-                <p>The system just retrieved your student data using a <strong>Frame</strong>.</p>
-                <p>A Frame is a "template" (like a digital baseball card) for a stereotyped object. Your profile is an <strong>instance</strong> of a 'Student' frame.</p>
+                <p>This is the <strong>Frame Instance</strong> you just created.</p>
+                <p>The system is simply displaying the data you provided, perfectly organized into the "Student" template (the Frame).</p>
                 <div class="font-mono text-sm bg-slate-100 p-3 rounded-md">
                     <strong>Frame:</strong> Student_Profile
                     <br>
@@ -620,9 +829,9 @@
                     <br>
                     - CGPA: ${student.cgpa}
                     <br>
-                    - Status: "${student.status}"
+                    - Passed: [${student.passedCourses.join(', ')}]
                 </div>
-                <p>This groups related data together in a structured way.</p>
+                <p>This is the data the system will use to make decisions.</p>
                 `
             );
             // This action doesn't change the screen, just shows info.
@@ -639,11 +848,11 @@
                     "KNOWLEDGE IN ACTION: 2. Rules (IF-THEN)",
                     `
                     <p><strong class="text-green-600">SUCCESS:</strong> Course added.</p>
-                    <p>The system's "Inference Engine" just checked its "Knowledge Base" of rules.</p>
+                    <p>The system's "Inference Engine" checked its <strong>Rules</strong> against your custom <strong>Frame</strong>.</p>
                     <div class="font-mono text-sm bg-slate-100 p-3 rounded-md">
                         <strong>Rule:</strong> IF Prerequisite_Passed("${course.prereq}") THEN Allow_Registration.
                         <br>
-                        <strong>Fact:</strong> Your transcript <strong>contains</strong> "${course.prereq}".
+                        <strong>Fact:</strong> Your frame's "passedCourses" slot <strong>contains</strong> "${course.prereq}".
                         <br>
                         <strong>Result:</strong> TRUE.
                     </div>
@@ -667,11 +876,11 @@
                         "KNOWLEDGE IN ACTION: 2. Rules (IF-THEN)",
                         `
                         <p><strong class="text-red-600">FAILED:</strong> Course already passed.</p>
-                        <p>The system's "Inference Engine" checked another rule.</p>
+                        <p>The system's "Inference Engine" checked another rule against your <strong>Frame</strong>.</p>
                         <div class="font-mono text-sm bg-slate-100 p-3 rounded-md">
-                            <strong>Rule:</strong> IF Course_ID is in Student_Passed_Courses THEN Block_Registration.
+                            <strong>Rule:</strong> IF Course_ID is in "passedCourses" THEN Block_Registration.
                             <br>
-                            <strong>Fact:</strong> Your transcript <strong>contains</strong> "GNS 101".
+                            <strong>Fact:</strong> Your frame <strong>contains</strong> "GNS 101".
                             <br>
                             <strong>Result:</strong> TRUE. (Registration Blocked)
                         </div>
@@ -711,11 +920,11 @@
                     "KNOWLEDGE IN ACTION: 2. Rules (IF-THEN)",
                     `
                     <p><strong class="text-red-600">FAILED:</strong> Prerequisite not met.</p>
-                    <p>The system's "Inference Engine" just checked its "Knowledge Base" of rules.</p>
+                    <p>The system's "Inference Engine" checked its <strong>Rules</strong> against your custom <strong>Frame</strong>.</p>
                     <div class="font-mono text-sm bg-slate-100 p-3 rounded-md">
-                        <strong>Rule:</strong> IF Prerequisite_Passed("${course.prereq}") THEN Allow_Registration.
+                        <strong>Rule:</strong> IF Prerequisite_Passed("${(course && course.prereq) ? course.prereq : 'CSC 303'}") THEN Allow_Registration.
                         <br>
-                        <strong>Fact:</strong> Your transcript <strong>does not contain</strong> "${course.prereq}".
+                        <strong>Fact:</strong> Your frame's "passedCourses" slot <strong>does not contain</strong> "${(course && course.prereq) ? course.prereq : 'CSC 303'}".
                         <br>
                         <strong>Result:</strong> FALSE.
                     </div>
@@ -730,23 +939,20 @@
                 "KNOWLEDGE IN ACTION: 5. Ontologies",
                 `
                 <p><strong class="text-red-600">STATUS:</strong> Pending Senate Approval.</p>
-                <p>This check uses an <strong>Ontology</strong>, the most formal KR. It's a "dictionary of everything" for the university, defining concepts and the <strong>strict rules governing their existence.</strong></p>
+                <p>This check uses an <strong>Ontology</strong>. Notice this result is the <strong>same for all students</strong>, no matter what data you entered in your <strong>Frame</strong>.</p>
+                <p>An Ontology defines the fundamental, unchangeable "constitution" of the system.</p>
                 <div class="font-mono text-sm bg-slate-100 p-3 rounded-md">
-                    <strong>Concept:</strong> Student, Lecturer, HOD, Senate
-                    <br>
-                    <strong>Hierarchy:</strong> An 'HOD' is-a 'Lecturer'.
-                    <br>
                     <strong>Strict Rule:</strong> (Approve_Graduation(Lecturer)) is <strong>NOT_ALLOWED</strong>.
                     <br>
                     <strong>Strict Rule:</strong> (Approve_Graduation(Senate)) is <strong>ALLOWED</strong>.
                 </div>
-                <p>The ontology ensures that a 'Lecturer' cannot approve graduation because the formal model of the university forbids it. It's the "constitution" of the system.</p>
+                <p>This contrasts with IF-THEN rules, which change based on your data. Ontological rules do not.</p>
                 `
             );
         }
 
         // --- Initial Render ---
-        renderLogin();
+        renderPersonaCreator(); // Start at the new creator screen
         
     </script>
 </body>
