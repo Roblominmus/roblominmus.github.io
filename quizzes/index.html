@@ -118,8 +118,7 @@
           button.className = `${quiz.color} text-white py-4 rounded-lg shadow-lg font-semibold text-lg transition`;
           button.textContent = quiz.label;
           
-          // Extract key from label (simple approach)
-          const key = quiz.label.toLowerCase().replace(' ', '-').split('-')[0];
+          const key = quiz.id; 
           button.addEventListener('click', () => startLoad(key));
           
           chooser.appendChild(button);
