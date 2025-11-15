@@ -260,6 +260,7 @@
     </style>
 </head>
 <body class="dark-mode">
+    <div id="protected-content" style="display:none">
     <div class="container">
         <!-- Header with Title, Mode Toggle, and Back Button -->
         <div class="header">
@@ -307,8 +308,10 @@
         <!-- Footer -->
         <footer>&copy; Robs Hub &mdash; Schedule refreshes in real-time.</footer>
     </div>
+    </div>
 
     <script src="../assets/theme.js"></script>
+    <script src="../assets/auth.js"></script>
     <script>
 
         // ============ SCHEDULE DATA ============
@@ -584,61 +587,16 @@
             }
         }
 
-        // ============ SECURE PASSWORD GATE & INITIALIZATION ============
-
-        // This is a simple, reliable "hashing" function that will work in any browser.
-        // It's not for high security, but it "hides" your password in the code.
-        function simpleHash(str) {
-            let hash = 0;
-            for (let i = 0; i < str.length; i++) {
-                const char = str.charCodeAt(i);
-                hash = ((hash << 5) - hash) + char;
-                hash = hash & hash; // Convert to 32bit integer
-            }
-            return hash.toString(); // Return as a string
-        }
-
-
-        const correctHash = '3327275';
-
-        function checkPassword() {
-            let pw = prompt('Enter password to view timetable:', '');
-            
-            if (pw === null) {
-                // User cancelled
-                window.location.href = '../index.html';
-                return false;
-            }
-
-            // Sanitize the input
-            const sanitizedPw = pw.trim().toLowerCase();
-
-            // Hash the sanitized input
-            const inputHash = simpleHash(sanitizedPw);
-
-            if (inputHash !== correctHash) {
-                alert('Incorrect password. Returning to hub.');
-                window.location.href = '../index.html';
-                return false;
-            }
-            
-            // Password is correct
-            return true;
-        }
-
         // ============ INITIALIZATION ============
 
-        // Run the password check *first*.
-        // If it fails, the script stops here.
-        if (checkPassword()) {
-            
+        // Put page startup logic into a single function and run it only after auth
+        function startApp() {
             // 1. Initialize the page
             daySelector.value = getTodayName();
             renderSchedule();
             updateCurrentTask();
 
             // 2. NOW we can add the event listeners
-            
             // Update on day change
             daySelector.addEventListener('change', () => {
                 renderSchedule();
@@ -653,6 +611,16 @@
                 renderSchedule();
                 updateCurrentTask();
             });
+        }
+
+        // Listen for the auth success event from the shared auth module
+        document.addEventListener('auth:unlocked', () => {
+            try { startApp(); } catch (e) { console.error('startApp failed after auth', e); }
+        });
+
+        // If the protected content is already visible (session-based), initialize now
+        if (document.getElementById('protected-content') && document.getElementById('protected-content').style.display !== 'none') {
+            startApp();
         }
     </script>
 </body>

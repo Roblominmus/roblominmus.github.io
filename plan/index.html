@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>My DevSecOps Plan</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* --- Base Theme --- */
+    body.light-mode {
+      background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+      color: #1f2937;
+    }
+    body.dark-mode {
+      background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+      color: #e5e7eb;
+    }
+    body.light-mode .page-container {
+      background: white;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+    body.dark-mode .page-container {
+      background: rgba(17, 24, 39, 0.9);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.25);
+    }
+    .page-container {
+      width: 100%;
+      max-width: 1000px;
+      padding: 16px;
+      border-radius: 14px;
+      margin: 1rem auto;
+    }
+    @media (min-width: 640px) {
+      .page-container {
+        padding: 24px;
+        margin: 2rem auto;
+      }
+    }
+    .header-controls {
+      display: flex;
+      gap: 8px;
+    }
+    .header-controls button {
+      font-size: 0.9rem;
+      padding: 6px 10px;
+    }
+    @media (min-width: 640px) {
+      .header-controls button {
+        font-size: 1rem;
+        padding: 8px 12px;
+      }
+    }
+
+    /* --- Card-Based Step Layout --- */
+    
+    .phases-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      width: 100%;
+    }
+
+    /* Phase card: always visible */
+    .phase-card {
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    body.dark-mode .phase-card {
+      background-color: #1f2937;
+      border: 1px solid #4b5563;
+    }
+    body.light-mode .phase-card {
+      background-color: #ffffff;
+      border: 1px solid #d1d5db;
+    }
+
+    /* Phase header */
+    .phase-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      padding: 18px 20px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 1.1rem;
+      transition: opacity 0.2s;
+      background-color: #1a5666;
+      color: #fff;
+      border: none;
+      text-align: left;
+    }
+    .phase-header:hover {
+      opacity: 0.9;
+    }
+    .phase-header::before {
+      content: '▶';
+      display: inline-block;
+      font-size: 0.8em;
+      transition: transform 0.3s ease;
+      flex-shrink: 0;
+    }
+    .phase-card[data-open="true"] .phase-header::before {
+      transform: rotate(90deg);
+    }
+
+    /* Phase content wrapper */
+    .phase-content {
+      padding: 0 20px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+    }
+    .phase-card[data-open="true"] .phase-content {
+      max-height: 2000px;
+      padding: 16px 20px 20px 20px;
+    }
+
+    /* Phase description */
+    .phase-description {
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+    body.dark-mode .phase-description {
+      color: #e5e7eb;
+    }
+    body.light-mode .phase-description {
+      color: #1f2937;
+    }
+    .phase-description h4 {
+      font-weight: 700;
+      font-size: 1rem;
+      margin: 8px 0 4px 0;
+    }
+    .phase-description p {
+      margin: 4px 0;
+    }
+
+    /* Skills list */
+    .skills-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Skill card */
+    .skill-item {
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    body.dark-mode .skill-item {
+      background-color: #111827;
+      border: 1px solid #374151;
+    }
+    body.light-mode .skill-item {
+      background-color: #f9fafb;
+      border: 1px solid #e5e7eb;
+    }
+
+    /* Skill header button */
+    .skill-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      padding: 12px 14px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: opacity 0.2s;
+      background: none;
+      border: none;
+      text-align: left;
+    }
+    body.dark-mode .skill-header {
+      color: #d0d0d0;
+    }
+    body.light-mode .skill-header {
+      color: #2a2a2a;
+    }
+    .skill-header:hover {
+      opacity: 0.8;
+    }
+    .skill-header::before {
+      content: '▶';
+      font-size: 0.7em;
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
+    }
+    .skill-item[data-open="true"] .skill-header::before {
+      transform: rotate(90deg);
+    }
+
+    /* Skill content */
+    .skill-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      padding: 0 14px;
+    }
+    .skill-item[data-open="true"] .skill-content {
+      max-height: 1200px;
+      padding: 12px 14px;
+    }
+    body.dark-mode .skill-content {
+      border-top: 1px solid #374151;
+      color: #e5e7eb;
+    }
+    body.light-mode .skill-content {
+      border-top: 1px solid #e5e7eb;
+      color: #1f2937;
+    }
+
+    /* Text styles inside skill content */
+    .skill-content h4 {
+      font-weight: 700;
+      font-size: 1rem;
+      margin: 8px 0 4px 0;
+    }
+    .skill-content p {
+      margin: 4px 0 8px 0;
+      line-height: 1.5;
+    }
+    .skill-content ul {
+      list-style: disc;
+      padding-left: 20px;
+      margin: 8px 0;
+    }
+    .skill-content li {
+      margin: 4px 0;
+      line-height: 1.5;
+    }
+    .skill-content code {
+      padding: 2px 5px;
+      border-radius: 3px;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.9em;
+    }
+    body.light-mode .skill-content code {
+      background-color: #e5e7eb;
+      color: #7c2d12;
+    }
+    body.dark-mode .skill-content code {
+      background-color: #111827;
+      color: #f76d47;
+    }
+
+    /* Definition of Done styling */
+    .done {
+      font-weight: bold;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid;
+    }
+    body.dark-mode .done {
+      color: #7dff7d;
+      border-top-color: #444;
+    }
+    body.light-mode .done {
+      color: #15803d;
+      border-top-color: #d1d5db;
+    }
+
+    /* Resources section */
+    .resources {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 2px solid;
+    }
+    body.dark-mode .resources {
+      border-top-color: #4b5563;
+    }
+    body.light-mode .resources {
+      border-top-color: #d1d5db;
+    }
+    .resources h2 {
+      color: #4a90e2;
+      font-size: 1.5rem;
+      margin-bottom: 16px;
+    }
+    .resources ul {
+      list-style: none;
+      padding: 0;
+    }
+    .resources li {
+      margin-bottom: 10px;
+      padding: 12px;
+      border-radius: 6px;
+    }
+    body.dark-mode .resources li {
+      background-color: #1f2937;
+    }
+    body.light-mode .resources li {
+      background-color: #f3f4f6;
+    }
+    .resources li strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+    body.light-mode .resources li strong {
+      color: #92400e;
+    }
+    body.dark-mode .resources li strong {
+      color: #e8bf6a;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 639px) {
+      .phase-header {
+        font-size: 1rem;
+        padding: 14px 16px;
+      }
+      .skill-header {
+        font-size: 0.95rem;
+        padding: 10px 12px;
+      }
+      .phase-description,
+      .skill-content {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body class="dark-mode min-h-screen flex items-center justify-center p-6">
+
+  <!-- Protected content wrapper -->
+  <div id="protected-content" style="display:none">
+    <div class="page-container">
+      <!-- Header -->
+      <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">My DevSecOps Plan</h1>
+        <div class="header-controls">
+          <button id="mode-toggle" class="mode-toggle" aria-label="Toggle dark/light mode">☀️</button>
+          <button class="back-btn" title="Go Back" onclick="history.back()">&larr; Back</button>
+        </div>
+      </div>
+
+      <!-- Intro -->
+      <p class="text-lg opacity-80 mb-8">
+        This is the **$0 Budget Plan**. It focuses *only* on the skills you can learn for **free** using your Debian VM and free online tools. This plan is designed to build the specific, high-value skills that make you "irreplaceable" and get you your first job.
+      </p>
+
+      <!-- Phases container -->
+      <div class="phases-container">
+        
+        <!-- PHASE 0 -->
+        <div class="phase-card" data-open="true">
+          <button class="phase-header" type="button">PHASE 0: Terminal Muscle Memory (MANDATORY)</button>
+          <div class="phase-content">
+            <div class="phase-description">
+              <h4>Why am I doing this?</h4>
+              <p>Your diagnostic showed this is your **biggest weakness**. All servers, automation, and containers are **headless** (no GUI). You must be able to operate in a terminal to do *any* part of this job. This phase covers the "Basic Linux commands" and "Terminal emulator" skills.</p>
+            </div>
+            <div class="skills-list">
+              <div class="skill-item" data-open="false">
+                <button class="skill-header" type="button">Skill: Terminal & Git Fluency</button>
+                <div class="skill-content">
+                  <h4>What:</h4>
+                  <p>Mastering core Git and Linux commands until they are muscle memory.</p>
+                  <h4>How to Practice ($0):</h4>
+                  <ul>
+                    <li><strong>Git:</strong> Create a new GitHub repo. `git clone` it. Create a `test.txt` file. `git add .`. `git commit -m "test"`. `git push`. **Do this 5 times.**</li>
+                    <li><strong>Linux:</strong> On your Debian VM, use **only** the terminal for one day. Navigate: `cd /var/log`, `pwd`. List: `ls -la`. Read: `cat auth.log`. Search: `grep "Failed" auth.log`</li>
+                    <li><strong>Resource:</strong> <a href="https://overthewire.org/wargames/bandit/" target="_blank" rel="noopener">OverTheWire: Bandit</a></li>
+                  </ul>
+                  <p class="done"><strong>✅ Definition of Done:</strong> You can push a file to GitHub and find a line in a log file using `grep` without looking up the commands.</p>
+                </div>
+              </div>
+              <div class="skill-item" data-open="false">
+                <button class="skill-header" type="button">Skill: Server Admin & Log Analysis</button>
+                <div class="skill-content">
+                  <h4>What:</h4>
+                  <p>Learning to be a *server administrator*, not just a *desktop user*. This is the "Monitoring" and "IDS/IPS" foundation.</p>
+                  <h4>How to Practice ($0):</h4>
+                  <ul>
+                    <li><strong>Service Mgmt:</strong> Install web server: `sudo apt install nginx`. Check status: `sudo systemctl status nginx`. Stop: `sudo systemctl stop nginx`</li>
+                    <li><strong>Log Analysis:</strong> Go to `/var/log/`. Find hacker IPs: `grep "Failed password" /var/log/auth.log | awk '{print $11}' | sort | uniq -c | sort -nr`. Watch live: `sudo tail -f /var/log/syslog`</li>
+                    <li><strong>Resource:</strong> <a href="https://letsdefend.io/" target="_blank" rel="noopener">LetsDefend.io</a></li>
+                  </ul>
+                  <p class="done"><strong>✅ Definition of Done:</strong> You can start/stop `nginx` and build the `grep` command to find the top 10 attacking IPs.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHASE 1 -->
+        <div class="phase-card" data-open="false">
+          <button class="phase-header" type="button">PHASE 1: Offensive Core & "Glue" Scripting</button>
+          <div class="phase-content">
+            <div class="phase-description">
+              <h4>Why am I doing this?</h4>
+              <p>This gives you **authority**. You're re-learning to hack with a new goal: to **write code that hacks for you**. This covers the "Coding skills (Python)" and "Security concepts" requirements.</p>
+            </div>
+            <div class="skills-list">
+              <div class="skill-item" data-open="false">
+                <button class="skill-header" type="button">Skill: Web Hacking (Offensive)</button>
+                <div class="skill-content">
+                  <h4>What:</h4>
+                  <p>Mastering the "big 4" OWASP vulnerabilities that all scanners look for.</p>
+                  <ul>
+                    <li><strong>Learn:</strong> SQL Injection, XSS, OS Command Injection, IDOR.</li>
+                    <li><strong>Where:</strong> <a href="https://portswigger.net/web-security" target="_blank" rel="noopener">PortSwigger Web Security Academy</a> (FREE).</li>
+                  </ul>
+                  <p class="done"><strong>✅ Definition of Done:</strong> You have completed the **Practitioner**-level labs for SQLi and XSS.</p>
+                </div>
+              </div>
+              <div class="skill-item" data-open="false">
+                <button class="skill-header" type="button">Skill: Python "Glue" Scripting</button>
+                <div class="skill-content">
+                  <h4>What:</h4>
+                  <p>Writing Python scripts that act like tools. This is the foundation for all "Automation".</p>
+                  <ul>
+                    <li><strong>Learn:</strong> `requests` library (for HTTP) and `argparse` (for CLI arguments).</li>
+                    <li><strong>Where:</strong> Free guides online. You don't need a book.</li>
+                  </ul>
+                  <h4>How to Practice ($0):</h4>
+                  <p>Write a Python script (`scanner.py`) that takes a URL as an argument (`-u http://...`) and prints all the links.</p>
+                  <p class="done"><strong>✅ Definition of Done:</strong> You have a working **Python script** that uses `requests` and `argparse`.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHASE 2 -->
+        <div class="phase-card" data-open="false">
+          <button class="phase-header" type="button">PHASE 2: Infrastructure & Containers (Cloud Foundation)</button>
+          <div class="phase-content">
+            <div class="phase-description">
+              <h4>Why am I doing this?</h4>
+              <p>This is the "Cloud-Native" skill. You need to package your code so it runs the same way for everyone, everywhere. **Docker is the foundation for 90% of all "Cloud" skills.**</p>
+            </div>
+            <div class="skills-list">
+              <div class="skill-item" data-open="false">
+                <button class="skill-header" type="button">Skill: Containerization (Docker)</button>
+                <div class="skill-content">
+                  <h4>What:</h4>
+                  <p>Writing a "recipe" (`Dockerfile`) that packages your app.</p>
+                  <ul>
+                    <li><strong>Learn:</strong> `Dockerfile` syntax (`FROM`, `RUN`, `COPY`, `CMD`), `docker build`, `docker run`.</li>
+                    <li><strong>Where:</strong> <a href="https://docs.docker.com/get-started/" target="_blank" rel="noopener">Docker's official "Get Started" guide</a> (FREE).</li>
+                  </ul>
+                  <h4>How to Practice ($0):</h4>
+                  <p>Write a `Dockerfile` for your Phase 1 script. Build it (`docker build . -t my-scanner`) and run it.</p>
+                  <p class="done"><strong>✅ Definition of Done:</strong> Your Phase 1 script runs successfully from a **Docker container** you built.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHASE 3 -->
+        <div class="phase-card" data-open="false">
+          <button class="phase-header" type="button">PHASE 3: The Automated Pipeline (CI/CD)</button>
+          <div class="phase-content">
+            <div class="phase-description">
+              <h4>Why am I doing this?</h4>
+              <p>This is the core "DevSecOps" skill. You are building the automated assembly line that will act as your 24/7 security guard. This is where you implement SAST, DAST, and **SCA**.</p>
+            </div>
+            <div class="skills-list">
+              <div class="skill-item" data-open="false">
+                <button class="skill-header" type="button">Skill: CI/CD & SAST Integration</button>
+                <div class="skill-content">
+                  <h4>What:</h4>
+                  <p>Building your first workflow in **GitHub Actions** and adding **SAST** (Static Analysis).</p>
+                  <ul>
+                    <li><strong>Learn:</strong> **YAML** syntax for GitHub Actions (`.github/workflows/main.yml`).</li>
+                    <li><strong>Tool:</strong> **Semgrep** (FREE SAST tool).</li>
+                  </ul>
+                  <h4>How to Practice ($0):</h4>
+                  <p>Commit a hardcoded password. Add Semgrep Action. Your pipeline must turn **RED**.</p>
+                  <p class="done"><strong>✅ Definition of Done:</strong> Your pipeline fails when you push a hardcoded secret.</p>
+                </div>
+              </div>
+              <div class="skill-item" data-open="false">
+                <button class="skill-header" type="button">Skill: SCA & DAST Integration</button>
+                <div class="skill-content">
+                  <h4>What:</h4>
+                  <p>Adding **SCA** to find vulnerable libraries and **DAST** to attack the running app.</p>
+                  <ul>
+                    <li><strong>SCA Tool:</strong> **Trivy** (FREE).</li>
+                    <li><strong>DAST Tool:</strong> **OWASP ZAP** (FREE).</li>
+                  </ul>
+                  <h4>How to Practice ($0):</h4>
+                  <ul>
+                    <li>Add Trivy step to find vulnerable Python libraries.</li>
+                    <li>Add OWASP ZAP Baseline Scan against a test URL.</li>
+                  </ul>
+                  <p class="done"><strong>✅ Definition of Done:</strong> One pipeline running **SAST**, **SCA**, and **DAST** on every push.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHASE 4 -->
+        <div class="phase-card" data-open="false">
+          <button class="phase-header" type="button">PHASE 4: The Capstone (The Resume Weapon)</button>
+          <div class="phase-content">
+            <div class="phase-description">
+              <h4>Why am I doing this?</h4>
+              <p>This project **proves** you are not just another DevSecOps guy. Combine all skills to show you're an engineer, a hacker, and an automator.</p>
+            </div>
+            <div class="skills-list">
+              <div class="skill-item" data-open="false">
+                <button class="skill-header" type="button">Project: The Exploit-Verified Pipeline</button>
+                <div class="skill-content">
+                  <h4>What:</h4>
+                  <p>A pipeline that uses your **own exploit script** as a security test.</p>
+                  <ul>
+                    <li><strong>Step 1:</strong> Build a Flask app **deliberately vulnerable** to SQL Injection.</li>
+                    <li><strong>Step 2:</strong> Write `exploit.py` that attacks and proves the SQLi exists.</li>
+                    <li><strong>Step 3:</strong> Write `docker-compose.yml` that runs your app.</li>
+                    <li><strong>Step 4:</strong> Build GitHub Action: start app → wait 10s → run exploit → FAIL if exploit succeeds.</li>
+                  </ul>
+                  <p class="done"><strong>✅ Definition of Done:</strong> Push vulnerable code → pipeline turns **RED** (fails). Push patched code → turns **GREEN** (passes). Put on resume.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Resources section -->
+      <div class="resources">
+        <h2>Continuous Learning Feed (Your New "Hot Topics")</h2>
+        <ul>
+          <li>
+            <strong>TechWorld with Nana (YouTube)</strong>
+            <span>Understand how modern cloud systems are built (CI/CD, Docker, Kubernetes) before securing them.</span>
+          </li>
+          <li>
+            <strong>KodeKloud (YouTube)</strong>
+            <span>Best hands-on tutorials for Docker and Kubernetes (next step after this plan).</span>
+          </li>
+          <li>
+            <strong>OWASP Projects (Website)</strong>
+            <span>Read **ASVS (Application Security Verification Standard)**. This is the professional's checklist.</span>
+          </li>
+          <li>
+            <strong>r/DevSecOps (Reddit)</strong>
+            <span>Read what real engineers complain about. What tools break? What vulnerabilities do they find?</span>
+          </li>
+          <li>
+            <strong>PortSwigger Blog & HackerOne Writeups</strong>
+            <span>Ask: "How could I write a script (Semgrep) or test (DAST) to find this automatically?"</span>
+          </li>
+        </ul>
+      </div>
+
+    </div><!-- End Page Container -->
+  </div>
+
+  <!-- Authentication script for protected pages -->
+  <script src="../assets/auth.js"></script>
+  <script src="../assets/theme.js"></script>
+
+  <script>
+    // Toggle phase cards
+    document.addEventListener('DOMContentLoaded', () => {
+      // Back button
+      const backBtn = document.querySelector('.back-btn');
+      if (backBtn) backBtn.addEventListener('click', () => history.back());
+
+      // Phase toggles
+      document.querySelectorAll('.phase-card > .phase-header').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const parent = btn.closest('.phase-card');
+          const isOpen = parent.getAttribute('data-open') === 'true';
+          parent.setAttribute('data-open', String(!isOpen));
+          btn.setAttribute('aria-expanded', String(!isOpen));
+        });
+      });
+
+      // Skill toggles
+      document.querySelectorAll('.skill-item > .skill-header').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const parent = btn.closest('.skill-item');
+          const isOpen = parent.getAttribute('data-open') === 'true';
+          parent.setAttribute('data-open', String(!isOpen));
+          btn.setAttribute('aria-expanded', String(!isOpen));
+        });
+      });
+
+      // Initialize aria-expanded
+      document.querySelectorAll('.phase-card, .skill-item').forEach(container => {
+        const btn = container.querySelector('.phase-header, .skill-header');
+        if (btn) {
+          const open = container.getAttribute('data-open') === 'true';
+          btn.setAttribute('aria-expanded', String(open));
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
