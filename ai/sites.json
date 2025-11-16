@@ -6,5 +6,9 @@
   {
     "file": "kr.html",
     "title": "Knowledge Representation "
+  },
+  {
+    "file": "pattern matching.html",
+    "title": "Pattern Matching Lab"
   }
 ]
