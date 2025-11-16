@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>My DevSecOps Plan</title>
+  <title>My API Pentester Plan</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     /* --- Base Theme --- */
@@ -105,15 +105,14 @@
       transform: rotate(90deg);
     }
 
-    /* Phase content wrapper */
+    /* Phase content wrapper (animated via JS height transition) */
     .phase-content {
-      padding: 0 20px;
-      max-height: 0;
+      padding: 0 20px; /* vertical padding added dynamically when open */
+      height: 0;
       overflow: hidden;
-      transition: max-height 0.3s ease, padding 0.3s ease;
+      transition: height 0.35s ease;
     }
-    .phase-card[data-open="true"] .phase-content {
-      max-height: 2000px;
+    .phase-card[data-open="true"] .phase-content.open-padding {
       padding: 16px 20px 20px 20px;
     }
 
@@ -192,15 +191,14 @@
       transform: rotate(90deg);
     }
 
-    /* Skill content */
+    /* Skill content (animated via JS height transition) */
     .skill-content {
-      max-height: 0;
+      height: 0;
       overflow: hidden;
-      transition: max-height 0.3s ease;
-      padding: 0 14px;
+      transition: height 0.35s ease;
+      padding: 0 14px; /* vertical padding added dynamically */
     }
-    .skill-item[data-open="true"] .skill-content {
-      max-height: 1200px;
+    .skill-item[data-open="true"] .skill-content.open-padding {
       padding: 12px 14px;
     }
     body.dark-mode .skill-content {
@@ -329,7 +327,7 @@
     <div class="page-container">
       <!-- Header -->
       <div class="flex justify-between items-center mb-8">
-        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">My DevSecOps Plan</h1>
+        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">My API Pentester Plan</h1>
         <div class="header-controls">
           <button id="mode-toggle" class="mode-toggle" aria-label="Toggle dark/light mode">☀️</button>
           <button class="back-btn" title="Go Back" onclick="history.back()">&larr; Back</button>
@@ -338,7 +336,7 @@
 
       <!-- Intro -->
       <p class="text-lg opacity-80 mb-8">
-        This is the **$0 Budget Plan**. It focuses *only* on the skills you can learn for **free** using your Debian VM and free online tools. This plan is designed to build the specific, high-value skills that make you "irreplaceable" and get you your first job.
+        This is your <strong>actionable career plan</strong> to become a professional-grade <strong>API Penetration Tester</strong>. It is a $0 Budget Plan focused on <strong>project-based deliverables</strong> that prove your skill. This plan is built on the <strong>"Build, Break, Secure"</strong> philosophy to make you a non-replaceable, high-value candidate.
       </p>
 
       <!-- Phases container -->
@@ -346,39 +344,45 @@
         
         <!-- PHASE 0 -->
         <div class="phase-card" data-open="true">
-          <button class="phase-header" type="button">PHASE 0: Terminal Muscle Memory (MANDATORY)</button>
+          <button class="phase-header" type="button">PHASE 0: Foundational DevOps & Server Administration (MANDATORY)</button>
           <div class="phase-content">
             <div class="phase-description">
               <h4>Why am I doing this?</h4>
-              <p>Your diagnostic showed this is your **biggest weakness**. All servers, automation, and containers are **headless** (no GUI). You must be able to operate in a terminal to do *any* part of this job. This phase covers the "Basic Linux commands" and "Terminal emulator" skills.</p>
+              <p>To fix your self-admitted weakness. This phase builds the "terminal muscle memory" required to operate in the headless (non-GUI) Linux environments where all professional targets (servers, APIs, containers) reside.</p>
             </div>
             <div class="skills-list">
               <div class="skill-item" data-open="false">
                 <button class="skill-header" type="button">Skill: Terminal & Git Fluency</button>
                 <div class="skill-content">
                   <h4>What:</h4>
-                  <p>Mastering core Git and Linux commands until they are muscle memory.</p>
+                  <p>Mastering core Linux and Git commands until they are muscle memory.</p>
                   <h4>How to Practice ($0):</h4>
                   <ul>
-                    <li><strong>Git:</strong> Create a new GitHub repo. `git clone` it. Create a `test.txt` file. `git add .`. `git commit -m "test"`. `git push`. **Do this 5 times.**</li>
-                    <li><strong>Linux:</strong> On your Debian VM, use **only** the terminal for one day. Navigate: `cd /var/log`, `pwd`. List: `ls -la`. Read: `cat auth.log`. Search: `grep "Failed" auth.log`</li>
-                    <li><strong>Resource:</strong> <a href="https://overthewire.org/wargames/bandit/" target="_blank" rel="noopener">OverTheWire: Bandit</a></li>
+                    <li><strong>Linux (Practice):</strong> Finish all levels of <strong><a href="https://overthewire.org/wargames/bandit/" target="_blank" rel="noopener">OverTheWire: Bandit</a></strong>. This is your #1 priority for core commands.</li>
+                    <li><strong>Git (Practice):</strong> Create a GitHub repo. Practice the full workflow: <code>git clone</code>, <code>git add .</code>, <code>git commit -m "msg"</code>, <code>git push</code>. Do this 20 times.</li>
+                    <li><strong>Git (Learn):</strong> Use the <strong><a href="https://www.git-tower.com/learn/git/ebook/en/command-line/introduction" target="_blank" rel="noopener">Git Tower (Free Book)</a></strong> for a clear guide if you get stuck.</li>
                   </ul>
-                  <p class="done"><strong>✅ Definition of Done:</strong> You can push a file to GitHub and find a line in a log file using `grep` without looking up the commands.</p>
+                  <h4>Deliverable:</h4>
+                  <p>A GitHub repository with a 100-commit history (even if just text files) to build muscle memory.</p>
+                  <p class="done"><strong>✅ Definition of Done:</strong> You can finish a Bandit level and `git push` your notes without looking up the commands.</p>
                 </div>
               </div>
               <div class="skill-item" data-open="false">
                 <button class="skill-header" type="button">Skill: Server Admin & Log Analysis</button>
                 <div class="skill-content">
                   <h4>What:</h4>
-                  <p>Learning to be a *server administrator*, not just a *desktop user*. This is the "Monitoring" and "IDS/IPS" foundation.</p>
+                  <p>Learning to install, manage, and analyze services on a live server. This is where you learn the "Text-Fu" (<code>grep</code>, <code>awk</code>, <code>sort</code>) that Bandit doesn't teach.</p>
                   <h4>How to Practice ($0):</h4>
                   <ul>
-                    <li><strong>Service Mgmt:</strong> Install web server: `sudo apt install nginx`. Check status: `sudo systemctl status nginx`. Stop: `sudo systemctl stop nginx`</li>
-                    <li><strong>Log Analysis:</strong> Go to `/var/log/`. Find hacker IPs: `grep "Failed password" /var/log/auth.log | awk '{print $11}' | sort | uniq -c | sort -nr`. Watch live: `sudo tail -f /var/log/syslog`</li>
-                    <li><strong>Resource:</strong> <a href="https://letsdefend.io/" target="_blank" rel="noopener">LetsDefend.io</a></li>
+                    <li><strong>Service Mgmt (Practice):</strong> On your Debian VM, install Nginx: <code>sudo apt install nginx</code>. Control it: <code>sudo systemctl status nginx</code>.</li>
+                    <li><strong>Log Analysis (Learn):</strong> Read this <strong><a href="https://www.digitalocean.com/community/tutorials/how-to-use-grep-awk-and-sed-to-manage-system-logs" target="_blank" rel="noopener">DigitalOcean `grep`/`awk`/`sed` Guide</a></strong>. This is your textbook for this skill.</li>
+                    <li><strong>Log Analysis (Practice):</strong> Go to <code>/var/log/</code> on your VM. Find a real log (like <code>auth.log</code>) and use <code>grep</code> and <code>awk</code> to find all failed password attempts.</li>
+                    <li><strong>Log Analysis (Lab):</strong> Use the <strong>[Free Room] <a href="https://tryhackme.com/room/tinkerbell" target="_blank" rel="noopener">TryHackMe 'Tinkerbell' Room</a></strong>. It is a specific <em>free</em> lab for practicing log analysis.</li>
+                    <li><strong>Linux (Learn):</strong> Use <strong><a href="https://linuxjourney.com/" target="_blank" rel="noopener">Linux Journey</a></strong>. It's a free, self-paced website to learn Linux theory that Bandit doesn't cover.</li>
                   </ul>
-                  <p class="done"><strong>✅ Definition of Done:</strong> You can start/stop `nginx` and build the `grep` command to find the top 10 attacking IPs.</p>
+                  <h4>Deliverable:</h4>
+                  <p>A simple Bash script (<code>analyzer.sh</code>) in your GitHub repo that takes a log file as an argument and prints the top 5 failed login IPs.</p>
+                  <p class="done"><strong>✅ Definition of Done:</strong> You can start/stop <code>nginx</code> and build the <code>grep | awk '{print $11}' | sort | uniq -c | sort -nr</code> one-liner from memory.</p>
                 </div>
               </div>
             </div>
@@ -387,37 +391,44 @@
 
         <!-- PHASE 1 -->
         <div class="phase-card" data-open="false">
-          <button class="phase-header" type="button">PHASE 1: Offensive Core & "Glue" Scripting</button>
+          <button class="phase-header" type="button">PHASE 1: Offensive API Security & Tooling</button>
           <div class="phase-content">
             <div class="phase-description">
               <h4>Why am I doing this?</h4>
-              <p>This gives you **authority**. You're re-learning to hack with a new goal: to **write code that hacks for you**. This covers the "Coding skills (Python)" and "Security concepts" requirements.</p>
+              <p>To build your core specialization. This phase pivots from generic web hacking to the high-demand field of API-specific vulnerabilities.</p>
             </div>
             <div class="skills-list">
               <div class="skill-item" data-open="false">
-                <button class="skill-header" type="button">Skill: Web Hacking (Offensive)</button>
+                <button class="skill-header" type="button">Skill: API Hacking (Offensive Theory)</button>
                 <div class="skill-content">
                   <h4>What:</h4>
-                  <p>Mastering the "big 4" OWASP vulnerabilities that all scanners look for.</p>
+                  <p>Master the <strong>OWASP API Top 10</strong>. Your primary focus must be on Business Logic Flaws: <code>API1</code> (BOLA), <code>API5</code> (BFLA), and <code>API2</code> (Broken Authentication).</p>
+                  <h4>How to Practice ($0):</h4>
                   <ul>
-                    <li><strong>Learn:</strong> SQL Injection, XSS, OS Command Injection, IDOR.</li>
-                    <li><strong>Where:</strong> <a href="https://portswigger.net/web-security" target="_blank" rel="noopener">PortSwigger Web Security Academy</a> (FREE).</li>
+                    <li><strong>Study (Learn):</strong> Read the <strong><a href="https://owasp.org/API-Security/current/Top-10-list/" target="_blank" rel="noopener">OWASP API Top 10 Project</a></strong> documentation for each vulnerability.</li>
+                    <li><strong>Practice (Mandatory):</strong> Complete all labs in the <strong><a href="https://portswigger.net/web-security/api-testing" target="_blank" rel="noopener">PortSwigger Academy "API Security" module</a></strong>. This is your new bible.</li>
+                    <li><strong>Practice (Tools):</strong> Install <strong><a href="https://www.postman.com/" target="_blank" rel="noopener">Postman</a></strong> and <strong><a href="https://portswigger.net/burp" target="_blank" rel="noopener">Burp Suite Community</a></strong>. Use them to manually poke at the PortSwigger labs.</li>
+                    <li><strong>Practice (Lab):</strong> Explore the <strong><a href="https://github.com/videntity/vapi" target="_blank" rel="noopener">vAPI (Vulnerable API)</a></strong> project as an extra target.</li>
                   </ul>
-                  <p class="done"><strong>✅ Definition of Done:</strong> You have completed the **Practitioner**-level labs for SQLi and XSS.</p>
+                  <h4>Deliverable:</h4>
+                  <p>A document in your GitHub repo (<code>API_NOTES.md</code>) explaining BOLA, BFLA, and Broken Authentication in your own words.</p>
+                  <p class="done"><strong>✅ Definition of Done:</strong> You have completed all Practitioner-level API security labs in the PortSwigger Academy and can explain BOLA by heart.</p>
                 </div>
               </div>
               <div class="skill-item" data-open="false">
-                <button class="skill-header" type="button">Skill: Python "Glue" Scripting</button>
+                <button class="skill-header" type="button">Skill: Python API Attack Scripting</button>
                 <div class="skill-content">
                   <h4>What:</h4>
-                  <p>Writing Python scripts that act like tools. This is the foundation for all "Automation".</p>
-                  <ul>
-                    <li><strong>Learn:</strong> `requests` library (for HTTP) and `argparse` (for CLI arguments).</li>
-                    <li><strong>Where:</strong> Free guides online. You don't need a book.</li>
-                  </ul>
+                  <p>Master the <code>requests</code> library (<code>get</code>, <code>post</code>, <code>headers</code>, <code>json</code>) and <code>argparse</code> to create professional, reusable command-line tools for pentesting.</p>
                   <h4>How to Practice ($0):</h4>
-                  <p>Write a Python script (`scanner.py`) that takes a URL as an argument (`-u http://...`) and prints all the links.</p>
-                  <p class="done"><strong>✅ Definition of Done:</strong> You have a working **Python script** that uses `requests` and `argparse`.</p>
+                  <ul>
+                    <li><strong>Learn (Requests):</strong> Read the official <strong><a href="https://requests.readthedocs.io/en/latest/" target="_blank" rel="noopener"><code>requests</code> library</a></strong> docs.</li>
+                    <li><strong>Learn (Argparse):</strong> Read the official Python <strong><a href="https://docs.python.org/3/library/argparse.html" target="_blank" rel="noopener"><code>argparse</code> module</a></strong> docs.</li>
+                    <li><strong>Project:</strong> Build a reusable Python script that takes a URL, user token, and user ID as arguments and attempts to find BOLA flaws by iterating IDs.</li>
+                  </ul>
+                  <h4>Deliverable:</h4>
+                  <p>A new GitHub repo (<code>bola_tester.py</code>) containing your finished, reusable tool.</p>
+                  <p class="done"><strong>✅ Definition of Done:</strong> You have a working, reusable Python script that uses <code>requests</code> and <code>argparse</code> to automate a BOLA check.</p>
                 </div>
               </div>
             </div>
@@ -426,25 +437,42 @@
 
         <!-- PHASE 2 -->
         <div class="phase-card" data-open="false">
-          <button class="phase-header" type="button">PHASE 2: Infrastructure & Containers (Cloud Foundation)</button>
+          <button class="phase-header" type="button">PHASE 2: Secure Development Lifecycle (SDLC) & Target Creation</button>
           <div class="phase-content">
             <div class="phase-description">
               <h4>Why am I doing this?</h4>
-              <p>This is the "Cloud-Native" skill. You need to package your code so it runs the same way for everyone, everywhere. **Docker is the foundation for 90% of all "Cloud" skills.**</p>
+              <p>To learn the "Build It" part of the "Build, Break, Secure" philosophy. You will build your own vulnerable target to understand a developer's logic, which is essential for finding logic flaws.</p>
             </div>
             <div class="skills-list">
               <div class="skill-item" data-open="false">
-                <button class="skill-header" type="button">Skill: Containerization (Docker)</button>
+                <button class="skill-header" type="button">Skill: Build a Vulnerable API</button>
                 <div class="skill-content">
                   <h4>What:</h4>
-                  <p>Writing a "recipe" (`Dockerfile`) that packages your app.</p>
-                  <ul>
-                    <li><strong>Learn:</strong> `Dockerfile` syntax (`FROM`, `RUN`, `COPY`, `CMD`), `docker build`, `docker run`.</li>
-                    <li><strong>Where:</strong> <a href="https://docs.docker.com/get-started/" target="_blank" rel="noopener">Docker's official "Get Started" guide</a> (FREE).</li>
-                  </ul>
+                  <p>Use <strong>Python Flask</strong> to create a simple REST API with <code>/login</code> and <code>/api/v1/users/&lt;id&gt;</code> endpoints. This will be your target.</p>
                   <h4>How to Practice ($0):</h4>
-                  <p>Write a `Dockerfile` for your Phase 1 script. Build it (`docker build . -t my-scanner`) and run it.</p>
-                  <p class="done"><strong>✅ Definition of Done:</strong> Your Phase 1 script runs successfully from a **Docker container** you built.</p>
+                  <ul>
+                    <li><strong>Learn:</strong> Use the <strong><a href="https://flask.palletsprojects.com/en/3.0.x/quickstart/" target="_blank" rel="noopener">official Flask "Quickstart" docs</a></strong> and <strong><a href="https://realpython.com/flask-connexion-rest-api/" target="_blank" rel="noopener">RealPython's Flask API guides</a></strong>.</li>
+                    <li><strong>Crucial Step:</strong> Deliberately code the BOLA flaw. The <code>/users/&lt;id&gt;</code> endpoint must *only* check if the user is logged in, but *not* if the logged-in user matches the <code>&lt;id&gt;</code> being requested.</li>
+                  </ul>
+                  <h4>Deliverable:</h4>
+                  <p>A new GitHub repo, <strong><code>broken-auth-lab</code></strong>, containing the full source code for your API.</p>
+                  <p class="done"><strong>✅ Definition of Done:</strong> Your API runs locally, has a working <code>/login</code>, and the <code>/api/v1/users/&lt;id&gt;</code> endpoint is demonstrably vulnerable to BOLA.</p>
+                </div>
+              </div>
+              <div class="skill-item" data-open="false">
+                <button class="skill-header" type="button">Skill: Containerize Your Target</button>
+                <div class="skill-content">
+                  <h4>What:</h4>
+                  <p>Package your vulnerable Flask API using Docker to simulate a real-world production environment.</p>
+                  <h4>How to Practice ($0):</h4>
+                  <ul>
+                    <li><strong>Learn:</strong> Use <strong><a href="https://docs.docker.com/get-started/" target="_blank" rel="noopener">Docker's "Get Started" guide</a></strong>.</li>
+                    <li><strong>Practice (Lab):</strong> Use <strong><a href="https://labs.play-with-docker.com/" target="_blank" rel="noopener">Play with Docker</a></strong> for a free, in-browser lab.</li>
+                    <li><strong>Project:</strong> Write a <code>Dockerfile</code> for your Flask app. Build it (<code>docker build</code>) and run it (<code>docker run</code>). Add a <code>docker-compose.yml</code> file for easy startup.</li>
+                  </ul>
+                  <h4>Deliverable:</h4>
+                  <p>A <code>Dockerfile</code> and <code>docker-compose.yml</code> file committed to your <code>broken-auth-lab</code> repo.</p>
+                  <p class="done"><strong>✅ Definition of Done:</strong> Your vulnerable API runs successfully from a Docker container using a single <code>docker compose up</code> command.</p>
                 </div>
               </div>
             </div>
@@ -453,42 +481,28 @@
 
         <!-- PHASE 3 -->
         <div class="phase-card" data-open="false">
-          <button class="phase-header" type="button">PHASE 3: The Automated Pipeline (CI/CD)</button>
+          <button class="phase-header" type="button">PHASE 3: Custom Exploit Development & Validation</button>
           <div class="phase-content">
             <div class="phase-description">
               <h4>Why am I doing this?</h4>
-              <p>This is the core "DevSecOps" skill. You are building the automated assembly line that will act as your 24/7 security guard. This is where you implement SAST, DAST, and **SCA**.</p>
+              <p>To learn the "Break It" part. You will now write a custom, logic-based exploit for the target you built, acting as a professional penetration tester.</p>
             </div>
             <div class="skills-list">
               <div class="skill-item" data-open="false">
-                <button class="skill-header" type="button">Skill: CI/CD & SAST Integration</button>
+                <button class="skill-header" type="button">Skill: Custom Exploit Scripting</button>
                 <div class="skill-content">
                   <h4>What:</h4>
-                  <p>Building your first workflow in **GitHub Actions** and adding **SAST** (Static Analysis).</p>
-                  <ul>
-                    <li><strong>Learn:</strong> **YAML** syntax for GitHub Actions (`.github/workflows/main.yml`).</li>
-                    <li><strong>Tool:</strong> **Semgrep** (FREE SAST tool).</li>
-                  </ul>
-                  <h4>How to Practice ($0):</h4>
-                  <p>Commit a hardcoded password. Add Semgrep Action. Your pipeline must turn **RED**.</p>
-                  <p class="done"><strong>✅ Definition of Done:</strong> Your pipeline fails when you push a hardcoded secret.</p>
-                </div>
-              </div>
-              <div class="skill-item" data-open="false">
-                <button class="skill-header" type="button">Skill: SCA & DAST Integration</button>
-                <div class="skill-content">
-                  <h4>What:</h4>
-                  <p>Adding **SCA** to find vulnerable libraries and **DAST** to attack the running app.</p>
-                  <ul>
-                    <li><strong>SCA Tool:</strong> **Trivy** (FREE).</li>
-                    <li><strong>DAST Tool:</strong> **OWASP ZAP** (FREE).</li>
-                  </ul>
+                  <p>Adapt your <code>bola_tester.py</code> script from Phase 1 to be a full exploit for your Phase 2 API. This proves you can automate the discovery of a business logic flaw.</p>
                   <h4>How to Practice ($0):</h4>
                   <ul>
-                    <li>Add Trivy step to find vulnerable Python libraries.</li>
-                    <li>Add OWASP ZAP Baseline Scan against a test URL.</li>
+                    <li><strong>Project:</strong> This is a pure project-based step. You will use your own code from Phase 1 and 2.</li>
+                    <li><strong>Script:</strong> Your tool must call <code>/login</code> endpoint to get a token for <code>user_A</code>.</li>
+                    <li><strong>Exploit:</strong> It must then use that token to call <code>/api/v1/users/user_B</code>.</li>
+                    <li><strong>Result:</strong> It must print the "stolen" data for <code>user_B</code> to the console.</li>
                   </ul>
-                  <p class="done"><strong>✅ Definition of Done:</strong> One pipeline running **SAST**, **SCA**, and **DAST** on every push.</p>
+                  <h4>Deliverable:</h4>
+                  <p>A detailed <code>README.md</code> in the <code>broken-auth-lab</code> repo, with an "Exploitation Steps" section and the finished <code>exploit.py</code> script.</p>
+                  <p class="done"><strong>✅ Definition of Done:</strong> Your <code>exploit.py</code> script, when run, successfully logs in as one user, attacks the BOLA endpoint, and prints stolen data from another user to the console.</p>
                 </div>
               </div>
             </div>
@@ -497,25 +511,30 @@
 
         <!-- PHASE 4 -->
         <div class="phase-card" data-open="false">
-          <button class="phase-header" type="button">PHASE 4: The Capstone (The Resume Weapon)</button>
+          <button class="phase-header" type="button">PHASE 4: Capstone Project - The Exploit-Verified CI/CD Pipeline</button>
           <div class="phase-content">
             <div class="phase-description">
               <h4>Why am I doing this?</h4>
-              <p>This project **proves** you are not just another DevSecOps guy. Combine all skills to show you're an engineer, a hacker, and an automator.</p>
+              <p>To learn the "Secure It" part and tie everything into one "Resume Weapon." This single project proves you are a professional who understands the full "Build, Break, Secure" lifecycle.</p>
             </div>
             <div class="skills-list">
               <div class="skill-item" data-open="false">
-                <button class="skill-header" type="button">Project: The Exploit-Verified Pipeline</button>
+                <button class="skill-header" type="button">Project: The "Build, Break, Secure" Pipeline</button>
                 <div class="skill-content">
                   <h4>What:</h4>
-                  <p>A pipeline that uses your **own exploit script** as a security test.</p>
+                  <p>Use GitHub Actions to create a CI/CD pipeline that automatically runs your exploit script as a security test.</p>
+                  <h4>How to Practice ($0):</h4>
                   <ul>
-                    <li><strong>Step 1:</strong> Build a Flask app **deliberately vulnerable** to SQL Injection.</li>
-                    <li><strong>Step 2:</strong> Write `exploit.py` that attacks and proves the SQLi exists.</li>
-                    <li><strong>Step 3:</strong> Write `docker-compose.yml` that runs your app.</li>
-                    <li><strong>Step 4:</strong> Build GitHub Action: start app → wait 10s → run exploit → FAIL if exploit succeeds.</li>
+                    <li><strong>Learn:</strong> Read the <strong><a href="https://docs.github.com/en/actions" target="_blank" rel="noopener">GitHub Actions Docs</a></strong>.</li>
+                    <li><strong>Tool (Optional):</strong> Use <strong><a href="https://github.com/nektos/act" target="_blank" rel="noopener"><code>act</code> (GitHub Tool)</a></strong> to run your Actions locally for faster testing.</li>
+                    <li><strong>Step 1 (Build Action):</strong> Create <code>.github/workflows/security_test.yml</code>. It must build your Docker container, wait 10s, and then run <code>python exploit.py</code>.</li>
+                    <li><strong>Step 2 (The "Break"):</strong> Push your vulnerable code. The <code>exploit.py</code> will succeed, and your pipeline <strong>must fail (turn RED)</strong>.</li>
+                    <li><strong>Step 3 (The "Secure"):</strong> Create a new branch <code>patched</code>. Fix the BOLA flaw in your Flask code.</li>
+                    <li><strong>Step 4 (The "Proof"):</strong> Push your patched code. The <code>exploit.py</code> will fail to find the bug, and your pipeline <strong>must pass (turn GREEN)</strong>.</li>
                   </ul>
-                  <p class="done"><strong>✅ Definition of Done:</strong> Push vulnerable code → pipeline turns **RED** (fails). Push patched code → turns **GREEN** (passes). Put on resume.</p>
+                  <h4>Deliverable:</h4>
+                  <p><strong>The "Resume Weapon":</strong> The single GitHub URL for your <code>broken-auth-lab</code> repo, showing a clear history of RED (vulnerable) and GREEN (patched) builds.</p>
+                  <p class="done"><strong>✅ Definition of Done:</strong> You have a GitHub Action that turns <strong>RED</strong> on your <code>main</code> branch and <strong>GREEN</strong> on your <code>patched</code> branch. This is the ultimate proof of your skills.</p>
                 </div>
               </div>
             </div>
@@ -524,29 +543,18 @@
 
       </div>
 
-      <!-- Resources section -->
+      <!-- Community / Continuous Learning section -->
       <div class="resources">
-        <h2>Continuous Learning Feed (Your New "Hot Topics")</h2>
+        <h2>Community / Continuous Learning</h2>
         <ul>
           <li>
-            <strong>TechWorld with Nana (YouTube)</strong>
-            <span>Understand how modern cloud systems are built (CI/CD, Docker, Kubernetes) before securing them.</span>
-          </li>
-          <li>
-            <strong>KodeKloud (YouTube)</strong>
-            <span>Best hands-on tutorials for Docker and Kubernetes (next step after this plan).</span>
-          </li>
-          <li>
-            <strong>OWASP Projects (Website)</strong>
-            <span>Read **ASVS (Application Security Verification Standard)**. This is the professional's checklist.</span>
-          </li>
-          <li>
-            <strong>r/DevSecOps (Reddit)</strong>
-            <span>Read what real engineers complain about. What tools break? What vulnerabilities do they find?</span>
-          </li>
-          <li>
-            <strong>PortSwigger Blog & HackerOne Writeups</strong>
-            <span>Ask: "How could I write a script (Semgrep) or test (DAST) to find this automatically?"</span>
+            <strong>General / Community</strong>
+            <span>
+              <b>[News] <a href="https://portswigger.net/daily-swig" target="_blank" rel="noopener">The Daily Swig</a>:</b> Security news from the creators of Burp Suite.
+              <br><b>[Learning] <a href="https://www.youtube.com/@InsiderPhD" target="_blank" rel="noopener">InsiderPhD (YouTube)</a>:</b> One of the best channels for API and web hacking deep-dives.
+              <br><b>[Real Reports] <a href="https://hackerone.com/hacktivity" target="_blank" rel="noopener">HackerOne Hacktivity</a>:</b> Read *real, disclosed* bug reports from professional hackers.
+              <br><b>[Community] <a href="https://www.reddit.com/r/netsec/" target="_blank" rel="noopener">r/netsec</a> & <a href="https://www.reddit.com/r/AppSec/" target="_blank" rel="noopener">r/AppSec</a>:</b> Read what real engineers and pentesters are discussing.
+            </span>
           </li>
         </ul>
       </div>
@@ -559,40 +567,126 @@
   <script src="../assets/theme.js"></script>
 
   <script>
-    // Toggle phase cards
+    // Toggle phase cards & safe markdown enhancement
     document.addEventListener('DOMContentLoaded', () => {
+      // --- Lightweight Markdown Conversion (runs BEFORE attaching listeners) ---
+      // We walk text nodes instead of replacing large innerHTML blocks to avoid destroying event listeners.
+      const protectedRoot = document.getElementById('protected-content');
+      if (protectedRoot) {
+        const walker = document.createTreeWalker(protectedRoot, NodeFilter.SHOW_TEXT, null);
+        const mdPatterns = [
+          { regex: /\*\*(.+?)\*\*/g, wrap: content => document.createElement('strong'), groupIndex: 1 },
+          { regex: /\*(?!\*)([^*]+?)\*(?!\*)/g, wrap: content => document.createElement('em'), groupIndex: 1 },
+          { regex: /`([^`]+?)`/g, wrap: content => document.createElement('code'), groupIndex: 1 }
+        ];
+        const nodesToProcess = [];
+        while (walker.nextNode()) {
+          nodesToProcess.push(walker.currentNode);
+        }
+        nodesToProcess.forEach(textNode => {
+          let original = textNode.nodeValue;
+          let hasMatch = mdPatterns.some(p => p.regex.test(original));
+          if (!hasMatch) return;
+          const frag = document.createDocumentFragment();
+          let cursor = 0;
+          // Reset regex lastIndex for each pattern per node
+          while (cursor < original.length) {
+            let earliest = null;
+            let chosenPattern = null;
+            mdPatterns.forEach(pattern => {
+              pattern.regex.lastIndex = cursor;
+              const m = pattern.regex.exec(original);
+              if (m && (earliest === null || m.index < earliest.index)) {
+                earliest = m;
+                chosenPattern = pattern;
+              }
+            });
+            if (!earliest) {
+              frag.appendChild(document.createTextNode(original.slice(cursor)));
+              break;
+            }
+            if (earliest.index > cursor) {
+              frag.appendChild(document.createTextNode(original.slice(cursor, earliest.index)));
+            }
+            const el = chosenPattern.wrap(earliest[chosenPattern.groupIndex]);
+            el.textContent = earliest[chosenPattern.groupIndex];
+            frag.appendChild(el);
+            cursor = earliest.index + earliest[0].length;
+          }
+          textNode.parentNode.replaceChild(frag, textNode);
+        });
+      }
+
       // Back button
       const backBtn = document.querySelector('.back-btn');
       if (backBtn) backBtn.addEventListener('click', () => history.back());
 
-      // Phase toggles
+      function animateSection(container, contentSelector) {
+        const content = container.querySelector(contentSelector);
+        if (!content) return;
+        const isOpen = container.getAttribute('data-open') === 'true';
+        if (isOpen) {
+          // Closing
+          const currentHeight = content.scrollHeight;
+          content.style.height = currentHeight + 'px';
+          content.classList.remove('open-padding');
+          requestAnimationFrame(() => {
+            content.style.height = '0px';
+          });
+          container.setAttribute('data-open', 'false');
+        } else {
+          // Opening
+          content.style.height = '0px';
+          content.classList.add('open-padding');
+          container.setAttribute('data-open', 'true');
+          const target = content.scrollHeight; // after padding applied
+          content.style.height = target + 'px';
+          // After transition, set to auto for responsive content changes
+          content.addEventListener('transitionend', function toAuto(e) {
+            if (e.propertyName === 'height') {
+              content.style.height = 'auto';
+              content.removeEventListener('transitionend', toAuto);
+            }
+          });
+        }
+      }
+
+      // Phase toggles (smooth)
       document.querySelectorAll('.phase-card > .phase-header').forEach(btn => {
         btn.addEventListener('click', () => {
           const parent = btn.closest('.phase-card');
+          animateSection(parent, '.phase-content');
           const isOpen = parent.getAttribute('data-open') === 'true';
-          parent.setAttribute('data-open', String(!isOpen));
-          btn.setAttribute('aria-expanded', String(!isOpen));
+          btn.setAttribute('aria-expanded', String(isOpen));
         });
       });
 
-      // Skill toggles
+      // Skill toggles (smooth)
       document.querySelectorAll('.skill-item > .skill-header').forEach(btn => {
         btn.addEventListener('click', () => {
           const parent = btn.closest('.skill-item');
+          animateSection(parent, '.skill-content');
           const isOpen = parent.getAttribute('data-open') === 'true';
-          parent.setAttribute('data-open', String(!isOpen));
-          btn.setAttribute('aria-expanded', String(!isOpen));
+          btn.setAttribute('aria-expanded', String(isOpen));
         });
       });
 
-      // Initialize aria-expanded
+      // Initialize aria-expanded & set initial heights for pre-opened sections
       document.querySelectorAll('.phase-card, .skill-item').forEach(container => {
         const btn = container.querySelector('.phase-header, .skill-header');
-        if (btn) {
-          const open = container.getAttribute('data-open') === 'true';
-          btn.setAttribute('aria-expanded', String(open));
+        const open = container.getAttribute('data-open') === 'true';
+        if (btn) btn.setAttribute('aria-expanded', String(open));
+        const content = container.querySelector('.phase-content, .skill-content');
+        if (content) {
+          if (open) {
+            content.classList.add('open-padding');
+            content.style.height = 'auto';
+          } else {
+            content.style.height = '0px';
+          }
         }
       });
+
     });
   </script>
 
