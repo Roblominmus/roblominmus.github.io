@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Schedule - Robs Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            color-scheme: light dark;
+        }
+        * {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+        /* Light Mode */
+        body.light-mode {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            color: #1f2937;
+        }
+        body.light-mode .container {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(229, 231, 235, 0.5);
+        }
+        body.light-mode h1 {
+            color: #1e40af;
+        }
+        body.light-mode #day-selector {
+            background-color: #f9fafb;
+            border-color: #d1d5db;
+            color: #1f2937;
+        }
+        body.light-mode table th {
+            background-color: #e5e7eb;
+            color: #1f2937;
+            border-color: #d1d5db;
+        }
+        body.light-mode table td {
+            border-color: #e5e7eb;
+            color: #1f2937;
+        }
+        body.light-mode table tr:nth-child(even) td {
+            background-color: #f9fafb;
+        }
+        body.light-mode table tr:hover td {
+            background-color: #dbeafe;
+        }
+        body.light-mode .highlight {
+            background-color: #fef08a !important;
+            color: #1f2937 !important;
+        }
+        body.light-mode .mode-toggle {
+            background-color: #e5e7eb;
+            color: #1f2937;
+            border: 1px solid #d1d5db;
+        }
+        body.light-mode .mode-toggle:hover {
+            background-color: #d1d5db;
+        }
+        body.light-mode .back-btn {
+            background-color: #e5e7eb;
+            color: #1f2937;
+            border: 1px solid #d1d5db;
+        }
+        body.light-mode .back-btn:hover {
+            background-color: #d1d5db;
+        }
+        body.light-mode #current-task {
+            color: #4b5563;
+        }
+
+        /* Dark Mode */
+        body.dark-mode {
+            background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+            color: #e5e7eb;
+        }
+        body.dark-mode .container {
+            background: rgba(17, 24, 39, 0.95);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(75, 85, 99, 0.2);
+        }
+        body.dark-mode h1 {
+            color: #60a5fa;
+        }
+        body.dark-mode #day-selector {
+            background-color: #1f2937;
+            border-color: #4b5563;
+            color: #e5e7eb;
+        }
+        body.dark-mode table th {
+            background-color: #1f2937;
+            color: #93c5fd;
+            border-color: #4b5563;
+        }
+        body.dark-mode table td {
+            border-color: #4b5563;
+            color: #dbeafe;
+        }
+        body.dark-mode table tr:nth-child(even) td {
+            background-color: rgba(31, 41, 55, 0.5);
+        }
+        body.dark-mode table tr:hover td {
+            background-color: rgba(96, 165, 250, 0.1);
+        }
+        body.dark-mode .highlight {
+            background-color: rgba(234, 179, 8, 0.2) !important;
+            color: #e5e7eb !important;
+            border-left: 3px solid #eab308;
+        }
+        body.dark-mode .mode-toggle {
+            background-color: #374151;
+            color: #93c5fd;
+            border: 1px solid #4b5563;
+        }
+        body.dark-mode .mode-toggle:hover {
+            background-color: #4b5563;
+        }
+        body.dark-mode .back-btn {
+            background-color: #374151;
+            color: #93c5fd;
+            border: 1px solid #4b5563;
+        }
+        body.dark-mode .back-btn:hover {
+            background-color: #4b5563;
+        }
+        body.dark-mode #current-task {
+            color: #9ca3af;
+        }
+
+        /* Shared Styles */
+        body {
+            min-height: 100vh;
+            font-family: 'Inter', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            width: 95%;
+            max-width: 920px;
+            margin: 2rem auto;
+            padding: 24px;
+            border-radius: 14px;
+            overflow-x: auto;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+        h1 {
+            font-size: 2em;
+            margin: 0;
+            font-weight: 800;
+        }
+        .header-controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .mode-toggle, .back-btn {
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid;
+        }
+        .mode-toggle:hover, .back-btn:hover {
+            opacity: 0.85;
+        }
+        #current-task {
+            font-size: 1.1em;
+            margin: 12px 0;
+            font-weight: 500;
+            font-style: italic;
+        }
+        .day-selector-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        @media (min-width: 768px) {
+            .day-selector-wrapper {
+                flex-direction: row;
+            }
+        }
+        .day-selector-wrapper label {
+            font-weight: 600;
+            font-size: 1em;
+        }
+        #day-selector {
+            padding: 10px 12px;
+            font-size: 1em;
+            border-radius: 8px;
+            border: 1px solid;
+            font-weight: 500;
+            flex: 1;
+            min-width: 150px;
+            outline: none;
+            cursor: pointer;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+            font-size: 1em;
+        }
+        th, td {
+            padding: 12px 10px;
+            text-align: left;
+            border: 1px solid;
+            word-wrap: break-word;
+        }
+        th {
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            font-size: 0.9em;
+        }
+        tr:hover td {
+            cursor: default;
+        }
+        footer {
+            margin-top: 24px;
+            font-size: 0.875em;
+            text-align: center;
+            opacity: 0.7;
+        }
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header-controls {
+                width: 100%;
+            }
+            .container {
+                padding: 16px;
+            }
+            h1 {
+                font-size: 1.5em;
+            }
+            #day-selector {
+                width: 100%;
+            }
+            th, td {
+                padding: 8px 6px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body class="dark-mode">
+    <div id="protected-content" style="display:none">
+    <div class="container">
+        <!-- Header with Title, Mode Toggle, and Back Button -->
+        <div class="header">
+            <h1>Weekly Schedule</h1>
+            <div class="header-controls">
+                <button id="mode-toggle" class="mode-toggle" aria-label="Toggle dark/light mode">☀️</button>
+                <button onclick="history.back()" class="back-btn" title="Go Back">&larr; Back</button>
+            </div>
+        </div>
+
+        <!-- Day Selector -->
+        <div class="day-selector-wrapper">
+            <label for="day-selector">Select Day:</label>
+            <select id="day-selector" aria-label="Select a day to view schedule">
+                <option value="Monday">Monday</option>
+                <option value="Tuesday">Tuesday</option>
+                <option value="Wednesday">Wednesday</option>
+                <option value="Thursday">Thursday</option>
+                <option value="Friday">Friday</option>
+                <option value="Saturday">Saturday</option>
+                <option value="Sunday">Sunday</option>
+            </select>
+        </div>
+
+        <!-- Current Task Display -->
+        <p id="current-task"></p>
+
+            <!-- Current Time Display -->
+            <div style="text-align: center; margin: 16px 0; padding: 12px; border-radius: 8px; background: rgba(59, 130, 246, 0.1); border-left: 3px solid #3b82f6;">
+                <div style="font-size: 0.875em; opacity: 0.8;">Current Time (WAT)</div>
+                <div id="current-time" style="font-size: 1.75em; font-weight: 700; font-family: 'Courier New', monospace; margin-top: 4px;">--:--:--</div>
+            </div>
+
+        <!-- Schedule Table -->
+        <table id="schedule-table">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Task / Event</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <!-- Footer -->
+        <footer>&copy; Robs Hub &mdash; Schedule refreshes in real-time.</footer>
+    </div>
+    </div>
+
+    <script src="../assets/theme.js"></script>
+    <script src="../assets/auth.js"></script>
+    <script>
+
+        // ============ SCHEDULE DATA ============
+        const schedule = {
+            "Monday": {
+                "6:00 AM - 7:30 AM": "Wake up, Pray & Bible Study",
+                "9 AM - 10 AM": "BIS - AMPHITHEATER",
+                "11 AM - 1 PM": "LINUX - BDEL LAB 1",
+                "1 PM - 2 PM": "CAF - FRIED RICE",
+                "2 PM - 3 PM": "Decompress / Power Nap (Strict Rest)",
+                "3 PM - 5 PM": "LINUX (Immediate Review: Today's Lab)",
+                "5 PM - 6 PM": "LINUX - BDEL LAB 1",
+                "6 PM - 7 PM": "CAF - POTATO AND EGG SAUCE",
+                "7:00 PM - 8:30 PM": "Cyber Security (Hands-On Practice)",
+                "8:30 PM - 10:00 PM": "Lounging / Chat with Family"
+            },
+            "Tuesday": {
+                "6:00 AM - 7:30 AM": "Wake up, Pray & Bible Study",
+                "8 AM - 9 AM": "CHRISTIAN FAITH - OGDN HALL",
+                "10 AM - 1 PM": "NETWORKING - BDEL ROOM 1",
+                "1 PM - 2 PM": "CAF - SWALLOW",
+                "2 PM - 5 PM": "DATABASE MANAGEMENT - BDEL LAB 1",
+                "5 PM - 6 PM": "CAF - RICE & BEANS",
+                "6 PM - 7:30 PM": "Hall Worship",
+                "8 PM - 9:30 PM": "NETWORKING (Immediate Review: Today's Class)",
+                "9:30 PM - 10:30 PM": "Wind Down (No Screens)"
+            },
+            "Wednesday": {
+                "6:00 AM - 7:30 AM": "Wake up, Pray & Bible Study",
+                "8 AM - 10 AM": "AI - BDEL LAB 2",
+                "10 AM - 10:30 AM": "Transit & Snack (Brain Break)",
+                "10:30 AM - 12:00 PM": "AI (Immediate Review: Today's Class)",
+                "12:00 PM - 1:30 PM": "DATABASE (Immediate Review: Yesterday's Lab)",
+                "1 PM - 2 PM": "CAF - BEANS",
+                "2 PM - 5 PM": "Cyber Security (Focused Study)",
+                "5 PM - 6 PM": "CAF - SPAG",
+                "6 PM - 7 PM": "CHURCH - AMPHITHEATER",
+                "7 PM - 10 PM": "Lounging / Chat with Family"
+            },
+            "Thursday": {
+                "5:30 AM - 6:30 AM": "Wake up, Pray & Bible Study",
+                "6:30 AM - 7:00 AM": "Transit to NH RM 3",
+                "7:00 AM - 9:00 AM": "MACHINE LEARNING - NH RM 3",
+                "9:00 AM - 10:00 AM": "Breakfast & Decompress",
+                "10:00 AM - 1:00 PM": "DATA STRUCTURES",
+                "1:00 PM - 2:00 PM": "CAF - SWALLOW",
+                "2:00 PM - 4:00 PM": "STRICT REST / NAP (Recovery from heavy morning)",
+                "4:00 PM - 6:00 PM": "CHRISTIAN FAITH - OGDN HALL",
+                "6:00 PM - 7:00 PM": "CAF - MIXED RICE",
+                "8:00 PM - 9:30 PM": "MACHINE LEARNING (Immediate Review: Today's Class)"
+            },
+            "Friday": {
+                "6:00 AM - 7:00 AM": "Jogging",
+                "7:15 AM - 8:00 AM": "Washing Clothes & Shower",
+                "8:00 AM - 8:30 AM": "Prayer & Bible Study",
+                "9:30 AM - 11:30 AM": "DATA STRUCTURES (Immediate Review: Yesterday's Class)",
+                "11:30 AM - 1:00 PM": "Cyber Security (Weekly Project)",
+                "1 PM - 2 PM": "CAF - BEANS",
+                "2 PM - 5 PM": "Social Time / Lounging",
+                "5 PM - 6 PM": "CAF - YAM & STEW",
+                "6 PM - 7 PM": "CHURCH - AMPHITHEATER",
+                "7 PM - 11 PM": "Social Time / Chat with Family"
+            },
+            "Saturday": {
+                "8:00 AM - 9:00 AM": "Wake up, Pray & Bible Study",
+                "9 AM - 11 AM": "CHURCH - AMPHITHEATER",
+                "11 AM - 1 PM": "CAF - JOLLOF RICE",
+                "1:00 PM - 2:00 PM": "Rest / Digest",
+                "2:00 PM - 4:00 PM": "NETWORKING (Cumulative Test: Week 1 - Current)",
+                "4:00 PM - 6:00 PM": "DATABASE (Cumulative Test: Week 1 - Current)",
+                "6:00 PM - 7:00 PM": "CAF - FRIED YAM",
+                "7:00 PM - 10:00 PM": "Social Time / Movie"
+            },
+            "Sunday": {
+                "6:00 AM - 8:00 AM": "Jogging & Morning Air",
+                "8:00 AM - 9:30 AM": "Shower, Breakfast & Relax",
+                "9:30 AM - 10:30 AM": "Pray & Bible Study",
+                "10:30 AM - 12:30 PM": "AI (Cumulative Test: Week 1 - Current)",
+                "12:30 PM - 1:30 PM": "CAF - BEANS (Light Lunch)",
+                "1:30 PM - 3:30 PM": "DATA STRUCTURES (Cumulative Test: Week 1 - Current)",
+                "3:30 PM - 4:30 PM": "Brain Break / Nap",
+                "4:30 PM - 6:30 PM": "MACHINE LEARNING (Cumulative Test: Week 1 - Current)",
+                "6:30 PM - 8:30 PM": "LINUX (Cumulative Test: Week 1 - Current)",
+                "8:30 PM - 10:00 PM": "Plan Week Ahead & Relax"
+            }
+        }
+
+        // ============ UTILITY FUNCTIONS ============
+        const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+        function getCurrentWATTime() {
+            const now = new Date();
+            now.setHours(now.getUTCHours() + 1); // WAT (UTC+1)
+            return now;
+        }
+
+        function getTodayName() {
+            return daysOfWeek[getCurrentWATTime().getDay()];
+        }
+
+        function parseTime(timeStr) {
+            if (!timeStr || typeof timeStr !== 'string') return 0;
+            const [time, period] = timeStr.toLowerCase().trim().split(' ');
+            if (!time || !period) return 0;
+            let [hours = 0, minutes = 0] = time.split(':').map(Number);
+            if (isNaN(hours)) return 0;
+            if (period === 'pm' && hours < 12) hours += 12;
+            if (period === 'am' && hours === 12) hours = 0;
+            return hours * 60 + minutes;
+        }
+
+        function getCurrentTimeInMinutes() {
+            const now = getCurrentWATTime();
+            return now.getHours() * 60 + now.getMinutes();
+        }
+
+        // ============ SCHEDULE RENDERING ============
+        const daySelector = document.getElementById('day-selector');
+        const tableBody = document.querySelector('#schedule-table tbody');
+        const currentTaskElement = document.getElementById('current-task');
+
+        // ============ CURRENT TIME DISPLAY ============
+        const currentTimeElement = document.getElementById('current-time');
+        
+        function updateCurrentTimeDisplay() {
+            const now = getCurrentWATTime();
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            if (hours === 0) hours = 12;
+            currentTimeElement.textContent = `${hours}:${minutes}:${seconds} ${ampm}`;
+        }
+        
+        // Update time immediately and then every second
+        updateCurrentTimeDisplay();
+        setInterval(updateCurrentTimeDisplay, 1000);
+
+        function renderSchedule() {
+            const selectedDay = daySelector.value;
+            tableBody.innerHTML = '';
+
+            if (!schedule[selectedDay]) {
+                const row = document.createElement('tr');
+                const cell = document.createElement('td');
+                cell.colSpan = 2;
+                cell.textContent = 'No schedule for this day';
+                cell.style.textAlign = 'center';
+                row.appendChild(cell);
+                tableBody.appendChild(row);
+                return;
+            }
+
+            const todayName = getTodayName();
+            const isToday = selectedDay === todayName;
+            const currentTime = getCurrentTimeInMinutes();
+
+            Object.entries(schedule[selectedDay]).forEach(([time, task]) => {
+                const row = document.createElement('tr');
+
+                const timeCell = document.createElement('td');
+                timeCell.textContent = time;
+                timeCell.style.fontWeight = '600';
+
+                const taskCell = document.createElement('td');
+                taskCell.textContent = task;
+
+                row.appendChild(timeCell);
+                row.appendChild(taskCell);
+
+                // Highlight current task if viewing today
+                if (isToday) {
+                    // Support time ranges with AM/PM in both start and end
+                    let [startStr, endStr] = time.split(' - ');
+                    // If endStr is missing AM/PM, inherit from startStr
+                    if (startStr && endStr && !/(am|pm)/i.test(endStr) && /(am|pm)/i.test(startStr)) {
+                        const match = startStr.match(/(am|pm)/i);
+                        if (match) endStr = endStr + ' ' + match[1];
+                    }
+                    const startTime = parseTime(startStr);
+                    const endTime = parseTime(endStr);
+                    if (task === 'Hall Worship') {
+                        console.log(`Hall Worship: startStr="${startStr}" endStr="${endStr}" startTime=${startTime} endTime=${endTime} currentTime=${currentTime} isHighlighted=${currentTime >= startTime && currentTime <= endTime}`);
+                    }
+                    if (currentTime >= startTime && currentTime <= endTime) {
+                        row.classList.add('highlight');
+                    }
+                }
+
+                tableBody.appendChild(row);
+            });
+        }
+
+        // ============ HELPER FOR DYNAMIC TASKS ============
+        // List of keywords to identify tasks that should be broken down
+        const studiableTasks = [
+            'study', 'reading', 'school stuff', 'assignments', 'project',
+            'cyber security', 'ai', 'linux', 'networking', 'db', 'database', 'data structures'
+        ];
+
+        // ============ (NEW) DYNAMIC CURRENT TASK ============
+        function updateCurrentTask() {
+            const todayName = getTodayName();
+            const selectedDay = daySelector.value;
+            const currentTime = getCurrentTimeInMinutes();
+
+            if (selectedDay !== todayName) {
+                currentTaskElement.textContent = 'Viewing schedule for a different day.';
+                return;
+            }
+
+            const dayTasks = schedule[selectedDay];
+            if (!dayTasks) {
+                currentTaskElement.textContent = 'No schedule for today.';
+                return;
+            }
+
+            let foundCurrent = false;
+            for (const [time, task] of Object.entries(dayTasks)) {
+                let [startStr, endStr] = time.split(' - ');
+                // If endStr is missing AM/PM, inherit from startStr
+                if (startStr && endStr && !/(am|pm)/i.test(endStr) && /(am|pm)/i.test(startStr)) {
+                    const match = startStr.match(/(am|pm)/i);
+                    if (match) endStr = endStr + ' ' + match[1];
+                }
+                const startTime = parseTime(startStr);
+                const endTime = parseTime(endStr);
+
+                // CHECK IF THIS IS THE CURRENT TASK
+                if (currentTime >= startTime && currentTime <= endTime) {
+                    foundCurrent = true;
+                    const taskLower = task.toLowerCase();
+
+                    // Check if this is a "studiable" task from our helper list
+                    const isStudiable = studiableTasks.some(keyword => taskLower.includes(keyword));
+
+                    if (isStudiable) {
+                        // --- This is the new "Smart" Logic ---
+
+                        const totalBlockDuration = endTime - startTime;
+                        const minutesIntoBlock = currentTime - startTime;
+                        const BUFFER_TIME = 10; // 10-minute buffer at the end
+
+                        // 1. Check for Buffer Time
+                        if (totalBlockDuration - minutesIntoBlock <= BUFFER_TIME) {
+                            currentTaskElement.innerHTML = `<strong>Buffer Time:</strong> Pack up & prep for next event.`;
+                        } else {
+                            // 2. Do Pomodoro Logic
+                            const cycleLength = 30; // 25 min study + 5 min break
+                            const minutesIntoCycle = minutesIntoBlock % cycleLength;
+
+                            if (minutesIntoCycle < 25) {
+                                // Focus Block
+                                const timeLeft = 25 - minutesIntoCycle;
+                                currentTaskElement.innerHTML = `<strong>FOCUS:</strong> ${task} (${timeLeft} min left)`;
+                            } else {
+                                // Break Block
+                                const timeLeft = 30 - minutesIntoCycle;
+                                currentTaskElement.innerHTML = `<strong>MOVEMENT BREAK</strong> (${timeLeft} min left). Stand up!`;
+                            }
+                        }
+
+                    } else {
+                        // --- This is a normal, non-studiable task ---
+                        currentTaskElement.textContent = `Current task: ${task}`;
+                    }
+                    break; // Exit loop once task is found
+                }
+            }
+
+            if (!foundCurrent) {
+                currentTaskElement.textContent = 'No task at the moment.';
+            }
+        }
+
+        // ============ INITIALIZATION ============
+
+        // Put page startup logic into a single function and run it only after auth
+        function startApp() {
+            // 1. Initialize the page
+            daySelector.value = getTodayName();
+            renderSchedule();
+            updateCurrentTask();
+
+            // 2. NOW we can add the event listeners
+            // Update on day change
+            daySelector.addEventListener('change', () => {
+                renderSchedule();
+                updateCurrentTask();
+            });
+
+            // Update current task every minute
+            setInterval(updateCurrentTask, 60000);
+
+            // Update when window regains focus
+            window.addEventListener('focus', () => {
+                renderSchedule();
+                updateCurrentTask();
+            });
+        }
+
+        // Listen for the auth success event from the shared auth module
+        document.addEventListener('auth:unlocked', () => {
+            try { startApp(); } catch (e) { console.error('startApp failed after auth', e); }
+        });
+
+        // If the protected content is already visible (session-based), initialize now
+        if (document.getElementById('protected-content') && document.getElementById('protected-content').style.display !== 'none') {
+            startApp();
+        }
+    </script>
+</body>
+</html>
