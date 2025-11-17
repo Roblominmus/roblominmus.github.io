@@ -3,10 +3,17 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>My API Pentester Plan</title>
+  <title>My Upgraded API Pentester Plan</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     /* --- Base Theme --- */
+    body {
+      min-height: 100vh;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-attachment: fixed;
+    }
+    
     body.light-mode {
       background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
       color: #1f2937;
@@ -26,23 +33,42 @@
     .page-container {
       width: 100%;
       max-width: 1000px;
-      padding: 16px;
-      border-radius: 14px;
-      margin: 1rem auto;
+      padding: 12px;
+      border-radius: 8px;
+      margin: 0.5rem auto;
     }
     @media (min-width: 640px) {
       .page-container {
         padding: 24px;
         margin: 2rem auto;
+        border-radius: 14px;
       }
     }
     .header-controls {
       display: flex;
-      gap: 8px;
+      gap: 6px;
+      flex-shrink: 0;
     }
     .header-controls button {
-      font-size: 0.9rem;
-      padding: 6px 10px;
+      font-size: 0.85rem;
+      padding: 6px 8px;
+      border-radius: 6px;
+      border: 1px solid rgba(75, 85, 99, 0.4);
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .header-controls button:hover {
+      opacity: 0.85;
+    }
+    body.light-mode .header-controls button {
+      background: #e5e7eb;
+      color: #1f2937;
+      border-color: #d1d5db;
+    }
+    body.dark-mode .header-controls button {
+      background: #374151;
+      color: #93c5fd;
+      border-color: #4b5563;
     }
     @media (min-width: 640px) {
       .header-controls button {
@@ -79,17 +105,25 @@
     .phase-header {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 8px;
       width: 100%;
-      padding: 18px 20px;
+      padding: 14px 16px;
       cursor: pointer;
       font-weight: 700;
-      font-size: 1.1rem;
+      font-size: 0.95rem;
       transition: opacity 0.2s;
       background-color: #1a5666;
       color: #fff;
       border: none;
       text-align: left;
+      line-height: 1.4;
+    }
+    @media (min-width: 640px) {
+      .phase-header {
+        font-size: 1.1rem;
+        padding: 18px 20px;
+        gap: 12px;
+      }
     }
     .phase-header:hover {
       opacity: 0.9;
@@ -107,19 +141,36 @@
 
     /* Phase content wrapper (animated via JS height transition) */
     .phase-content {
-      padding: 0 20px; /* vertical padding added dynamically when open */
+      padding: 0 16px;
       height: 0;
       overflow: hidden;
       transition: height 0.35s ease;
     }
+    @media (min-width: 640px) {
+      .phase-content {
+        padding: 0 20px;
+      }
+    }
     .phase-card[data-open="true"] .phase-content.open-padding {
-      padding: 16px 20px 20px 20px;
+      padding: 14px 16px 18px 16px;
+    }
+    @media (min-width: 640px) {
+      .phase-card[data-open="true"] .phase-content.open-padding {
+        padding: 16px 20px 20px 20px;
+      }
     }
 
     /* Phase description */
     .phase-description {
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       line-height: 1.5;
+      font-size: 0.9rem;
+    }
+    @media (min-width: 640px) {
+      .phase-description {
+        margin-bottom: 16px;
+        font-size: 1rem;
+      }
     }
     body.dark-mode .phase-description {
       color: #e5e7eb;
@@ -129,8 +180,13 @@
     }
     .phase-description h4 {
       font-weight: 700;
-      font-size: 1rem;
+      font-size: 0.95rem;
       margin: 8px 0 4px 0;
+    }
+    @media (min-width: 640px) {
+      .phase-description h4 {
+        font-size: 1rem;
+      }
     }
     .phase-description p {
       margin: 4px 0;
@@ -140,7 +196,12 @@
     .skills-list {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
+    }
+    @media (min-width: 640px) {
+      .skills-list {
+        gap: 12px;
+      }
     }
 
     /* Skill card */
@@ -161,16 +222,25 @@
     .skill-header {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       width: 100%;
-      padding: 12px 14px;
+      padding: 10px 12px;
       cursor: pointer;
       font-weight: 600;
-      font-size: 1rem;
+      font-size: 0.9rem;
       transition: opacity 0.2s;
       background: none;
       border: none;
       text-align: left;
+      line-height: 1.4;
+      min-height: 44px; /* Touch-friendly */
+    }
+    @media (min-width: 640px) {
+      .skill-header {
+        padding: 12px 14px;
+        font-size: 1rem;
+        gap: 10px;
+      }
     }
     body.dark-mode .skill-header {
       color: #d0d0d0;
@@ -196,10 +266,22 @@
       height: 0;
       overflow: hidden;
       transition: height 0.35s ease;
-      padding: 0 14px; /* vertical padding added dynamically */
+      padding: 0 12px;
+      font-size: 0.85rem;
+    }
+    @media (min-width: 640px) {
+      .skill-content {
+        padding: 0 14px;
+        font-size: 0.95rem;
+      }
     }
     .skill-item[data-open="true"] .skill-content.open-padding {
-      padding: 12px 14px;
+      padding: 10px 12px;
+    }
+    @media (min-width: 640px) {
+      .skill-item[data-open="true"] .skill-content.open-padding {
+        padding: 12px 14px;
+      }
     }
     body.dark-mode .skill-content {
       border-top: 1px solid #374151;
@@ -213,8 +295,13 @@
     /* Text styles inside skill content */
     .skill-content h4 {
       font-weight: 700;
-      font-size: 1rem;
+      font-size: 0.9rem;
       margin: 8px 0 4px 0;
+    }
+    @media (min-width: 640px) {
+      .skill-content h4 {
+        font-size: 1rem;
+      }
     }
     .skill-content p {
       margin: 4px 0 8px 0;
@@ -222,18 +309,33 @@
     }
     .skill-content ul {
       list-style: disc;
-      padding-left: 20px;
+      padding-left: 18px;
       margin: 8px 0;
+    }
+    @media (min-width: 640px) {
+      .skill-content ul {
+        padding-left: 20px;
+      }
     }
     .skill-content li {
       margin: 4px 0;
       line-height: 1.5;
     }
+    .skill-content a {
+      word-break: break-word;
+      text-decoration: underline;
+    }
     .skill-content code {
       padding: 2px 5px;
       border-radius: 3px;
       font-family: "Courier New", Courier, monospace;
-      font-size: 0.9em;
+      font-size: 0.85em;
+      word-break: break-word;
+    }
+    @media (min-width: 640px) {
+      .skill-content code {
+        font-size: 0.9em;
+      }
     }
     body.light-mode .skill-content code {
       background-color: #e5e7eb;
@@ -262,9 +364,15 @@
 
     /* Resources section */
     .resources {
-      margin-top: 40px;
-      padding-top: 20px;
+      margin-top: 30px;
+      padding-top: 16px;
       border-top: 2px solid;
+    }
+    @media (min-width: 640px) {
+      .resources {
+        margin-top: 40px;
+        padding-top: 20px;
+      }
     }
     body.dark-mode .resources {
       border-top-color: #4b5563;
@@ -274,17 +382,31 @@
     }
     .resources h2 {
       color: #4a90e2;
-      font-size: 1.5rem;
-      margin-bottom: 16px;
+      font-size: 1.25rem;
+      margin-bottom: 12px;
+    }
+    @media (min-width: 640px) {
+      .resources h2 {
+        font-size: 1.5rem;
+        margin-bottom: 16px;
+      }
     }
     .resources ul {
       list-style: none;
       padding: 0;
     }
     .resources li {
-      margin-bottom: 10px;
-      padding: 12px;
+      margin-bottom: 8px;
+      padding: 10px;
       border-radius: 6px;
+      font-size: 0.9rem;
+    }
+    @media (min-width: 640px) {
+      .resources li {
+        margin-bottom: 10px;
+        padding: 12px;
+        font-size: 1rem;
+      }
     }
     body.dark-mode .resources li {
       background-color: #1f2937;
@@ -305,44 +427,37 @@
 
     /* Responsive adjustments */
     @media (max-width: 639px) {
-      .phase-header {
-        font-size: 1rem;
-        padding: 14px 16px;
+      body {
+        padding: 8px;
       }
-      .skill-header {
-        font-size: 0.95rem;
-        padding: 10px 12px;
+      h1 {
+        font-size: 1.5rem !important;
+        line-height: 1.3;
       }
-      .phase-description,
-      .skill-content {
-        font-size: 0.9rem;
+      .text-lg {
+        font-size: 0.95rem !important;
       }
     }
   </style>
 </head>
-<body class="dark-mode min-h-screen flex items-center justify-center p-6">
+<body class="dark-mode min-h-screen flex items-center justify-center">
 
-  <!-- Protected content wrapper -->
   <div id="protected-content" style="display:none">
     <div class="page-container">
-      <!-- Header -->
-      <div class="flex justify-between items-center mb-8">
-        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">My API Pentester Plan</h1>
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8">
+        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">My Upgraded API Pentester Plan</h1>
         <div class="header-controls">
           <button id="mode-toggle" class="mode-toggle" aria-label="Toggle dark/light mode">☀️</button>
           <button class="back-btn" title="Go Back" onclick="history.back()">&larr; Back</button>
         </div>
       </div>
 
-      <!-- Intro -->
-      <p class="text-lg opacity-80 mb-8">
+      <p class="text-lg opacity-80 mb-6 sm:mb-8">
         This is your <strong>actionable career plan</strong> to become a professional-grade <strong>API Penetration Tester</strong>. It is a $0 Budget Plan focused on <strong>project-based deliverables</strong> that prove your skill. This plan is built on the <strong>"Build, Break, Secure"</strong> philosophy to make you a non-replaceable, high-value candidate.
       </p>
 
-      <!-- Phases container -->
       <div class="phases-container">
         
-        <!-- PHASE 0 -->
         <div class="phase-card" data-open="true">
           <button class="phase-header" type="button">PHASE 0: Foundational DevOps & Server Administration (MANDATORY)</button>
           <div class="phase-content">
@@ -368,28 +483,30 @@
                 </div>
               </div>
               <div class="skill-item" data-open="false">
-                <button class="skill-header" type="button">Skill: Server Admin & Log Analysis</button>
+                <button class="skill-header" type="button">Project 1: Python Log Analyzer</button>
                 <div class="skill-content">
                   <h4>What:</h4>
-                  <p>Learning to install, manage, and analyze services on a live server. This is where you learn the "Text-Fu" (<code>grep</code>, <code>awk</code>, <code>sort</code>) that Bandit doesn't teach.</p>
+                  <p>Turning a simple Bash one-liner into a professional, reusable Python tool. This demonstrates "Text-Fu" and practical Python scripting.</p>
                   <h4>How to Practice ($0):</h4>
                   <ul>
                     <li><strong>Service Mgmt (Practice):</strong> On your Debian VM, install Nginx: <code>sudo apt install nginx</code>. Control it: <code>sudo systemctl status nginx</code>.</li>
-                    <li><strong>Log Analysis (Learn):</strong> Read this <strong><a href="https://www.digitalocean.com/community/tutorials/how-to-use-grep-awk-and-sed-to-manage-system-logs" target="_blank" rel="noopener">DigitalOcean `grep`/`awk`/`sed` Guide</a></strong>. This is your textbook for this skill.</li>
-                    <li><strong>Log Analysis (Practice):</strong> Go to <code>/var/log/</code> on your VM. Find a real log (like <code>auth.log</code>) and use <code>grep</code> and <code>awk</code> to find all failed password attempts.</li>
+                    <li><strong>Log Analysis (Learn):</strong> Read this <strong><a href="https://www.digitalocean.com/community/tutorials/how-to-use-grep-awk-and-sed-to-manage-system-logs" target="_blank" rel="noopener">DigitalOcean `grep`/`awk`/`sed` Guide</a></strong>. This is your textbook for the concept.</li>
                     <li><strong>Log Analysis (Lab):</strong> Use the <strong>[Free Room] <a href="https://tryhackme.com/room/tinkerbell" target="_blank" rel="noopener">TryHackMe 'Tinkerbell' Room</a></strong>. It is a specific <em>free</em> lab for practicing log analysis.</li>
-                    <li><strong>Linux (Learn):</strong> Use <strong><a href="https://linuxjourney.com/" target="_blank" rel="noopener">Linux Journey</a></strong>. It's a free, self-paced website to learn Linux theory that Bandit doesn't cover.</li>
+                    <li><strong>Python (Learn):</strong> Learn the <strong><a href="https://docs.python.org/3/library/argparse.html" target="_blank" rel="noopener">`argparse` module</a></strong> for CLI arguments and the <strong><a href="https://docs.python.org/3/library/re.html" target="_blank" rel="noopener">`re` module</a></strong> for regex parsing.</li>
                   </ul>
                   <h4>Deliverable:</h4>
-                  <p>A simple Bash script (<code>analyzer.sh</code>) in your GitHub repo that takes a log file as an argument and prints the top 5 failed login IPs.</p>
-                  <p class="done"><strong>✅ Definition of Done:</strong> You can start/stop <code>nginx</code> and build the <code>grep | awk '{print $11}' | sort | uniq -c | sort -nr</code> one-liner from memory.</p>
+                  <p>A new GitHub repo <strong><code>log-analyzer.py</code></strong>. This tool must:
+                    <br>1. Use <code>argparse</code> to accept a file path (<code>-f</code>).
+                    <br>2. Use Python's <code>re</code> (regex) to parse the Nginx log.
+                    <br>3. Output structured JSON (e.g., top 5 failed IPs).
+                  </p>
+                  <p class="done"><strong>✅ Definition of Done:</strong> Your script runs from the command line, parses a real <code>/var/log/nginx/access.log</code>, and prints a clean JSON report.</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- PHASE 1 -->
         <div class="phase-card" data-open="false">
           <button class="phase-header" type="button">PHASE 1: Offensive API Security & Tooling</button>
           <div class="phase-content">
@@ -416,26 +533,27 @@
                 </div>
               </div>
               <div class="skill-item" data-open="false">
-                <button class="skill-header" type="button">Skill: Python API Attack Scripting</button>
+                <button class="skill-header" type="button">Project 2: API Pentest Toolkit</button>
                 <div class="skill-content">
                   <h4>What:</h4>
-                  <p>Master the <code>requests</code> library (<code>get</code>, <code>post</code>, <code>headers</code>, <code>json</code>) and <code>argparse</code> to create professional, reusable command-line tools for pentesting.</p>
+                  <p>Building an extensible Python toolkit, not just a one-off script. This shows you build frameworks, not just hacks.</p>
                   <h4>How to Practice ($0):</h4>
                   <ul>
                     <li><strong>Learn (Requests):</strong> Read the official <strong><a href="https://requests.readthedocs.io/en/latest/" target="_blank" rel="noopener"><code>requests</code> library</a></strong> docs.</li>
-                    <li><strong>Learn (Argparse):</strong> Read the official Python <strong><a href="https://docs.python.org/3/library/argparse.html" target="_blank" rel="noopener"><code>argparse</code> module</a></strong> docs.</li>
-                    <li><strong>Project:</strong> Build a reusable Python script that takes a URL, user token, and user ID as arguments and attempts to find BOLA flaws by iterating IDs.</li>
+                    <li><strong>Project:</strong> Build a reusable Python script (<code>api-toolkit.py</code>) that uses <code>argparse</code> to select a "module".
+                      <br> - Start with <code>module_bola</code> (iterates IDs).
+                      <br> - Add <code>module_discovery</code> (takes a wordlist, finds hidden endpoints).
+                    </li>
                   </ul>
                   <h4>Deliverable:</h4>
-                  <p>A new GitHub repo (<code>bola_tester.py</code>) containing your finished, reusable tool.</p>
-                  <p class="done"><strong>✅ Definition of Done:</strong> You have a working, reusable Python script that uses <code>requests</code> and <code>argparse</code> to automate a BOLA check.</p>
+                  <p>A new GitHub repo <strong><code>api-pentest-toolkit</code></strong> containing your finished, modular tool. The <code>README.md</code> must explain how to use it and how to add new modules.</p>
+                  <p class="done"><strong>✅ Definition of Done:</strong> You have a working, reusable Python script that can run at least two different "attack modules" (e.g., BOLA and Discovery) selected via CLI arguments.</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- PHASE 2 -->
         <div class="phase-card" data-open="false">
           <button class="phase-header" type="button">PHASE 2: Secure Development Lifecycle (SDLC) & Target Creation</button>
           <div class="phase-content">
@@ -445,18 +563,20 @@
             </div>
             <div class="skills-list">
               <div class="skill-item" data-open="false">
-                <button class="skill-header" type="button">Skill: Build a Vulnerable API</button>
+                <button class="skill-header" type="button">Project 3: Build a Multi-Vulnerability API Lab</button>
                 <div class="skill-content">
                   <h4>What:</h4>
-                  <p>Use <strong>Python Flask</strong> to create a simple REST API with <code>/login</code> and <code>/api/v1/users/&lt;id&gt;</code> endpoints. This will be your target.</p>
+                  <p>Use <strong>Python Flask</strong> to create a REST API with <code>/login</code> and user endpoints. This will be your target. We will *deliberately* code multiple flaws.</p>
                   <h4>How to Practice ($0):</h4>
                   <ul>
                     <li><strong>Learn:</strong> Use the <strong><a href="https://flask.palletsprojects.com/en/3.0.x/quickstart/" target="_blank" rel="noopener">official Flask "Quickstart" docs</a></strong> and <strong><a href="https://realpython.com/flask-connexion-rest-api/" target="_blank" rel="noopener">RealPython's Flask API guides</a></strong>.</li>
-                    <li><strong>Crucial Step:</strong> Deliberately code the BOLA flaw. The <code>/users/&lt;id&gt;</code> endpoint must *only* check if the user is logged in, but *not* if the logged-in user matches the <code>&lt;id&gt;</code> being requested.</li>
+                    <li><strong>Flaw 1 (BOLA):</strong> The <code>/users/&lt;id&gt;</code> endpoint must *not* check if the logged-in user matches the <code>&lt;id&gt;</code>.</li>
+                    <li><strong>Flaw 2 (BFLA):</strong> Create an <code>/admin/all_users</code> endpoint that *only* checks for login, not for an "admin" role.</li>
+                    <li><strong>Flaw 3 (Mass Assignment):</strong> Create a <code>PATCH /profile</code> endpoint that naively updates a user object, allowing a user to "promote" themselves by sending <code>{"is_admin": true}</code>.</li>
                   </ul>
                   <h4>Deliverable:</h4>
-                  <p>A new GitHub repo, <strong><code>broken-auth-lab</code></strong>, containing the full source code for your API.</p>
-                  <p class="done"><strong>✅ Definition of Done:</strong> Your API runs locally, has a working <code>/login</code>, and the <code>/api/v1/users/&lt;id&gt;</code> endpoint is demonstrably vulnerable to BOLA.</p>
+                  <p>A new GitHub repo, <strong><code>multi-vuln-api-lab</code></strong>, containing the full source code for your API with all three vulnerabilities.</p>
+                  <p class="done"><strong>✅ Definition of Done:</strong> Your API runs locally and is demonstrably vulnerable to BOLA, BFLA, and Mass Assignment.</p>
                 </div>
               </div>
               <div class="skill-item" data-open="false">
@@ -471,7 +591,7 @@
                     <li><strong>Project:</strong> Write a <code>Dockerfile</code> for your Flask app. Build it (<code>docker build</code>) and run it (<code>docker run</code>). Add a <code>docker-compose.yml</code> file for easy startup.</li>
                   </ul>
                   <h4>Deliverable:</h4>
-                  <p>A <code>Dockerfile</code> and <code>docker-compose.yml</code> file committed to your <code>broken-auth-lab</code> repo.</p>
+                  <p>A <code>Dockerfile</code> and <code>docker-compose.yml</code> file committed to your <code>multi-vuln-api-lab</code> repo.</p>
                   <p class="done"><strong>✅ Definition of Done:</strong> Your vulnerable API runs successfully from a Docker container using a single <code>docker compose up</code> command.</p>
                 </div>
               </div>
@@ -479,39 +599,110 @@
           </div>
         </div>
 
-        <!-- PHASE 3 -->
         <div class="phase-card" data-open="false">
-          <button class="phase-header" type="button">PHASE 3: Custom Exploit Development & Validation</button>
+          <button class="phase-header" type="button">PHASE 3: Custom Exploit Development & Professional Reporting</button>
           <div class="phase-content">
             <div class="phase-description">
               <h4>Why am I doing this?</h4>
-              <p>To learn the "Break It" part. You will now write a custom, logic-based exploit for the target you built, acting as a professional penetration tester.</p>
+              <p>To learn the "Break It" part. You will now write a custom, logic-based exploit for the target you built, and *document* it like a professional.</p>
             </div>
             <div class="skills-list">
               <div class="skill-item" data-open="false">
-                <button class="skill-header" type="button">Skill: Custom Exploit Scripting</button>
+                <button class="skill-header" type="button">Skill: Custom Multi-Exploit Scripting</button>
                 <div class="skill-content">
                   <h4>What:</h4>
-                  <p>Adapt your <code>bola_tester.py</code> script from Phase 1 to be a full exploit for your Phase 2 API. This proves you can automate the discovery of a business logic flaw.</p>
+                  <p>Adapt your <code>api-pentest-toolkit</code> (or write a new <code>exploit.py</code>) to find all three vulnerabilities in your custom lab.</p>
                   <h4>How to Practice ($0):</h4>
                   <ul>
                     <li><strong>Project:</strong> This is a pure project-based step. You will use your own code from Phase 1 and 2.</li>
-                    <li><strong>Script:</strong> Your tool must call <code>/login</code> endpoint to get a token for <code>user_A</code>.</li>
-                    <li><strong>Exploit:</strong> It must then use that token to call <code>/api/v1/users/user_B</code>.</li>
-                    <li><strong>Result:</strong> It must print the "stolen" data for <code>user_B</code> to the console.</li>
+                    <li><strong>Script:</strong> Your tool must login as a low-privilege <code>user_A</code>.</li>
+                    <li><strong>Exploit:</strong> It must then use that user's token to:
+                      <br> 1. Exploit BOLA to read data for <code>user_B</code>.
+                      <br> 2. Exploit BFLA to access the <code>/admin/all_users</code> endpoint.
+                      <br> 3. Exploit Mass Assignment to make <code>user_A</code> an admin.
+                    </li>
                   </ul>
                   <h4>Deliverable:</h4>
-                  <p>A detailed <code>README.md</code> in the <code>broken-auth-lab</code> repo, with an "Exploitation Steps" section and the finished <code>exploit.py</code> script.</p>
-                  <p class="done"><strong>✅ Definition of Done:</strong> Your <code>exploit.py</code> script, when run, successfully logs in as one user, attacks the BOLA endpoint, and prints stolen data from another user to the console.</p>
+                  <p>A detailed <code>README.md</code> in the <code>multi-vuln-api-lab</code> repo, with an "Exploitation Steps" section and the finished <code>exploit.py</code> script.</p>
+                  <p class="done"><strong>✅ Definition of Done:</strong> Your <code>exploit.py</code> script, when run, successfully exploits all three vulnerabilities.</p>
+                </div>
+              </div>
+              <div class="skill-item" data-open="false">
+                <button class="skill-header" type="button">Project 4: Professional Vulnerability Report</button>
+                <div class="skill-content">
+                  <h4>What:</h4>
+                  <p>Creating a high-quality PDF report for your findings. This is a non-technical skill that is <strong>critical</strong> for getting hired. You are proving you can do the *job*, not just the *hack*.</p>
+                  <h4>How to Practice ($0):</h4>
+                  <ul>
+                    <li><strong>Template (Learn):</strong> Search "pentest report template github" to find free Markdown or DocX templates.</li>
+                    <li><strong>Writing (Practice):</strong> Write a professional report for your <code>multi-vuln-api-lab</code> project.</li>
+                    <li><strong>Content:</strong> It must include:
+                      <br> 1. <strong>Executive Summary:</strong> Simple, non-technical summary for a manager.
+                      <br> 2. <strong>Technical Findings:</strong> One section for each of your 3 bugs (BOLA, BFLA, Mass Assignment).
+                      <br> 3. <strong>Proof of Concept:</strong> Your <code>exploit.py</code> code/output.
+                      <br> 4. <strong>Remediation:</strong> Clear, actionable advice on how to *fix* the code.
+                    </li>
+                  </ul>
+                  <h4>Deliverable:</h4>
+                  <p>A high-quality <strong><code>Vulnerability_Report.pdf</code></strong>, exported and committed to the <code>multi-vuln-api-lab</code> repo. Link this PDF directly on your CV.</p>
+                  <p class="done"><strong>✅ Definition of Done:</strong> You have a professional PDF report that clearly explains the risk, impact, and solution for all three vulnerabilities.</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- PHASE 4 -->
         <div class="phase-card" data-open="false">
-          <button class="phase-header" type="button">PHASE 4: Capstone Project - The Exploit-Verified CI/CD Pipeline</button>
+          <button class="phase-header" type="button">PHASE 4: Standalone Project - JWT Security Lab (Build, Break, Secure)</button>
+          <div class="phase-content">
+            <div class="phase-description">
+              <h4>Why am I doing this?</h4>
+              <p>To tackle <code>API2: Broken Authentication</code>. JSON Web Tokens (JWT) are the #1 auth method for modern APIs and a massive attack surface. This becomes a *second* major portfolio project.</p>
+            </div>
+            <div class="skills-list">
+              <div class="skill-item" data-open="false">
+                <button class="skill-header" type="button">Skill: Build & Break a JWT API</button>
+                <div class="skill-content">
+                  <h4>What:</h4>
+                  <p>Use Flask and the <strong><a href="https://pyjwt.readthedocs.io/en/stable/" target="_blank" rel="noopener">PyJWT library</a></strong> to build an API, deliberately introducing common JWT flaws.</p>
+                  <h4>How to Practice ($0):</h4>
+                  <ul>
+                    <li><strong>Build (Part 1):</strong> Create a new Flask API with <code>/login</code> (issues a JWT) and <code>/protected</code> (requires a JWT).</li>
+                    <li><strong>Flaw 1 (alg:none):</strong> Deliberately code the <code>/protected</code> endpoint to *accept* tokens with the <code>alg</code> header set to <code>none</code>.</li>
+                    <li><strong>Flaw 2 (Weak Secret):</strong> Use a laughably weak secret key, like <code>secret123</code>.</li>
+                    <li><strong>Break (Part 2):</strong> Write a Python script (<code>jwt_attacker.py</code>) using <code>requests</code> and <code>pyjwt</code> to:
+                      <br> 1. Forge a token with <code>alg: none</code> and access <code>/protected</code>.
+                      <br> 2. Brute-force the weak secret key using a simple wordlist.
+                    </li>
+                  </ul>
+                  <h4>Deliverable:</h4>
+                  <p>A new GitHub repo <strong><code>jwt-security-lab</code></strong> with the vulnerable Flask API source and the <code>jwt_attacker.py</code> exploit script.</p>
+                  <p class="done"><strong>✅ Definition of Done:</strong> Your <code>jwt_attacker.py</code> script can successfully get admin access by exploiting both the <code>alg:none</code> and weak secret vulnerabilities.</p>
+                </div>
+              </div>
+              <div class="skill-item" data-open="false">
+                <button class="skill-header" type="button">Skill: Secure the JWT API</button>
+                <div class="skill-content">
+                  <h4>What:</h4>
+                  <p>Fixing the flaws you introduced, demonstrating the "Secure" part of the cycle.</p>
+                  <h4>How to Practice ($0):</h4>
+                  <ul>
+                    <li><strong>Secure (Part 1):</strong> Create a new branch <code>patched</code>.</li>
+                    <li><strong>Fix 1:</strong> Update the code to *only* accept the <code>HS256</code> algorithm, rejecting all others.</li>
+                    <li><strong>Fix 2:</strong> Change the key to a long, complex, random string.</li>
+                    <li><strong>Verify:</strong> Run your <code>jwt_attacker.py</code> script against the <code>patched</code> code. It must fail.</li>
+                  </ul>
+                  <h4>Deliverable:</h4>
+                  <p>The <code>patched</code> branch in your repo, with a <code>README.md</code> explaining the vulnerabilities and the fixes.</p>
+                  <p class="done"><strong>✅ Definition of Done:</strong> Your exploit script works on the <code>main</code> branch but fails completely on the <code>patched</code> branch.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="phase-card" data-open="false">
+          <button class="phase-header" type="button">PHASE 5: Capstone Project - The Exploit-Verified CI/CD Pipeline</button>
           <div class="phase-content">
             <div class="phase-description">
               <h4>Why am I doing this?</h4>
@@ -522,18 +713,18 @@
                 <button class="skill-header" type="button">Project: The "Build, Break, Secure" Pipeline</button>
                 <div class="skill-content">
                   <h4>What:</h4>
-                  <p>Use GitHub Actions to create a CI/CD pipeline that automatically runs your exploit script as a security test.</p>
+                  <p>Use GitHub Actions to create a CI/CD pipeline that automatically runs your exploit script as a security test against your <strong><code>multi-vuln-api-lab</code></strong>.</p>
                   <h4>How to Practice ($0):</h4>
                   <ul>
                     <li><strong>Learn:</strong> Read the <strong><a href="https://docs.github.com/en/actions" target="_blank" rel="noopener">GitHub Actions Docs</a></strong>.</li>
                     <li><strong>Tool (Optional):</strong> Use <strong><a href="https://github.com/nektos/act" target="_blank" rel="noopener"><code>act</code> (GitHub Tool)</a></strong> to run your Actions locally for faster testing.</li>
                     <li><strong>Step 1 (Build Action):</strong> Create <code>.github/workflows/security_test.yml</code>. It must build your Docker container, wait 10s, and then run <code>python exploit.py</code>.</li>
                     <li><strong>Step 2 (The "Break"):</strong> Push your vulnerable code. The <code>exploit.py</code> will succeed, and your pipeline <strong>must fail (turn RED)</strong>.</li>
-                    <li><strong>Step 3 (The "Secure"):</strong> Create a new branch <code>patched</code>. Fix the BOLA flaw in your Flask code.</li>
-                    <li><strong>Step 4 (The "Proof"):</strong> Push your patched code. The <code>exploit.py</code> will fail to find the bug, and your pipeline <strong>must pass (turn GREEN)</strong>.</li>
+                    <li><strong>Step 3 (The "Secure"):</strong> Create a new branch <code>patched</code>. Fix all 3 flaws (BOLA, BFLA, Mass Assignment) in your Flask code.</li>
+                    <li><strong>Step 4 (The "Proof"):</strong> Push your patched code. The <code>exploit.py</code> will fail to find the bugs, and your pipeline <strong>must pass (turn GREEN)</strong>.</li>
                   </ul>
                   <h4>Deliverable:</h4>
-                  <p><strong>The "Resume Weapon":</strong> The single GitHub URL for your <code>broken-auth-lab</code> repo, showing a clear history of RED (vulnerable) and GREEN (patched) builds.</p>
+                  <p><strong>The "Resume Weapon":</strong> The single GitHub URL for your <code>multi-vuln-api-lab</code> repo, showing a clear history of RED (vulnerable) and GREEN (patched) builds.</p>
                   <p class="done"><strong>✅ Definition of Done:</strong> You have a GitHub Action that turns <strong>RED</strong> on your <code>main</code> branch and <strong>GREEN</strong> on your <code>patched</code> branch. This is the ultimate proof of your skills.</p>
                 </div>
               </div>
@@ -543,7 +734,6 @@
 
       </div>
 
-      <!-- Community / Continuous Learning section -->
       <div class="resources">
         <h2>Community / Continuous Learning</h2>
         <ul>
@@ -559,10 +749,8 @@
         </ul>
       </div>
 
-    </div><!-- End Page Container -->
-  </div>
+    </div></div>
 
-  <!-- Authentication script for protected pages -->
   <script src="../assets/auth.js"></script>
   <script src="../assets/theme.js"></script>
 
