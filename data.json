@@ -1,0 +1,251 @@
+{
+  "schedule_blocks": {
+    "monday": [
+      { "time": "08:00 AM - 05:00 PM", "activity": "Work (Office)", "details": "Standard office hours. Focus on tasks." },
+      { "time": "06:00 PM - 07:00 PM", "activity": "Rest & Get Bearings", "details": "Transition time. Decompress from office." },
+      { "time": "07:00 PM - 07:25 PM", "activity": "Workout: Light Recovery (Home)", "type": "gym", "routine": "light_recovery", "details": "Short and restorative to fit post-office fatigue." },
+      { "time": "08:30 PM - 10:30 PM", "activity": "Cyber Security Time", "type": "cyber", "details": "Focus on Phase 0: Foundational DevOps." }
+    ],
+    "tuesday": [
+      { "time": "07:00 AM - 09:00 AM", "activity": "Gym: Strength & Pulling", "type": "gym", "routine": "strength_pulling", "details": "75 mins total including travel/buffer. Back home/showered by 9:30 AM to start work comfortably." },
+      { "time": "09:00 AM - 05:00 PM", "activity": "Work (WFH)", "details": "Work from home. Stand up periodically." },
+      { "time": "05:00 PM - 06:00 PM", "activity": "Rest & Get Bearings", "details": "Mental reset before evening study." },
+      { "time": "06:00 PM - 08:00 PM", "activity": "Cyber Security Time", "type": "cyber", "details": "Focus on Phase 1: Offensive API Security." }
+    ],
+    "wednesday": [
+      { "time": "08:00 AM - 05:00 PM", "activity": "Work (Office)", "details": "Standard office hours." },
+      { "time": "06:00 PM - 07:00 PM", "activity": "Rest & Get Bearings", "details": "Transition time." },
+      { "time": "07:00 PM - 07:25 PM", "activity": "Workout: Light Recovery (Home)", "type": "gym", "routine": "light_recovery", "details": "Short and restorative to fit post-office fatigue." },
+      { "time": "08:30 PM - 10:30 PM", "activity": "Cyber Security Time", "type": "cyber", "details": "Continue Phase 0 or 1 labs." }
+    ],
+    "thursday": [
+      { "time": "07:00 AM - 09:00 AM", "activity": "Gym: Combat Conditioning", "type": "gym", "routine": "combat_conditioning", "details": "75 mins total, back by 9:30 AM." },
+      { "time": "09:00 AM - 05:00 PM", "activity": "Work (WFH)", "details": "Work from home." },
+      { "time": "05:00 PM - 06:00 PM", "activity": "Rest & Get Bearings", "details": "Mental reset." },
+      { "time": "06:00 PM - 08:00 PM", "activity": "Cyber Security Time", "type": "cyber", "details": "Phase 1.5: VDP Hunt or Lab Project." }
+    ],
+    "friday": [
+      { "time": "07:00 AM - 08:00 AM", "activity": "Workout: Light Recovery (Home)", "type": "gym", "routine": "light_recovery", "details": "25 mins—quick morning session before work start." },
+      { "time": "09:00 AM - 05:00 PM", "activity": "Work (WFH)", "details": "Work from home. Wrap up weekly tasks." },
+      { "time": "05:00 PM - 06:00 PM", "activity": "Rest & Get Bearings", "details": "End of work week transition." },
+      { "time": "Evening", "activity": "Cyber Security Time", "type": "cyber", "details": "Flexible time for Labs or Capstone." }
+    ],
+    "saturday": [
+      { "time": "07:00 AM - 09:30 AM", "activity": "Gym: Agility & Skill Synthesis", "type": "gym", "routine": "agility_skill", "details": "90 mins total, flexible end time since no work constraint." },
+      { "time": "11:00 AM - 03:00 PM", "activity": "Cyber Security Time", "type": "cyber", "details": "Long session: Deep work on Capstone or VDP." }
+    ],
+    "sunday": [
+      { "time": "Morning - 12:00 PM", "activity": "Church", "details": "Weekly reset." },
+      { "time": "12:00 PM - End of Day", "activity": "Rest", "details": "Total rest—no workouts, prioritize sleep/recovery for weekly reset." }
+    ]
+  },
+  "gym_data": {
+    "warmup": {
+      "title": "Standard Warm-Up",
+      "duration": "10 mins",
+      "description": "Mandatory before every session: Builds mobility/agility baseline safely, preps for all goals without clashing schedules.",
+      "exercises": [
+        { "name": "Light Cardio", "duration": "3 mins", "form": "Jog in place or jumping jacks. Steady pace to break sweat.", "why": "Elevates heart rate for endurance/sprint readiness, adaptable home/gym.", "video": "https://www.youtube.com/watch?v=BsZmSx34hvQ" },
+        { "name": "Neck CARs", "reps": "5 circles/direction", "form": "Slow, controlled rotations.", "why": "Enhances head movement/clarity for chase/combat memorization.", "video": "https://www.youtube.com/watch?v=BsZmSx34hvQ" },
+        { "name": "Cat-Cow", "reps": "10 reps", "form": "On all fours, arch/round back with breath.", "why": "Spine mobility for balance in climbs/carries.", "video": "https://www.youtube.com/watch?v=Xq3nUS-Y2q4" },
+        { "name": "Shoulder Dislocates", "reps": "10 reps", "form": "Wide grip, over-and-back (Band/Towel).", "why": "Shoulder range for pulling/punching in self-protection.", "video": "https://www.youtube.com/watch?v=7p-Ma0eksaY" },
+        { "name": "World's Greatest Stretch", "reps": "5/side, 5s hold", "form": "Lunge forward, twist torso.", "why": "Opens hips for agility/momentum shifts.", "video": "https://www.youtube.com/watch?v=-CiWQ2IvY34" },
+        { "name": "Leg Swings", "reps": "10 fwd/back + side/side", "form": "Controlled swings.", "why": "Loosens legs for sprints/labor demands.", "video": "https://www.youtube.com/watch?v=difDswSWOc4" },
+        { "name": "Bodyweight Squats", "reps": "15 reps", "form": "Feet shoulder-width, sit back, knees track toes.", "why": "Primes lower body/core for strength/endurance.", "video": "https://www.youtube.com/watch?v=P-yaD24bUE8" }
+      ]
+    },
+    "routines": {
+      "light_recovery": {
+        "title": "Light Recovery",
+        "description": "Goal: Healing/mobility focus—supports quick recovery for multiple efforts, fits office evenings/WFH mornings without strain. (25 mins total)",
+        "warmup": true,
+        "circuit": [
+          { "name": "Bird-Dogs", "reps": "10/side, hold 5 secs", "form": "Extend opposite arm/leg, hips level, core braced.", "why": "Builds core stability for balance in chases/climbs.", "video": "https://www.youtube.com/watch?v=wiFNA3sqjCA" },
+          { "name": "Side Plank", "reps": "20 secs/side", "form": "Straight body line, no hip sag.", "why": "Obliques for anti-rotation in fights/carries.", "video": "https://www.youtube.com/watch?v=XeN4pEZZJNI" },
+          { "name": "Glute Bridges", "reps": "15 reps", "form": "Feet flat, lift hips squeezing glutes, drive through heels.", "why": "Glute activation for sprint/power in labor.", "video": "https://www.youtube.com/watch?v=wPM8icPu6H8" },
+          { "name": "Couch Stretch", "reps": "45-60 secs/side", "form": "Knee down, foot against wall, lean forward.", "why": "Releases hips for better running/agility.", "video": "https://www.youtube.com/watch?v=kRSUZPsqBQg" },
+          { "name": "Figure-Four Stretch", "reps": "45-60 secs/side", "form": "Cross ankle over knee, pull thigh in.", "why": "Eases glutes for endurance/labor resilience.", "video": "https://www.youtube.com/watch?v=OcfcKXTaEkA" }
+        ]
+      },
+      "strength_pulling": {
+        "title": "Strength & Pulling Focus",
+        "description": "Goal: Raw functional strength for labor/carrying/climbing/combat—directly builds grip/resilience for jerrycans/barrows/holding off attackers. (75 mins)",
+        "warmup": true,
+        "exercises": [
+          { "name": "Barbell Back Squats", "sets": "4 x 6-8", "rest": "2 mins", "form": "Bar on upper back, feet shoulder-width, descend to parallel with core braced, drive up through heels.", "why": "Leg/core power for sustained labor/sprints over 1-2km. Progress: Add weight when 2 reps in reserve.", "video": "https://www.youtube.com/watch?v=U3HlLHzX6Lg" },
+          { "name": "Bent-Over Barbell Rows", "sets": "4 x 6-8", "rest": "2 mins", "form": "Hinge hips, flat back, pull bar to lower ribs, squeeze shoulder blades.", "why": "Back pulling strength for climbing/ledges/bodyweight pulls. Progress: Add weight at full reps with control.", "video": "https://www.youtube.com/watch?v=TJiouaKew_k" },
+          { "name": "Dumbbell Floor Press", "sets": "4 x 6-8", "rest": "90 secs", "form": "Lie on floor, press from chest, elbows at 45 degrees.", "why": "Pushing toughness for self-protection in 4v1 scenarios. Progress: Increase weight gradually.", "video": "https://www.youtube.com/watch?v=AqYFvc9t_vU" },
+          { "name": "Push-Ups", "sets": "3 x max", "rest": "60 secs", "form": "Straight body, chest to floor, full range.", "why": "Additional upper body pushing resilience for combat or pushing obstacles.", "video": "https://www.youtube.com/watch?v=IODxDxX7oi4" },
+          { "name": "Farmers Walk", "sets": "2 sets", "details": "Heavy weights, 40m walk.", "form": "Upright posture, tight grip.", "why": "Grip/endurance for carrying loads without failure.", "video": "https://www.youtube.com/watch?v=lLAw6fUccKA" },
+          { "name": "Band Pull-Aparts", "sets": "2 sets x 15 reps", "form": "Hold band at chest, pull apart to sides.", "why": "Shoulder health/toughness for repeated efforts.", "video": "https://www.youtube.com/watch?v=smSSXITNpCI" }
+        ]
+      },
+      "combat_conditioning": {
+        "title": "Combat Conditioning & Sprint",
+        "description": "Goal: Fight stamina/sprint capacity—trains for chases (2-3km sprint, 10km jog) and holding off attackers with clarity/recovery. (75 mins)",
+        "warmup": true,
+        "exercises": [
+          { "name": "Punching Bag Intervals", "sets": "8 rounds", "details": "20 mins total. 30 secs all-out combos, 90 secs active rest (light footwork).", "form": "Hands up, pivot feet, move head.", "why": "Power/mental toughness for 4v1 deterrence/escape.", "video": "https://www.youtube.com/watch?v=Rlj3SWFu3I0" },
+          { "name": "Treadmill Intervals", "sets": "20 mins", "details": "Weeks 1-4: 400m hard run, 90 secs walk x6; progress to 600m (5-8), 800m (9-12).", "form": "Controlled pace, upright posture.", "why": "Builds sustained effort for escapes/long distances.", "video": "https://www.youtube.com/watch?v=ufh3SWOc4oM" },
+          { "name": "Farmers Holds (Grip Finisher)", "sets": "3 x 30 secs", "details": "Heaviest weight.", "form": "Static hold, no drop.", "why": "Resilient grip for labor/confrontations.", "video": "https://www.youtube.com/watch?v=h3I-fD7RYgE" }
+        ]
+      },
+      "agility_skill": {
+        "title": "Agility & Skill Synthesis",
+        "description": "Goal: Integrate skills under fatigue—mimics real-world survival (multi-attacker, labor, climbs) for adaptability/body control. (90 mins)",
+        "warmup": true,
+        "exercises": [
+          { "name": "Extended Warm-Up", "details": "Standard + 5 mins shadow boxing footwork.", "form": "Light, controlled footwork.", "why": "Agility/mental clarity." },
+          { "name": "Inverted Rows (Skill Drill)", "details": "10 mins practice.", "form": "Pull chest to bar, slow 5-sec negative lower, body straight.", "why": "Bodyweight pulling for ledges/hanging emergencies.", "video": "https://www.youtube.com/watch?v=I640fMJC80s" },
+          { "name": "Carries (Skill Drill)", "details": "10 mins heavy (Suitcase/Front Rack).", "form": "Balanced walk, core tight.", "why": "Dexterity/grip for jerrycans/barrows over distance.", "video": "https://www.youtube.com/watch?v=y-hn_Ha1-RE" },
+          { "name": "Capacity Challenge (AMRAP)", "details": "15-20 mins. 15 Inverted Rows, 20 Bag Slams, 400m Run, 15 Barbell Back Squats. Rest 2 mins after full circuit.", "form": "Maintain technique under fatigue.", "why": "Stop-start demands for protection/labor scenarios.", "video": "https://www.youtube.com/watch?v=w7e6KD9tvHo" },
+          { "name": "Cool-Down", "duration": "15 mins", "form": "Full-body stretches.", "video": "https://www.youtube.com/watch?v=itJE4neqDJw" }
+        ]
+      }
+    }
+  },
+  "cyber_content_database": {
+    "phases": [
+      {
+        "id": "0",
+        "title": "Foundational DevOps & Server Admin",
+        "description": "Why: To fix your self-admitted weakness. This phase builds the \"terminal muscle memory\" required to operate in the headless (non-GUI) Linux environments where all professional targets (servers, APIs, containers) reside.",
+        "tasks": [
+          {
+            "name": "Skill: Terminal & Git Fluency",
+            "type": "Skill",
+            "details": "What: Mastering core Linux and Git commands until they are muscle memory.\nHow to Practice ($0):\n- Linux (Practice): Finish all levels of OverTheWire: Bandit. This is your #1 priority for core commands.\n- Git (Practice): Create a GitHub repo. Practice the full workflow: git clone, git add ., git commit -m \"msg\", git push. Do this 20 times.\n- Git (Learn): Use the Git Tower (Free Book) for a clear guide.",
+            "deliverable": "A GitHub repository with a 100-commit history (even if just text files) to build muscle memory.",
+            "done": "Definition of Done: You can finish a Bandit level and `git push` your notes without looking up the commands."
+          },
+          {
+            "name": "Project 1: Python Log Analyzer",
+            "type": "Project",
+            "details": "What: Turning a simple Bash one-liner into a professional, reusable Python tool. Demonstrates \"Text-Fu\" and practical scripting.\nHow to Practice ($0):\n- Service Mgmt: On Debian VM, install Nginx. Control it (systemctl).\n- Log Analysis: Read DigitalOcean grep/awk/sed Guide.\n- Lab: TryHackMe 'Tinkerbell' Room.\n- Python: Learn argparse and re modules.",
+            "deliverable": "A new GitHub repo `log-analyzer.py`. Must use argparse (-f) and regex to parse Nginx log to JSON.",
+            "done": "Definition of Done: Script runs from CLI, parses real /var/log/nginx/access.log, and prints clean JSON report."
+          }
+        ]
+      },
+      {
+        "id": "1",
+        "title": "Offensive API Security & Tooling",
+        "description": "Why: To build your core specialization. This phase pivots from generic web hacking to the high-demand field of API-specific vulnerabilities.",
+        "tasks": [
+          {
+            "name": "Skill: API Hacking (Offensive Theory)",
+            "type": "Skill",
+            "details": "What: Master OWASP API Top 10. Focus on Business Logic Flaws: API1 (BOLA), API5 (BFLA), API2 (Broken Auth).\nHow to Practice ($0):\n- Study: Read OWASP API Top 10 Project docs.\n- Practice (Mandatory): Complete all labs in PortSwigger Academy \"API Security\" module.\n- Practice (Tools): Use Postman and Burp Suite Community.\n- Lab: Explore vAPI (Vulnerable API) project.",
+            "deliverable": "A document in your GitHub repo (API_NOTES.md) explaining BOLA, BFLA, and Broken Auth in your own words.",
+            "done": "Definition of Done: Completed all Practitioner-level API security labs in PortSwigger Academy and can explain BOLA by heart."
+          },
+          {
+            "name": "Project 2: API Pentest Toolkit",
+            "type": "Project",
+            "details": "What: Building an extensible Python toolkit.\nHow to Practice ($0):\n- Learn: Read requests library docs.\n- Project: Build reusable Python script (api-toolkit.py) using argparse.\n- Start with module_bola (iterates IDs).\n- Add module_discovery (wordlist finder).",
+            "deliverable": "New GitHub repo `api-pentest-toolkit` containing finished, modular tool. README.md explaining usage.",
+            "done": "Definition of Done: Working, reusable Python script that runs at least two different 'attack modules' selected via CLI."
+          }
+        ]
+      },
+      {
+        "id": "1.5",
+        "title": "The 'Real World' VDP Hunt",
+        "description": "Why: To validate skills on real infrastructure without competing against elite hackers. Focus on VDPs to build portfolio.",
+        "tasks": [
+          {
+            "name": "Skill: Strategic VDP Selection",
+            "type": "Strategy",
+            "details": "What: Finding targets not saturated by automation.\nHow to Practice ($0):\n- Avoid Front Page: Don't pick top HackerOne programs.\n- Find VDPs: Search for 'Vulnerability Disclosure Programs' offering Thanks/Swag (not cash).\n- Self-Hosted: Look for self-managed programs on company websites.",
+            "deliverable": "A list of 3 low-competition VDP targets.",
+            "done": "Definition of Done: You have selected ONE specific VDP target for the next step."
+          },
+          {
+            "name": "Project: The 14-Day Deep Dive",
+            "type": "Execution",
+            "details": "What: Applying 'Pattern Recognition' to a single target.\nThe Routine:\n- Rule: Stick to ONE target for 2 weeks.\n- Daily: 2 hours study feature, 2-3 hours active hunting.\n- Focus: Map business logic. Look for where patterns (IDOR/BOLA) should exist.",
+            "deliverable": "A valid vulnerability report (even P4/Low) or a detailed 'Attack Surface Map'.",
+            "done": "Definition of Done: You have spent 14 days on one target and understand its business logic better than the developers."
+          }
+        ]
+      },
+      {
+        "id": "2",
+        "title": "SDLC & Target Creation",
+        "description": "Why: To learn the 'Build It' part. You will build your own vulnerable target to understand a developer's logic.",
+        "tasks": [
+          {
+            "name": "Project 3: Build a Multi-Vuln API Lab",
+            "type": "Project",
+            "details": "What: Use Python Flask to create REST API with /login and user endpoints. Deliberately code flaws.\nHow to Practice ($0):\n- Learn: Flask Quickstart docs.\n- Flaw 1 (BOLA): /users/<id> endpoint must not check login match.\n- Flaw 2 (BFLA): /admin/all_users checks login but not role.\n- Flaw 3 (Mass Assignment): PATCH /profile allows updating \"is_admin\": true.",
+            "deliverable": "New GitHub repo `multi-vuln-api-lab` with source code.",
+            "done": "Definition of Done: API runs locally and is demonstrably vulnerable to BOLA, BFLA, and Mass Assignment."
+          },
+          {
+            "name": "Skill: Containerize Your Target",
+            "type": "DevOps",
+            "details": "What: Package your vulnerable API using Docker.\nHow to Practice ($0):\n- Learn: Docker 'Get Started'.\n- Project: Write Dockerfile and docker-compose.yml.",
+            "deliverable": "Dockerfile and docker-compose.yml committed to repo.",
+            "done": "Definition of Done: Vulnerable API runs successfully from a Docker container using `docker compose up`."
+          }
+        ]
+      },
+      {
+        "id": "3",
+        "title": "Custom Exploit Dev & Reporting",
+        "description": "Why: To learn the 'Break It' part. Write custom exploit and document it professionally.",
+        "tasks": [
+          {
+            "name": "Skill: Custom Multi-Exploit Scripting",
+            "type": "Exploit",
+            "details": "What: Adapt api-pentest-toolkit or write new exploit.py to find all 3 vulnerabilities.\nHow to Practice ($0):\n- Script: Login as low-privilege user.\n- Exploit:\n  1. Exploit BOLA to read user_B data.\n  2. Exploit BFLA to access /admin.\n  3. Exploit Mass Assignment to become admin.",
+            "deliverable": "README.md with 'Exploitation Steps' and finished exploit.py.",
+            "done": "Definition of Done: exploit.py successfully exploits all three vulnerabilities."
+          },
+          {
+            "name": "Project 4: Professional Vulnerability Report",
+            "type": "Documentation",
+            "details": "What: Creating a high-quality PDF report.\nContent:\n1. Executive Summary.\n2. Technical Findings (one per bug).\n3. Proof of Concept (exploit code/output).\n4. Remediation (how to fix).",
+            "deliverable": "High-quality Vulnerability_Report.pdf committed to repo.",
+            "done": "Definition of Done: Professional PDF report clearly explaining risk, impact, and solution."
+          }
+        ]
+      },
+      {
+        "id": "4",
+        "title": "Standalone Project - JWT Security Lab",
+        "description": "Why: To tackle API2: Broken Authentication (JWT).",
+        "tasks": [
+          {
+            "name": "Skill: Build & Break a JWT API",
+            "type": "Project",
+            "details": "What: Use Flask and PyJWT to build API with JWT flaws.\nHow to Practice ($0):\n- Build: /login (issues JWT) and /protected.\n- Flaw 1 (alg:none): /protected accepts alg:none.\n- Flaw 2 (Weak Secret): Use 'secret123'.\n- Break: Write jwt_attacker.py to forge token and brute-force secret.",
+            "deliverable": "New repo `jwt-security-lab` with API source and attacker script.",
+            "done": "Definition of Done: Attacker script gains admin access via both flaws."
+          },
+          {
+            "name": "Skill: Secure the JWT API",
+            "type": "Defense",
+            "details": "What: Fixing the flaws.\nHow to Practice ($0):\n- Secure: Create branch 'patched'.\n- Fix 1: Only accept HS256.\n- Fix 2: Use complex key.\n- Verify: Attacker script must fail.",
+            "deliverable": "Patched branch with README explaining fixes.",
+            "done": "Definition of Done: Exploit works on main but fails on patched branch."
+          }
+        ]
+      },
+      {
+        "id": "5",
+        "title": "Capstone - Exploit-Verified CI/CD",
+        "description": "Why: Tie everything into one 'Resume Weapon'. Build, Break, Secure lifecycle.",
+        "tasks": [
+          {
+            "name": "Project: The 'Build, Break, Secure' Pipeline",
+            "type": "DevOps",
+            "details": "What: GitHub Actions pipeline running exploit script.\nSteps:\n1. Build Action: .github/workflows/security_test.yml. Build container, run exploit.py.\n2. Break: Push vulnerable code. Pipeline MUST fail (RED).\n3. Secure: Create branch 'patched', fix code.\n4. Proof: Push patched code. Pipeline MUST pass (GREEN).",
+            "deliverable": "GitHub URL showing clear history of RED and GREEN builds.",
+            "done": "Definition of Done: GitHub Action turns RED on main and GREEN on patched."
+          }
+        ]
+      }
+    ]
+  }
+}
