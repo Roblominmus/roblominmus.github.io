@@ -89,6 +89,22 @@ elems.modal.overlay.addEventListener('click', (e) => {
     if (e.target === elems.modal.overlay) closeModal();
 });
 
+// --- Modal Body Event Delegation ---
+elems.modal.body.addEventListener('click', (e) => {
+    const phaseItem = e.target.closest('.phase-item');
+    const taskItem = e.target.closest('.task-item');
+    
+    if (phaseItem && phaseItem.dataset.phase) {
+        e.stopPropagation();
+        const phase = JSON.parse(phaseItem.dataset.phase);
+        openPhase(phase);
+    } else if (taskItem && taskItem.dataset.task) {
+        e.stopPropagation();
+        const task = JSON.parse(taskItem.dataset.task);
+        openTask(task);
+    }
+});
+
 // --- Utilities ---
 function getYouTubeID(url) {
     if (!url) return null;
@@ -321,7 +337,7 @@ function openPhaseList() {
     let html = '<div class="card" style="background: transparent;">';
     data.cyber_content_database.phases.forEach((phase, idx) => {
         html += `
-            <div class="list-item" style="background: var(--card-bg); margin-bottom: 1px; ${idx===0?'border-top-left-radius:12px;border-top-right-radius:12px;':''} ${idx===data.cyber_content_database.phases.length-1?'border-bottom-left-radius:12px;border-bottom-right-radius:12px;':''}" onclick='openPhase(${JSON.stringify(phase)})'>
+            <div class="list-item phase-item" style="background: var(--card-bg); margin-bottom: 1px; ${idx===0?'border-top-left-radius:12px;border-top-right-radius:12px;':''} ${idx===data.cyber_content_database.phases.length-1?'border-bottom-left-radius:12px;border-bottom-right-radius:12px;':''}" data-phase='${JSON.stringify(phase).replace(/'/g, "&apos;")}'>
                 <div class="list-item-content">
                     <div class="item-primary">Phase ${phase.id}: ${phase.title}</div>
                     <div class="item-secondary" style="font-size: 12px; opacity: 0.8; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${phase.description}</div>
@@ -345,7 +361,7 @@ function openPhase(phase) {
     
     phase.tasks.forEach((task, idx) => {
         html += `
-            <div class="list-item" style="background: var(--card-bg); margin-bottom: 1px; ${idx===0?'border-top-left-radius:12px;border-top-right-radius:12px;':''} ${idx===phase.tasks.length-1?'border-bottom-left-radius:12px;border-bottom-right-radius:12px;':''}" onclick='openTask(${JSON.stringify(task)})'>
+            <div class="list-item task-item" style="background: var(--card-bg); margin-bottom: 1px; ${idx===0?'border-top-left-radius:12px;border-top-right-radius:12px;':''} ${idx===phase.tasks.length-1?'border-bottom-left-radius:12px;border-bottom-right-radius:12px;':''}" data-task='${JSON.stringify(task).replace(/'/g, "&apos;")}'>
                 <div class="list-item-content">
                     <div class="item-primary">${task.name} <span class="tag">${task.type}</span></div>
                     <div class="item-secondary">Click for full details</div>

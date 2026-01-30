@@ -50,7 +50,7 @@
         { "name": "Cat-Cow", "reps": "10 reps", "form": "On all fours, arch/round back with breath.", "why": "Spine mobility for balance in climbs/carries.", "video": "https://www.youtube.com/watch?v=Xq3nUS-Y2q4" },
         { "name": "Shoulder Dislocates", "reps": "10 reps", "form": "Wide grip, over-and-back (Band/Towel).", "why": "Shoulder range for pulling/punching in self-protection.", "video": "https://www.youtube.com/watch?v=7p-Ma0eksaY" },
         { "name": "World's Greatest Stretch", "reps": "5/side, 5s hold", "form": "Lunge forward, twist torso.", "why": "Opens hips for agility/momentum shifts.", "video": "https://www.youtube.com/watch?v=-CiWQ2IvY34" },
-        { "name": "Leg Swings", "reps": "10 fwd/back + side/side", "form": "Controlled swings.", "why": "Loosens legs for sprints/labor demands.", "video": "https://www.youtube.com/watch?v=difDswSWOc4" },
+        { "name": "Leg Swings", "reps": "10 fwd/back + side/side", "form": "Controlled swings.", "why": "Loosens legs for sprints/labor demands.", "video": "https://www.youtube.com/watch?v=naW8u72lOzI" },
         { "name": "Bodyweight Squats", "reps": "15 reps", "form": "Feet shoulder-width, sit back, knees track toes.", "why": "Primes lower body/core for strength/endurance.", "video": "https://www.youtube.com/watch?v=P-yaD24bUE8" }
       ]
     },
@@ -72,7 +72,7 @@
         "description": "Goal: Raw functional strength for labor/carrying/climbing/combat—directly builds grip/resilience for jerrycans/barrows/holding off attackers. (75 mins)",
         "warmup": true,
         "exercises": [
-          { "name": "Barbell Back Squats", "sets": "4 x 6-8", "rest": "2 mins", "form": "Bar on upper back, feet shoulder-width, descend to parallel with core braced, drive up through heels.", "why": "Leg/core power for sustained labor/sprints over 1-2km. Progress: Add weight when 2 reps in reserve.", "video": "https://www.youtube.com/watch?v=U3HlLHzX6Lg" },
+          { "name": "Barbell Back Squats", "sets": "4 x 6-8", "rest": "2 mins", "form": "Bar on upper back, feet shoulder-width, descend to parallel with core braced, drive up through heels.", "why": "Leg/core power for sustained labor/sprints over 1-2km. Progress: Add weight when 2 reps in reserve.", "video": "https://www.youtube.com/watch?v=gcNh17Ckjgg" },
           { "name": "Bent-Over Barbell Rows", "sets": "4 x 6-8", "rest": "2 mins", "form": "Hinge hips, flat back, pull bar to lower ribs, squeeze shoulder blades.", "why": "Back pulling strength for climbing/ledges/bodyweight pulls. Progress: Add weight at full reps with control.", "video": "https://www.youtube.com/watch?v=TJiouaKew_k" },
           { "name": "Dumbbell Floor Press", "sets": "4 x 6-8", "rest": "90 secs", "form": "Lie on floor, press from chest, elbows at 45 degrees.", "why": "Pushing toughness for self-protection in 4v1 scenarios. Progress: Increase weight gradually.", "video": "https://www.youtube.com/watch?v=AqYFvc9t_vU" },
           { "name": "Push-Ups", "sets": "3 x max", "rest": "60 secs", "form": "Straight body, chest to floor, full range.", "why": "Additional upper body pushing resilience for combat or pushing obstacles.", "video": "https://www.youtube.com/watch?v=IODxDxX7oi4" },
@@ -85,8 +85,8 @@
         "description": "Goal: Fight stamina/sprint capacity—trains for chases (2-3km sprint, 10km jog) and holding off attackers with clarity/recovery. (75 mins)",
         "warmup": true,
         "exercises": [
-          { "name": "Punching Bag Intervals", "sets": "8 rounds", "details": "20 mins total. 30 secs all-out combos, 90 secs active rest (light footwork).", "form": "Hands up, pivot feet, move head.", "why": "Power/mental toughness for 4v1 deterrence/escape.", "video": "https://www.youtube.com/watch?v=Rlj3SWFu3I0" },
-          { "name": "Treadmill Intervals", "sets": "20 mins", "details": "Weeks 1-4: 400m hard run, 90 secs walk x6; progress to 600m (5-8), 800m (9-12).", "form": "Controlled pace, upright posture.", "why": "Builds sustained effort for escapes/long distances.", "video": "https://www.youtube.com/watch?v=ufh3SWOc4oM" },
+          { "name": "Punching Bag Intervals", "sets": "8 rounds", "details": "20 mins total. 30 secs all-out combos, 90 secs active rest (light footwork).", "form": "Hands up, pivot feet, move head.", "why": "Power/mental toughness for 4v1 deterrence/escape.", "video": "https://www.youtube.com/watch?v=kbgkeTTSau8" },
+          { "name": "Treadmill Intervals", "sets": "20 mins", "details": "Weeks 1-4: 400m hard run, 90 secs walk x6; progress to 600m (5-8), 800m (9-12).", "form": "Controlled pace, upright posture.", "why": "Builds sustained effort for escapes/long distances.", "video": "https://www.youtube.com/watch?v=ufhM_9eLU-s" },
           { "name": "Farmers Holds (Grip Finisher)", "sets": "3 x 30 secs", "details": "Heaviest weight.", "form": "Static hold, no drop.", "why": "Resilient grip for labor/confrontations.", "video": "https://www.youtube.com/watch?v=h3I-fD7RYgE" }
         ]
       },
